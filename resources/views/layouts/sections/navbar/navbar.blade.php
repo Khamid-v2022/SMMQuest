@@ -99,7 +99,7 @@ $navbarDetached = ($navbarDetached ?? '');
                   <span class="align-middle">Logout</span>
                 </a>
               </li>
-              <form method="POST" id="logout-form" action="{{ route('logout') }}">
+              <form method="GET" id="logout-form" action="{{ route('logout') }}">
                 @csrf
               </form>
               @endif

@@ -39,6 +39,7 @@ $(function () {
                     success: function (response) {
                         if (response.code == 200) {
                             Swal.fire({
+                                icon: 'success',
                                 title: 'Success',
                                 text: '',
                                 type: 'success',

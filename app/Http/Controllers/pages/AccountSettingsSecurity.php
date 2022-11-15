@@ -4,12 +4,11 @@ namespace App\Http\Controllers\pages;
 
 use Illuminate\Http\Request;
 
-class HomePage extends MyController
+class AccountSettingsSecurity extends MyController
 {
   public function index()
   {
     $pageConfigs = ['myLayout' => 'horizontal'];
-
-    return view('content.pages.pages-home', ['pageConfigs'=> $pageConfigs]);
+    return view('content.pages.pages-account-settings-security', ['pageConfigs'=> $pageConfigs]);
   }
 }

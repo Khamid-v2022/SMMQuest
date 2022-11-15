@@ -12,6 +12,7 @@ $(function () {
         const password = $("#password").val();
         if(!email || !password){
             Swal.fire({
+                icon: 'warning',
                 title: 'Warning!',
                 text: 'Please fill out the following form',
                 type: 'warning',
@@ -38,6 +39,7 @@ $(function () {
                     location.href = "/";
                 }  else {
                     Swal.fire({
+                        icon: 'warning',
                         title: 'Warning!',
                         text: response.message,
                         type: 'warning',
@@ -50,6 +52,7 @@ $(function () {
             },
             error: function (response) {
                 Swal.fire({
+                    icon: 'error',
                     title: 'Error!',
                     text: response.responseJSON.message,
                     type: 'error',

@@ -34,7 +34,9 @@ class LoginBasic extends Controller
 
   public function logout(){
     Session::flush();
-    Auth::logout();
+    if (Auth::check()) {
+      Auth::logout();
+    }
 
     return Redirect('/auth/login');
   }

@@ -33,10 +33,7 @@
     <div class="col-md-12">
         <ul class="nav nav-pills flex-column flex-md-row mb-3">
             <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Account</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-security')}}"><i class="bx bx-lock-alt me-1"></i> Security</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-billing')}}"><i class="bx bx-detail me-1"></i> Billing & Plans</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-notifications')}}"><i class="bx bx-bell me-1"></i> Notifications</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-connections')}}"><i class="bx bx-link-alt me-1"></i> Connections</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{url('/profile-security')}}"><i class="bx bx-lock-alt me-1"></i> Security</a></li>
         </ul>
         <div class="card mb-4">
             <h5 class="card-header">Profile Details</h5>
@@ -55,7 +52,7 @@
                             <span class="d-none d-sm-block">Reset</span>
                         </button>
 
-                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                        <p class="text-muted mb-0" id="img-warning">Allowed JPG, GIF or PNG. Max size of 800K</p>
                     </div>
                 </div>
             </div>
@@ -96,7 +93,7 @@
                         </div>
                     </div>
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                        <button type="submit" class="btn btn-primary me-2" id="submit_btn">Save changes</button>
                         <button type="reset" class="btn btn-label-secondary" id="reset_btn">Cancel</button>
                     </div>
                 </form>

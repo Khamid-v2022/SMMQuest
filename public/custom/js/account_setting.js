@@ -69,14 +69,47 @@
                         buttonsStyling: false
                     }).then(function (result) {
                         if (result.value) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Deleted!',
-                                text: 'Your file has been deleted.',
-                                customClass: {
-                                confirmButton: 'btn btn-success'
-                                }
+                            let _url = "/profile";
+
+                            $.ajax({
+                                url: _url,
+                                type: "DELETE",
+                                success: function (response) {
+                                    if (response.code == 200) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Deleted!',
+                                            text: 'Your file has been deleted.',
+                                            customClass: {
+                                            confirmButton: 'btn btn-success'
+                                            }
+                                        }).then(function(result){
+                                            location.href = "/auth/logout";
+                                        })
+                                        
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: '',
+                                            text: 'Something went wrong. Please try again later',
+                                            customClass: {
+                                            confirmButton: 'btn btn-success'
+                                            }
+                                        })
+                                    }
+                                },
+                                error: function (response) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '',
+                                        text: 'Something went wrong. Please try again later',
+                                        customClass: {
+                                        confirmButton: 'btn btn-success'
+                                        }
+                                    })
+                                },
                             });
+                            
                         } else if (result.dismiss === Swal.DismissReason.cancel) {
                             Swal.fire({
                                 title: 'Cancelled',
@@ -137,55 +170,78 @@ const reset_country = $("#country").val();
 $(function () {
     
     $('.select2').select2();
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
 
     $("#formAccountSettings").on("submit", function(e){
         e.preventDefault();
         
         let data = new FormData();
-        data.append('file', $('#upload')[0].files[0]);
+        
 
-        var imgname  =  $('input[type=file]').val();
-        var size  =  $('#file')[0].files[0].size;
+        data.append('phone', $("#phoneNumber").val());
+        data.append('address', $("#address").val());
+        data.append('zip_code', $("#zipCode").val());
+        data.append('country', $("#country").val());
 
-        var ext =  imgname.substr( (imgname.lastIndexOf('.') +1) );
-        if(ext=='jpg' || ext=='jpeg' || ext=='png' || ext=='gif' || ext=='PNG' || ext=='JPG' || ext=='JPEG')
-        {
-            if(size <= 800000) {
-                $.ajax({
-                    url: "<?php echo base_url() ?>/upload.php",
-                    type: "POST",
-                    data: data,
-                    enctype: 'multipart/form-data',
-                    processData: false,  // tell jQuery not to process the data
-                    contentType: false   // tell jQuery not to set contentType
-                }).done(function(data) {
-                    // if(data!='FILE_SIZE_ERROR' || data!='FILE_TYPE_ERROR' ) {
-                    //     fcnt = parseInt(fcnt)+1;
-                    //     $('#filecount').val(fcnt);
-                    //     var img = '<div class="dialog" id ="img_'+fcnt+'" ><img src="<?php echo base_url() ?>/local_cdn/'+data+'"><a href="#" id="rmv_'+fcnt+'" onclick="return removeit('+fcnt+')" class="close-classic"></a></div><input type="hidden" id="name_'+fcnt+'" value="'+data+'">';
-                    //     $('#prv').append(img);
-                        
-                    //     if(fname!=='') {
-                    //         fname = fname+','+data;
-                    //     } else {
-                    //         fname = data;
-                    //     }
-                    // }
-                    // else
-                    // {
-                    
-                    // }
-              
-                });
-                return false;
-            } else {
+        if($('#upload')[0].files[0]){
+            data.append('file', $('#upload')[0].files[0]);
+            var imgname  =  $('#upload').val();
+            var size  =  $('#upload')[0].files[0].size;
+
+            var ext =  imgname.substr( (imgname.lastIndexOf('.') +1) );
+            if(ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'gif' && ext != 'PNG' && ext != 'JPG' && ext != 'JPEG')
+            {
                 fileInput.value = '';
                 accountUserImage.src = resetImage;
+                $("#img-warning").css("color", "red");
+                return;
             }
-        } else {
-            fileInput.value = '';
-            accountUserImage.src = resetImage;
+            if(size > 800000) { 
+                fileInput.value = '';
+                accountUserImage.src = resetImage;
+                $("#img-warning").css("color", "red");
+                return;
+            }
         }
+        
+        $("#submit_btn").attr("disabled", true);
+
+        $("#img-warning").css("color", "#a1acb8 !important");
+        let _url = "/profile";
+        $.ajax({
+            url: _url,
+            type: "POST",
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,  // tell jQuery not to process the data
+            contentType: false   // tell jQuery not to set contentType
+        }).done(function(data) {
+            $("#submit_btn").removeAttr("disabled");
+            if(data.code == 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Updated!',
+                    text: '',
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Somethig went wrong!',
+                    icon: 'error',
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    }
+                });
+            }
+        });
+       
     })
 
     $("#reset_btn").on("click", function(){
