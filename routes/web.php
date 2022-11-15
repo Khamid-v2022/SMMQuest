@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/profile', [AccountSettingsAccount::class, 'delete']);
 
         Route::get('/profile-security', [AccountSettingsSecurity::class, 'index'])->name('profile-security');
+        Route::post('/profile-security', [AccountSettingsSecurity::class, 'update']);
     });
 });
 

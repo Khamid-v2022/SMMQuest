@@ -10,44 +10,44 @@
         deactivateButton = deactivateAcc.querySelector('.deactivate-account');
 
         if (deactivateAcc) {
-        const fv = FormValidation.formValidation(deactivateAcc, {
-            fields: {
-                accountActivation: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Please confirm you want to delete account'
+            const fv = FormValidation.formValidation(deactivateAcc, {
+                fields: {
+                    accountActivation: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please confirm you want to delete account'
+                            }
                         }
                     }
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap5: new FormValidation.plugins.Bootstrap5({
+                        eleValidClass: ''
+                    }),
+                    submitButton: new FormValidation.plugins.SubmitButton(),
+                    fieldStatus: new FormValidation.plugins.FieldStatus({
+                        onStatusChanged: function (areFieldsValid) {
+                            areFieldsValid
+                            ? // Enable the submit button
+                            // so user has a chance to submit the form again
+                            deactivateButton.removeAttribute('disabled')
+                            : // Disable the submit button
+                            deactivateButton.setAttribute('disabled', 'disabled');
+                        }
+                    }),
+                    // Submit the form when all fields are valid
+                    // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+                    autoFocus: new FormValidation.plugins.AutoFocus()
+                },
+                init: instance => {
+                    instance.on('plugins.message.placed', function (e) {
+                        if (e.element.parentElement.classList.contains('input-group')) {
+                            e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+                        }
+                    });
                 }
-            },
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                bootstrap5: new FormValidation.plugins.Bootstrap5({
-                    eleValidClass: ''
-                }),
-                submitButton: new FormValidation.plugins.SubmitButton(),
-                fieldStatus: new FormValidation.plugins.FieldStatus({
-                    onStatusChanged: function (areFieldsValid) {
-                        areFieldsValid
-                        ? // Enable the submit button
-                        // so user has a chance to submit the form again
-                        deactivateButton.removeAttribute('disabled')
-                        : // Disable the submit button
-                        deactivateButton.setAttribute('disabled', 'disabled');
-                    }
-                }),
-                // Submit the form when all fields are valid
-                // defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-                autoFocus: new FormValidation.plugins.AutoFocus()
-            },
-            init: instance => {
-                instance.on('plugins.message.placed', function (e) {
-                    if (e.element.parentElement.classList.contains('input-group')) {
-                        e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
-                    }
-                });
-            }
-        });
+            });
         }
 
         // Deactivate account alert
@@ -79,7 +79,7 @@
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Deleted!',
-                                            text: 'Your file has been deleted.',
+                                            text: 'Your profile has been deleted.',
                                             customClass: {
                                             confirmButton: 'btn btn-success'
                                             }
