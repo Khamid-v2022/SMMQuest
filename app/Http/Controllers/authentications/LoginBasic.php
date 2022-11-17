@@ -12,6 +12,9 @@ use App\Models\LoginHistory;
 use Stevebauman\Location\Facades\Location;
 use Jenssegers\Agent\Facades\Agent;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Notify;
+
 use Hash;
 use Session;
 
@@ -61,5 +64,79 @@ class LoginBasic extends Controller
     }
 
     return Redirect('/auth/login');
+  }
+
+  public function forgotPassword(Request $request){
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.authentications.forgot-password', ['pageConfigs' => $pageConfigs]);
+  }
+
+  public function sendMailToResetPasswordLink(Request $request){
+    $request->validate([
+      'email' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+    if(!$user)
+      return response()->json(['code'=>201, 'message'=>'This is an unregistered email.'], 200);
+    
+    // send email
+    $verify_code = $this->randomString(99);
+    $user->verify_code = $verify_code;
+    $user->save();
+
+    $active_link = route('reset-password', ['unique_str' => $verify_code]);
+    $details = [
+      'title' => 'Reset Password',
+      'body' => ' Click the link below to reset your password:<br/>' 
+                  . '<a href="' . $active_link . '" target="_black">' . $active_link . '</a>'
+    ];
+    
+    try {
+      Mail::to($user->email) -> send(new Notify($details));
+    } catch (Exception $e) {
+      if (count(Mail::failures()) > 0) {
+        return redirect('/pages/misc-error');
+      }
+    }
+    return response()->json(['code'=>200, 'message'=>'Please check your email box'], 200);
+  }
+
+  private function randomString($length) {
+    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    $pass = array();
+    $alphaLength = strlen($alphabet) - 1;
+    for ($i = 0; $i < $length; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+    }
+    return implode($pass);
+  }
+
+  public function resetPasswordPage($verify_code){
+    $user = User::where('verify_code', $verify_code)->first();
+    
+    if(!$user){
+      return redirect('/pages/misc-error');
+    }
+
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.authentications.reset-password', ['pageConfigs' => $pageConfigs, 'email' => $user->email ]);
+  }
+
+  public function resetPassword(Request $request){
+    $request->validate([
+      'email' => 'required',
+      'password' => 'required',
+    ]);
+
+    $user = User::where('email', strtolower($request->email))->first();
+    if(!$user){
+      return response()->json(['code'=>400, 'message'=>'Invalid email address'], 400);
+    }
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return response()->json(['code'=>200, 'message'=>'Success', 'data'=>$user], 200);
   }
 }

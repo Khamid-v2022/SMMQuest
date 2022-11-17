@@ -54,7 +54,7 @@ $customizerHidden = 'customizer-hide';
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">Password</label>
-                <a href="javascript:void(0);">
+                <a href="/forgot-password">
                   <small>Forgot Password?</small>
                 </a>
               </div>
@@ -79,6 +79,7 @@ $customizerHidden = 'customizer-hide';
           <p class="text-center">
             <span>New on our platform?</span>
             <a href="{{url('auth/register')}}">
+            <!-- <a href="#"> -->
               <span>Create an account</span>
             </a>
           </p>

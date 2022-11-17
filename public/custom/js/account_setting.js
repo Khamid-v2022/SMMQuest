@@ -166,6 +166,7 @@
 });
  
 const reset_country = $("#country").val();
+const reset_timezone = $("#timezone").val();
 
 $(function () {
     
@@ -181,10 +182,14 @@ $(function () {
         
         let data = new FormData();
         
-
+        data.append('first_name', $("#firstName").val());
+        data.append('last_name', $("#lastName").val());
+        data.append('organization', $("#organization").val());
         data.append('phone', $("#phoneNumber").val());
         data.append('address', $("#address").val());
+        data.append('state', $("#state").val());
         data.append('zip_code', $("#zipCode").val());
+        data.append('timezone', $("#timezone").val());
         data.append('country', $("#country").val());
 
         if($('#upload')[0].files[0]){
@@ -246,6 +251,7 @@ $(function () {
 
     $("#reset_btn").on("click", function(){
         $('#country').val(reset_country).select2();
+        $('#timezone').val(reset_timezone).select2();
     })
  });
  

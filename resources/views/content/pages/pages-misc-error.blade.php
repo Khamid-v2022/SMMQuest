@@ -16,7 +16,7 @@ $configData = Helper::appClasses();
 <!-- Error -->
 <div class="container-xxl container-p-y">
   <div class="misc-wrapper">
-    <h1 class="mb-2 mx-2">Page Not Found :(</h1>
+    <h1 class="mb-2 mx-2">Something went wrong :(</h1>
     <p class="mb-4 mx-2">Oops! 😖 The requested URL was not found on this server.</p>
     <a href="{{url('/')}}" class="btn btn-primary">Back to home</a>
     <div class="mt-3">

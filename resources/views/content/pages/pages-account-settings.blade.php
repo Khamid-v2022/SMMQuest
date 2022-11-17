@@ -61,18 +61,44 @@
                 <form id="formAccountSettings">
                     <div class="row">
                         <div class="mb-3 col-md-6">
-                            <label for="email" class="form-label">E-mail</label>
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input class="form-control" type="text" id="firstName" name="firstName" value="{{ Auth::user()->first_name }}" autofocus />
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input class="form-control" type="text" name="lastName" id="lastName" value="{{ Auth::user()->last_name }}" />
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="email" class="form-label">
+                                E-mail
+                                @if(Auth::user()->verified == false)
+                                <span>(not verified)</span>
+                                @else
+                                <span>(verified)</span>
+                                @endif
+                            </label>
                             <input class="form-control" type="text" id="email" name="email" value="{{ Auth::user()->email }}" placeholder="Email address" readonly/>
+                            @if(Auth::user()->verified == false)
+                                <div id="defaultFormControlHelp" class="form-text">You did not verify your email. Verify your email <a href="{{url('/profile/verify-email')}}">here</a>.</div>
+                            @endif
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="organization" class="form-label">Organization</label>
+                            <input type="text" class="form-control" id="organization" name="organization" value="{{ Auth::user()->organization }}" />
                         </div>
                         <div class="mb-3 col-md-6">
                             <label class="form-label" for="phoneNumber">Phone Number</label>
                             <div class="input-group input-group-merge">
-                                <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="" value="{{ Auth::user()->phone }}"/>
+                                <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="Phone Number" value="{{ Auth::user()->phone }}"/>
                             </div>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="address" class="form-label">Address</label>
                             <input type="text" class="form-control" id="address" name="address" placeholder="Address" value="{{ Auth::user()->address }}"/>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="state" class="form-label">State</label>
+                            <input class="form-control" type="text" id="state" name="state" placeholder="California" value="{{ Auth::user()->state }}"/>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="zipCode" class="form-label">Zip Code</label>
@@ -87,6 +113,19 @@
                                         <option value="{{ $country }}" selected>{{ $country }}</option>
                                     @else
                                         <option value="{{ $country }}">{{ $country }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="timezone" class="form-label">Timezone</label>
+                            <select id="timezone" class="select2 form-select">
+                                <option value="">Select Timezone</option>
+                                @foreach(config('variables.timeZones') as $key => $value)
+                                    @if($key == Auth::user()->timezone)
+                                        <option value="{{ $key }}" selected>{{ $key }}</option>
+                                    @else
+                                        <option value="{{ $key }}">{{ $key }}</option>
                                     @endif
                                 @endforeach
                             </select>

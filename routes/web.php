@@ -23,9 +23,13 @@ $controller_path = 'App\Http\Controllers';
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['auth', 'user']], function () {
         Route::get('/', [HomePage::class, 'index'])->name('pages-home');
+
         Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile-show');
         Route::post('/profile', [AccountSettingsAccount::class, 'update']);
         Route::delete('/profile', [AccountSettingsAccount::class, 'delete']);
+        Route::get('/profile/verify-email', [AccountSettingsAccount::class, 'verifyEmail']);
+        Route::get('/profile/send-verify-email', [AccountSettingsAccount::class, 'sendVerifyEmail']);
+        
 
         Route::get('/profile-security', [AccountSettingsSecurity::class, 'index'])->name('profile-security');
         Route::post('/profile-security', [AccountSettingsSecurity::class, 'update']);
@@ -33,13 +37,23 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 // // pages
-// Route::get('/pages/misc-error', $controller_path . '\pages\MiscError@index')->name('pages-misc-error');
+Route::get('/pages/misc-error', $controller_path . '\pages\MiscError@index')->name('pages-misc-error');
 
 // authentication
 Route::get('/auth/login', $controller_path . '\authentications\LoginBasic@index')->name('auth-login');
 Route::post('/auth/login', $controller_path . '\authentications\LoginBasic@login');
-Route::get('/auth/logout', $controller_path . '\authentications\LoginBasic@logout')->name('logout');;
+Route::get('/auth/logout', $controller_path . '\authentications\LoginBasic@logout')->name('logout');
+
+Route::get('/forgot-password', $controller_path . '\authentications\LoginBasic@forgotPassword');
+Route::post('/forgot-password', $controller_path . '\authentications\LoginBasic@sendMailToResetPasswordLink');
+
+Route::get('/reset-password/{unique_str}', $controller_path . '\authentications\LoginBasic@resetPasswordPage')->name('reset-password');
+Route::post('/reset-password', $controller_path . '\authentications\LoginBasic@resetPassword');
 
 
 Route::get('/auth/register', $controller_path . '\authentications\RegisterBasic@index')->name('auth-register');
-Route::post('/auth/register', $controller_path . '\authentications\RegisterBasic@register')->name('auth-register');
+Route::post('/auth/register', $controller_path . '\authentications\RegisterBasic@register');
+
+// verification 
+Route::get('/email-verify/{unique_str}', $controller_path . '\authentications\RegisterBasic@verifyEmail')->name('email-verify');
+Route::get('/failed-email-verify', $controller_path . '\authentications\RegisterBasic@failedVerify')->name('failed-email-verify');

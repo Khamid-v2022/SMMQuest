@@ -18,6 +18,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
 
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/fontawesome.css') }}" />
+
   <!-- sweetalert -->
   <link rel="stylesheet" href="{{ asset('assets/vendor/libs/animate-css/animate.css') }}" />
   <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
