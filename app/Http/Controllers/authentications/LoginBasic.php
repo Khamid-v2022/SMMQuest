@@ -35,23 +35,26 @@ class LoginBasic extends Controller
     $credentials = $request->only('email', 'password');
 
     if (Auth::attempt($credentials)) {
-      
-       // set login history
-      $user = Auth::user();
-      $history = new LoginHistory;
-      $history->user_id = $user->id;
-      $history->agency = $request->header('User-Agent');
-      $history->ip_address = $request->ip();
-      $history->device = Agent::device();
-      $history->browser = Agent::browser();
-      $history->platform = Agent::platform();
-      $location = Location::get($request->ip());
-      if($location)
-        $history->location = $location->countryName;
-      
-      $history->save();
-      
-      return response()->json(['code'=>200, 'message'=>'You have successfully logged in'], 200);
+      if(Auth::user()->verified == false){
+        return response()->json(['code'=>201, 'message'=>'This account is not verified. Please check your email box.'], 201);
+      } else {       
+        // set login history
+        $user = Auth::user();
+        $history = new LoginHistory;
+        $history->user_id = $user->id;
+        $history->agency = $request->header('User-Agent');
+        $history->ip_address = $request->ip();
+        $history->device = Agent::device();
+        $history->browser = Agent::browser();
+        $history->platform = Agent::platform();
+        $location = Location::get($request->ip());
+        if($location)
+          $history->location = $location->countryName;
+        
+        $history->save();
+        
+        return response()->json(['code'=>200, 'message'=>'You have successfully logged in'], 200);
+      }
     }
 
     return response()->json(['code'=>401, 'message'=>'You have entered invalid login details'], 401);
@@ -100,17 +103,6 @@ class LoginBasic extends Controller
       }
     }
     return response()->json(['code'=>200, 'message'=>'Please check your email box'], 200);
-  }
-
-  private function randomString($length) {
-    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-    $pass = array();
-    $alphaLength = strlen($alphabet) - 1;
-    for ($i = 0; $i < $length; $i++) {
-        $n = rand(0, $alphaLength);
-        $pass[] = $alphabet[$n];
-    }
-    return implode($pass);
   }
 
   public function resetPasswordPage($verify_code){

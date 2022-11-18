@@ -78,9 +78,6 @@
                                 @endif
                             </label>
                             <input class="form-control" type="text" id="email" name="email" value="{{ Auth::user()->email }}" placeholder="Email address" readonly/>
-                            @if(Auth::user()->verified == false)
-                                <div id="defaultFormControlHelp" class="form-text">You did not verify your email. Verify your email <a href="{{url('/profile/verify-email')}}">here</a>.</div>
-                            @endif
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="organization" class="form-label">Organization</label>

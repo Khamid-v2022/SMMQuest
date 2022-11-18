@@ -9,7 +9,7 @@ $(function () {
         $(this).css("display", "none");
         $(".fa-spinner").css("display", "inline-block");
         
-        let _url = "/profile/send-verify-email";
+        let _url = "/auth/register/resend-verify-email/" + $("#email").val();
         $.ajax({
             url: _url,
             type: "get",
@@ -38,6 +38,8 @@ $(function () {
                         },
                         buttonsStyling: false
                     })
+                    $("#resend_btn").css("display", "inline");
+                    $(".fa-spinner").css("display", "none");
                 }
             },
             error: function (response) {
@@ -51,8 +53,9 @@ $(function () {
                     },
                     buttonsStyling: false
                 })
-               
-            },
+                $("#resend_btn").css("display", "inline");
+                $(".fa-spinner").css("display", "none");
+            },  
         });
     })
 })

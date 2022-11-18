@@ -37,7 +37,19 @@ $(function () {
             success: function (response) {
                 if (response.code == 200) {
                     location.href = "/";
-                }  else {
+                } else if(response.code == 201){
+                    Swal.fire({
+                        icon: 'warning',
+                        title: response.message,
+                        type: 'warning',
+                        text: '',
+                        customClass: {
+                            confirmButton: 'btn btn-success'
+                        }
+                    }).then(function(result){
+                        location.href = "/auth/register/send-verify-email/" + email;
+                    })
+                } else {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Warning!',

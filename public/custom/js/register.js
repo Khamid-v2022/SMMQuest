@@ -99,26 +99,20 @@ $(function () {
                     password: $("#password").val(),
                 };
 
+                $(".fa-spinner").css("display", "inline-block");
+                $("#singup_btn_title").css("display", "none");
+                $("#singup_btn").attr("disabled", true);
+
                 $.ajax({
                     url: _url,
                     type: "POST",
                     data: data,
                     success: function (response) {
                         if (response.code == 200) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success',
-                                text: '',
-                                type: 'success',
-                                customClass: {
-                                  confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false
-                            }).then(function(result){
-                                location.href = "/auth/login";
-                            })
-                            return;
-                        }  else {
+                          // location.href = "/auth/register/send-verify-email/" + response.verify_code;
+                          location.href = "/auth/register/send-verify-email/" + $("#email").val()
+                          return;
+                        } else {
                             Swal.fire({
                                 icon: 'warning',
                                 title: '',
@@ -129,6 +123,9 @@ $(function () {
                                 },
                                 buttonsStyling: false
                             })
+                            $(".fa-spinner").css("display", "none");  
+                            $("#singup_btn_title").css("display", "block");
+                            $("#singup_btn").removeAttr("disabled");
                             return;
                         }
                     },
@@ -143,6 +140,9 @@ $(function () {
                             },
                             buttonsStyling: false
                         })
+                        $(".fa-spinner").css("display", "none");  
+                        $("#singup_btn_title").css("display", "block");
+                        $("#singup_btn").removeAttr("disabled");
                         return;
                     },
                 });

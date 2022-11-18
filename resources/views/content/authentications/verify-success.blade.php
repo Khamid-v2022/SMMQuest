@@ -29,10 +29,10 @@ $customizerHidden = 'customizer-hide';
         <!-- /Logo -->
         <h3 class="mb-2">Verify your email ✉️</h3>
         <p class="text-start">
-            Account activation is failed...
+            Account activation is successed...
         </p>
         <a class="btn btn-primary w-100 my-3" href="{{url('/')}}">
-          Skip for now
+          Go to login
         </a>
       </div>
     </div>

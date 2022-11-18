@@ -75,7 +75,8 @@ $customizerHidden = 'customizer-hide';
               </div>
             </div>
             <button class="btn btn-primary d-grid w-100" id="singup_btn" type="button">
-              Sign up
+              <span id="singup_btn_title">Sign up</span>
+              <i class="fas fa-spinner fa-spin" style="display: none"></i>
             </button>
           </form>
 

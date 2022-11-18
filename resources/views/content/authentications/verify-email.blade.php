@@ -19,7 +19,7 @@ $customizerHidden = 'customizer-hide';
 <div class="authentication-wrapper authentication-basic px-4">
   <div class="authentication-inner">
 
-
+    <input type="hidden" value="{{ $email }}" id="email">
     <!-- Verify Email -->
     <div class="card">
       <div class="card-body">

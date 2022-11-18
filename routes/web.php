@@ -27,10 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile-show');
         Route::post('/profile', [AccountSettingsAccount::class, 'update']);
         Route::delete('/profile', [AccountSettingsAccount::class, 'delete']);
-        Route::get('/profile/verify-email', [AccountSettingsAccount::class, 'verifyEmail']);
-        Route::get('/profile/send-verify-email', [AccountSettingsAccount::class, 'sendVerifyEmail']);
         
-
         Route::get('/profile-security', [AccountSettingsSecurity::class, 'index'])->name('profile-security');
         Route::post('/profile-security', [AccountSettingsSecurity::class, 'update']);
     });
@@ -55,5 +52,7 @@ Route::get('/auth/register', $controller_path . '\authentications\RegisterBasic@
 Route::post('/auth/register', $controller_path . '\authentications\RegisterBasic@register');
 
 // verification 
+Route::get('/auth/register/send-verify-email/{unique_str}', $controller_path . '\authentications\RegisterBasic@sendVerifyEmail');
+Route::get('/auth/register/resend-verify-email/{unique_str}', $controller_path . '\authentications\RegisterBasic@resendVerifyEmail');
 Route::get('/email-verify/{unique_str}', $controller_path . '\authentications\RegisterBasic@verifyEmail')->name('email-verify');
 Route::get('/failed-email-verify', $controller_path . '\authentications\RegisterBasic@failedVerify')->name('failed-email-verify');

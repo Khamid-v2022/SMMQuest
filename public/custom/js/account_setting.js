@@ -81,7 +81,7 @@
                                             title: 'Deleted!',
                                             text: 'Your profile has been deleted.',
                                             customClass: {
-                                            confirmButton: 'btn btn-success'
+                                                confirmButton: 'btn btn-success'
                                             }
                                         }).then(function(result){
                                             location.href = "/auth/logout";
