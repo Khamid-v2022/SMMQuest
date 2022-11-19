@@ -35,8 +35,8 @@ $customizerHidden = 'customizer-hide';
         <p class="text-start">
           Account activation link sent to your email address: {{ $email }} Please follow the link inside to continue.
         </p>
-        <a class="btn btn-primary w-100 my-3" href="{{url('/profile')}}">
-          Skip for now
+        <a class="btn btn-primary w-100 my-3" href="{{url('/auth/login')}}">
+          Return to Sign In
         </a>
         <p class="text-center">Didn't get the mail?
           <!-- <a href="/profile/verify-email"> -->

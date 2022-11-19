@@ -32,7 +32,7 @@ $customizerHidden = 'customizer-hide';
             Account activation is successed...
         </p>
         <a class="btn btn-primary w-100 my-3" href="{{url('/')}}">
-          Go to login
+          Return to Sign In
         </a>
       </div>
     </div>

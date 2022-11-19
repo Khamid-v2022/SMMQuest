@@ -15,9 +15,9 @@ class RegisterBasic extends Controller
 {
   public function index()
   {
-    // return "register page";
-    $pageConfigs = ['myLayout' => 'blank'];
-    return view('content.authentications.auth-register', ['pageConfigs' => $pageConfigs]);
+    return "register page";
+    // $pageConfigs = ['myLayout' => 'blank'];
+    // return view('content.authentications.auth-register', ['pageConfigs' => $pageConfigs]);
   }
 
   public function register(Request $request) {
@@ -135,7 +135,10 @@ class RegisterBasic extends Controller
           return redirect('/failed-email-verify');
       }
     }
-    return redirect('/auth/login');
+    
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.authentications.verify-success', ['pageConfigs' => $pageConfigs]);
+    // return redirect('/auth/login');
   }
 
   public function failedVerify(Request $request){    
