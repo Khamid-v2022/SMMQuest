@@ -96,7 +96,7 @@ $(function () {
                         Swal.fire({
                             icon: 'error',
                             title: '',
-                            text: response.message,
+                            text: "Something went wrong. Please try again later",
                             customClass: {
                             confirmButton: 'btn btn-success'
                             }
