@@ -8,6 +8,9 @@ use App\Http\Controllers\pages\AccountSettingsAccount;
 use App\Http\Controllers\pages\AccountSettingsSecurity;
 use App\Http\Controllers\pages\ProviderController;
 
+// use App\Http\Controllers\admin\LoginPage;
+// use App\Http\Controllers\admin\DashboardPage;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,25 +25,22 @@ use App\Http\Controllers\pages\ProviderController;
 $controller_path = 'App\Http\Controllers';
 
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::group(['middleware' => ['auth', 'user']], function () {
-        Route::get('/', [HomePage::class, 'index'])->name('pages-home');
+Route::group(['middleware' => ['auth', 'user']], function () {
+    Route::get('/', [HomePage::class, 'index'])->name('pages-home');
 
-        Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile-show');
-        Route::post('/profile', [AccountSettingsAccount::class, 'update']);
-        Route::delete('/profile', [AccountSettingsAccount::class, 'delete']);
-        
-        Route::get('/profile-security', [AccountSettingsSecurity::class, 'index'])->name('profile-security');
-        Route::post('/profile-security', [AccountSettingsSecurity::class, 'update']);
+    Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile-show');
+    Route::post('/profile', [AccountSettingsAccount::class, 'update']);
+    Route::delete('/profile', [AccountSettingsAccount::class, 'delete']);
+    
+    Route::get('/profile-security', [AccountSettingsSecurity::class, 'index'])->name('profile-security');
+    Route::post('/profile-security', [AccountSettingsSecurity::class, 'update']);
 
-        // Provider
-        Route::get('/providers', [ProviderController::class, 'index']);
-        Route::post('/providers/add', [ProviderController::class, 'createNewProvider']);
-        Route::get('/providers/delete/{id}', [ProviderController::class, 'deleteProvider'])->where('id', '[0-9]+');
-        Route::post('/providers/favorite', [ProviderController::class, 'favoriteProvider']);
-        Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']);
-       
-    });
+    // Provider
+    Route::get('/providers', [ProviderController::class, 'index']);
+    Route::post('/providers/add', [ProviderController::class, 'createNewProvider']);
+    Route::get('/providers/delete/{id}', [ProviderController::class, 'deleteProvider'])->where('id', '[0-9]+');
+    Route::post('/providers/favorite', [ProviderController::class, 'favoriteProvider']);
+    Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']);   
 });
 
 // error pages

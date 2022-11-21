@@ -83,7 +83,6 @@ class ProviderController extends MyController
       } catch (Exception $e) {
       }
 
-
       return response()->json(['code'=>200, 'message'=>'A request has been sent to the administrator to activate the new provider.'], 200);
     }
 

@@ -1,0 +1,28 @@
+<?php 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\Login;
+use App\Http\Controllers\admin\Dashboard;
+use App\Http\Controllers\admin\ProviderManagement;
+
+Route::namespace('admin')->prefix('admin')->group(function(){
+
+    Route::middleware('guest:admin')->group(function(){
+        //login route
+        Route::get('/login', [Login::class, 'index'])->name('admin-login');
+        Route::post('/login', [Login::class, 'signin']);
+    });
+
+    Route::middleware('auth:admin')->group(function(){
+        Route::get('/', [Dashboard::class, 'index']);
+        Route::get('/logout', [Login::class, 'signout'])->name('admin-logout');
+
+        Route::get('/provider-management', [ProviderManagement::class, 'index']);
+        Route::post('/provider-management', [ProviderManagement::class, 'addProvider']);
+        Route::delete('/provider-management', [ProviderManagement::class, 'deleteProvider']);
+        Route::post('/provider-management/changeAPIKey', [ProviderManagement::class, 'changeAPIKey']);
+        Route::post('/provider-management/updateActivate', [ProviderManagement::class, 'updateActivate']);
+       
+    });
+
+});

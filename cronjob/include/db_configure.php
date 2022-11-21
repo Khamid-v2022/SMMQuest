@@ -1,6 +1,6 @@
 <?php 
-    require_once "../vendor/autoload.php";
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    require_once "../../vendor/autoload.php";
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
     $dotenv->load();
 
     $servername = $_ENV['DB_HOST'];
@@ -15,8 +15,6 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    
-    
     // $conn->close();
 
 ?>

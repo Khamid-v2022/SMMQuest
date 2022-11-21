@@ -3,13 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
-use Illuminate\Support\Facades\Route;
-
-class UserAuthenticated
+class AdminAuthenticated
 {
     /**
      * Handle an incoming request.
@@ -18,13 +16,13 @@ class UserAuthenticated
      * @param Closure $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $guard = null)
     {
-        if( Auth::check())
+        if($guard == 'admin' && Auth::guard($guard)->check())
         {
             return $next($request);
         }
-
-        abort(403);  // permission denied error
+       
+        return redirect(route('admin-login'));
     }
 }
