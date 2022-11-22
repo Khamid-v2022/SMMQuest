@@ -36,11 +36,11 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     Route::post('/profile-security', [AccountSettingsSecurity::class, 'update']);
 
     // Provider
-    Route::get('/providers', [ProviderController::class, 'index']);
-    Route::post('/providers/add', [ProviderController::class, 'createNewProvider']);
-    Route::get('/providers/delete/{id}', [ProviderController::class, 'deleteProvider'])->where('id', '[0-9]+');
-    Route::post('/providers/favorite', [ProviderController::class, 'favoriteProvider']);
-    Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']);   
+    // Route::get('/providers', [ProviderController::class, 'index']);
+    // Route::post('/providers/add', [ProviderController::class, 'createNewProvider']);
+    // Route::get('/providers/delete/{id}', [ProviderController::class, 'deleteProvider'])->where('id', '[0-9]+');
+    // Route::post('/providers/favorite', [ProviderController::class, 'favoriteProvider']);
+    // Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']);   
 });
 
 // error pages
