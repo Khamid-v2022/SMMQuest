@@ -82,13 +82,6 @@ $(function () {
     dt_basic = $('.datatables-basic').DataTable({
         columnDefs: [
             {
-                // API Key
-                targets: 2,
-                title: 'API Key',
-                orderable: false,
-                searchable: false,
-            },
-            {
                // Actions
                 targets: -1,
                 title: 'Actions',
@@ -257,10 +250,8 @@ $(function () {
  
     // edit API key 
     $('.datatables-basic tbody').on('click', '.item-edit', function () {
-        const sel_id = $(this).parents('tr').attr("data-provider_id");
-        const api_key = $(this).parents('tr').attr("data-api_key");
+        const sel_id = $(this).parents('tr').attr("data-provider_id");    
         const domain = $(this).parents('tr').attr("data-domain");
-        $("#api_key").val(api_key);
         $("#domain_name").val(domain);
 
         $("#m_selected_id").val(sel_id);

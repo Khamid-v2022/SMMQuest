@@ -50,7 +50,7 @@
                 $disabled++;
             }
         }
-        echo "ENABLED: " . $enabled . PHP_EOL . "<br/>";
+        echo "UPDATED: " . $enabled . PHP_EOL . "<br/>";
         echo "DISABLED: " . $disabled . PHP_EOL . "<br/>";
         echo "FUNCTION ENDED: " . date("Y-m-d H:i:s");
     }

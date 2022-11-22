@@ -23,6 +23,10 @@ class Provider extends Model
         'activated_at'
     ];
 
+    protected $hidden = [
+        'api_key'
+    ];
+
     public function services(){
         return $this->hasMany(Service::class);
     }

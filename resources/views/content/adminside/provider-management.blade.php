@@ -64,7 +64,6 @@ $configData = Helper::appClasses();
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>API Key</th>
                     <th>Status</th>
                     <th>Created</th>
                     <th>Action</th>
@@ -74,18 +73,17 @@ $configData = Helper::appClasses();
                 @php $index = 0; @endphp
                 @foreach($providers as $provider)
                     @php $index++; @endphp
-                    <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} data-api_key={{ $provider->api_key }} >
+                    <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} >
                         <td>{{ $index }}</td>
                         <td>{{ $provider->domain }}</td>
-                        <td>{{ $provider->api_key }}</td>
                         <td>
                             @if($provider->is_activated == 1)
-                                <span class="badge bg-label-primary">Enabled</span>
+                                <span class="badge bg-label-success">Enabled</span>
                             @else
-                                <span class="badge bg-label-warning">Disabled</span>
+                                <span class="badge bg-label-danger">Disabled</span>
                             @endif
                             @if($provider->is_valid_key == 0)
-                                <span class="badge bg-label-danger">Invalid API Key</span>
+                                <span class="badge bg-label-warning">Invalid API Key</span>
                             @endif
                         </td>
                         <td>{{ $provider->created_at }}</td>
@@ -127,7 +125,7 @@ $configData = Helper::appClasses();
                         <!-- <i class="bx bx-envelope"></i> -->
                         <i class='bx bxs-key'></i>
                     </span>
-                    <input type="text" id="api_key" name="api_key" class="form-control" placeholder="API Key" />
+                    <input type="text" id="api_key" name="api_key" class="form-control" placeholder="API Key" autocomplete="off"/>
                 </div>
                 <div class="form-text">
                     
@@ -155,7 +153,7 @@ $configData = Helper::appClasses();
                 <p class="text-white text-large fw-light mb-3">Edit api key</p>
                 <div class="input-group input-group-lg mb-3">
                     <input type="hidden" value="" id="m_selected_id">
-                    <input type="text" class="form-control bg-white border-0" id="m_api_key" placeholder="API Key" aria-describedby="">
+                    <input type="text" class="form-control bg-white border-0" id="m_api_key" placeholder="API Key" aria-describedby="" autocomplete="off">
                     <button class="btn btn-primary" type="button" id="m_change_api_btn">Change</button>
                 </div>
             </div>
