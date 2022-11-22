@@ -52,6 +52,7 @@ class ProviderManagement extends Controller
                         'domain' => $url,
                         'is_activated' => ($request->is_activated ? 1 : 0),
                         'api_key' => $request->api_key,
+                        'is_valid_key' => 1,
                         'endpoint' => '/api/v2',
                         'created_at' => date("Y-m-d H:i:s")
                     ]);
@@ -60,6 +61,7 @@ class ProviderManagement extends Controller
                         'domain' => $url,
                         'is_activated' => ($request->is_activated ? 1 : 0),
                         'api_key' => $request->api_key,
+                        'is_valid_key' => 1,
                         'endpoint' => '/api/v2',
                         'updated_at' => date("Y-m-d H:i:s")
                     ]);

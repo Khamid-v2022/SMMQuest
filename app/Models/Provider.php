@@ -17,6 +17,7 @@ class Provider extends Model
         'domain',
         'endpoint',
         'api_key',
+        'is_valid_key',
         'is_activated',
         'request_by',
         'activated_at'

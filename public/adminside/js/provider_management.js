@@ -80,7 +80,6 @@ $(function () {
     // --------------------------------------------------------------------
  
     dt_basic = $('.datatables-basic').DataTable({
-        // ajax: assetsPath + '/json/table-datatable.json',
         columnDefs: [
             {
                 // API Key
@@ -88,44 +87,6 @@ $(function () {
                 title: 'API Key',
                 orderable: false,
                 searchable: false,
-            },
-            // {
-            //     // Status
-            //     targets: 4,
-            //     orderable: false,
-            //     render: function (data, type, full, meta) {
-            //         return (
-
-            //             '<label class="switch">' +
-            //                 '<input type="checkbox" class="switch-input activate-btn" ' + (data == 1 ? 'checked' : '') + '/>' +
-            //                 '<span class="switch-toggle-slider">' +
-            //                     '<span class="switch-on">' +
-            //                         '<i class="bx bx-check"></i>' +
-            //                     '</span>' +
-            //                     '<span class="switch-off">' +
-            //                         '<i class="bx bx-x"></i>' +
-            //                     '</span>' +
-            //                 '</span>' +
-            //             '</label>'
-            //         );
-            //     }
-            // },
-            {
-                // Status
-                targets: 3,
-                render: function (data, type, full, meta) {
-                    var $status = {
-                        0: { title: 'Disable ', class: ' bg-label-warning' },
-                        1: { title: 'Enable', class: ' bg-label-primary' },
-                    };
-                    if (typeof $status[data] === 'undefined') {
-                        return data;
-                    }
-
-                    return (
-                        '<span class="badge ' + $status[data].class + '">' + $status[data].title + '</span>'
-                    );
-                }
             },
             {
                // Actions

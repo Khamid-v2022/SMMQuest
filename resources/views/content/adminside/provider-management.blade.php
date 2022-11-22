@@ -78,7 +78,16 @@ $configData = Helper::appClasses();
                         <td>{{ $index }}</td>
                         <td>{{ $provider->domain }}</td>
                         <td>{{ $provider->api_key }}</td>
-                        <td>{{ $provider->is_activated }}</td>
+                        <td>
+                            @if($provider->is_activated == 1)
+                                <span class="badge bg-label-primary">Enabled</span>
+                            @else
+                                <span class="badge bg-label-warning">Disabled</span>
+                            @endif
+                            @if($provider->is_valid_key == 0)
+                                <span class="badge bg-label-danger">Invalid API Key</span>
+                            @endif
+                        </td>
                         <td>{{ $provider->created_at }}</td>
                         <td></td>
                     </tr>
