@@ -60,7 +60,7 @@ $configData = Helper::appClasses();
                     <th>Name</th>
                     <th>API Key</th>
                     <th>Created</th>
-                    <th>Status</th>
+                    <!-- <th>Status</th> -->
                     <th>Action</th>
                 </tr>
             </thead>
@@ -73,7 +73,7 @@ $configData = Helper::appClasses();
                         <td>{{ $provider->domain }}</td>
                         <td>{{ $provider->api_key }}</td>
                         <td>{{ $provider->created_at }}</td>
-                        <td>{{ $provider->is_activated }}</td>
+                        <!-- <td>{{ $provider->is_activated }}</td> -->
                         <td></td>
                     </tr>
                 @endforeach
@@ -96,12 +96,12 @@ $configData = Helper::appClasses();
                     <input type="text" id="domain_name" class="form-control" name="domain_name" placeholder="Domain Name" aria-label="Domain Name" aria-describedby="domain_name" />
                 </div>
             </div>
-            <div class="col-sm-12">
+            <!-- <div class="col-sm-12">
                 <div class="form-check form-check-primary mt-3">
                     <input class="form-check-input" type="checkbox" value="" id="is_activated" checked />
                     <label class="form-check-label" for="is_activated">Is Active</label>
                 </div> 
-            </div>
+            </div> -->
 
             <div class="col-sm-12">
                 <label class="form-label" for="api_key">API Key</label>

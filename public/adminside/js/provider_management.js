@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
                         // Empty fields on offCanvas open
                         (offCanvasElement.querySelector('#domain_name').value = ''),
-                        (offCanvasElement.querySelector('#is_activated').checked = false),
+                        // (offCanvasElement.querySelector('#is_activated').checked = false),
                         (offCanvasElement.querySelector('#api_key').value = '');
                         // Open offCanvas with form
                     offCanvasEl.show();
@@ -29,6 +29,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     validators: {
                         notEmpty: {
                             message: 'The domain name is required'
+                        }
+                    }
+                },
+                api_key: {
+                    validators: {
+                        notEmpty: {
+                            message: 'API key is required'
                         }
                     }
                 },
@@ -82,27 +89,27 @@ $(function () {
                     );
                 }
             },
-            {
-                // Status
-                targets: 4,
-                orderable: false,
-                render: function (data, type, full, meta) {
-                    return (
+            // {
+            //     // Status
+            //     targets: 4,
+            //     orderable: false,
+            //     render: function (data, type, full, meta) {
+            //         return (
 
-                        '<label class="switch">' +
-                            '<input type="checkbox" class="switch-input activate-btn" ' + (data == 1 ? 'checked' : '') + '/>' +
-                            '<span class="switch-toggle-slider">' +
-                                '<span class="switch-on">' +
-                                    '<i class="bx bx-check"></i>' +
-                                '</span>' +
-                                '<span class="switch-off">' +
-                                    '<i class="bx bx-x"></i>' +
-                                '</span>' +
-                            '</span>' +
-                        '</label>'
-                    );
-                }
-            },
+            //             '<label class="switch">' +
+            //                 '<input type="checkbox" class="switch-input activate-btn" ' + (data == 1 ? 'checked' : '') + '/>' +
+            //                 '<span class="switch-toggle-slider">' +
+            //                     '<span class="switch-on">' +
+            //                         '<i class="bx bx-check"></i>' +
+            //                     '</span>' +
+            //                     '<span class="switch-off">' +
+            //                         '<i class="bx bx-x"></i>' +
+            //                     '</span>' +
+            //                 '</span>' +
+            //             '</label>'
+            //         );
+            //     }
+            // },
             {
                // Actions
                 targets: -1,
@@ -136,7 +143,8 @@ $(function () {
             let _url = "/admin/provider-management";
             let data = {
                 domain: $('#domain_name').val(),
-                is_activated: $('#is_activated').prop('checked'),
+                // is_activated: $('#is_activated').prop('checked'),
+                is_activated: 1,
                 api_key: $('#api_key').val()
             };
     
