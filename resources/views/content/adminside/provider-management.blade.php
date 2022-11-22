@@ -47,6 +47,12 @@ $configData = Helper::appClasses();
 <script src="{{asset('adminside/js/provider_management.js')}}"></script>
 @endsection
 
+<style>
+    .fa-spinner {
+        display: none
+    }
+</style>
+
 @section('content')
 <h4>Providers Management</h4>
 <p>Register providers.</p>
@@ -59,8 +65,8 @@ $configData = Helper::appClasses();
                     <th>ID</th>
                     <th>Name</th>
                     <th>API Key</th>
+                    <th>Status</th>
                     <th>Created</th>
-                    <!-- <th>Status</th> -->
                     <th>Action</th>
                 </tr>
             </thead>
@@ -68,12 +74,12 @@ $configData = Helper::appClasses();
                 @php $index = 0; @endphp
                 @foreach($providers as $provider)
                     @php $index++; @endphp
-                    <tr data-provider_id= {{ $provider->id }} >
+                    <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} data-api_key={{ $provider->api_key }} >
                         <td>{{ $index }}</td>
                         <td>{{ $provider->domain }}</td>
                         <td>{{ $provider->api_key }}</td>
+                        <td>{{ $provider->is_activated }}</td>
                         <td>{{ $provider->created_at }}</td>
-                        <!-- <td>{{ $provider->is_activated }}</td> -->
                         <td></td>
                     </tr>
                 @endforeach
@@ -89,6 +95,8 @@ $configData = Helper::appClasses();
     </div>
     <div class="offcanvas-body flex-grow-1">
         <form class="add-new-record pt-0 row g-2" id="form-add-new-record" onsubmit="return false">
+            <input type="hidden" id="m_selected_id">
+            <input type="hidden" id="m_action_type">
             <div class="col-sm-12">
                 <label class="form-label" for="domain_name">Provider Domain</label>
                 <div class="input-group input-group-merge">
@@ -117,7 +125,10 @@ $configData = Helper::appClasses();
                 </div>
             </div>
             <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">Submit</button>
+                <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">
+                    <span id="submit_btn_title">Submit</span>
+                    <i class="fas fa-spinner fa-spin" style="display:none"></i>
+                </button>
                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
             </div>
         </form>
@@ -127,7 +138,7 @@ $configData = Helper::appClasses();
 <!--/ DataTable with Buttons -->
 
 <!-- Modal template -->
-<div class="modal modal-transparent fade" id="modals-change_key" tabindex="-1">
+<div class="modal fade" id="modals-change_key" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">

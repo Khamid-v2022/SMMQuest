@@ -32,11 +32,13 @@ class ProviderManagement extends Controller
         $url = preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain);
 
         $domain = "http://" . $url;
-        // check aready registred 
-        $provider = Provider::where('domain', $url)->first();
-        if($provider){
-            return response()->json(['code'=>422, 'message'=>'Already registred.'], 200);
-        }
+        if($request->action_type == "add"){
+            // check aready registred 
+            $provider = Provider::where('domain', $url)->first();
+            if($provider){
+                return response()->json(['code'=>422, 'message'=>'Already registred.'], 200);
+            }
+        } 
 
         // checking domain is working or not
         $response = $this->urlExists($domain);
@@ -45,13 +47,24 @@ class ProviderManagement extends Controller
             $api_check = $this->checkAPI($domain, $request->api_key);
             
             if($api_check){
-                $user_provider = Provider::create([
-                    'domain' => $url,
-                    'is_activated' => ($request->is_activated ? 1 : 0),
-                    'api_key' => $request->api_key,
-                    'endpoint' => '/api/v2',
-                    'created_at' => date("Y-m-d H:i:s")
-                ]);
+                if($request->action_type == "add"){
+                    $user_provider = Provider::create([
+                        'domain' => $url,
+                        'is_activated' => ($request->is_activated ? 1 : 0),
+                        'api_key' => $request->api_key,
+                        'endpoint' => '/api/v2',
+                        'created_at' => date("Y-m-d H:i:s")
+                    ]);
+                } else {
+                    $user_provider = Provider::where('id', $request->selected_id)->update([
+                        'domain' => $url,
+                        'is_activated' => ($request->is_activated ? 1 : 0),
+                        'api_key' => $request->api_key,
+                        'endpoint' => '/api/v2',
+                        'updated_at' => date("Y-m-d H:i:s")
+                    ]);
+                }
+
                 return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
             } else {
                 return response()->json(['code'=>400, 'message'=>'The API key or endpoint is incorrect. Please check again!'], 200);

@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', function (e) {
                         // (offCanvasElement.querySelector('#is_activated').checked = false),
                         (offCanvasElement.querySelector('#api_key').value = '');
                         // Open offCanvas with form
+
+                    $("#m_selected_id").val("");
+                    $("#m_action_type").val("add");
+                    $("#submit_btn_title").html("Submit");
+                    $("#exampleModalLabel").html("New Provider");
                     offCanvasEl.show();
                 });
             }
@@ -83,11 +88,6 @@ $(function () {
                 title: 'API Key',
                 orderable: false,
                 searchable: false,
-                render: function (data, type, full, meta) {
-                    return ( data +
-                        '<a href="javascript:;" data-api_key="' + data + '" class="btn btn-sm btn-icon item-edit ms-3" title="Edit API key"><i class="bx bxs-edit"></i></a>'
-                    );
-                }
             },
             // {
             //     // Status
@@ -111,6 +111,23 @@ $(function () {
             //     }
             // },
             {
+                // Status
+                targets: 3,
+                render: function (data, type, full, meta) {
+                    var $status = {
+                        0: { title: 'Disable ', class: ' bg-label-warning' },
+                        1: { title: 'Enable', class: ' bg-label-primary' },
+                    };
+                    if (typeof $status[data] === 'undefined') {
+                        return data;
+                    }
+
+                    return (
+                        '<span class="badge ' + $status[data].class + '">' + $status[data].title + '</span>'
+                    );
+                }
+            },
+            {
                // Actions
                 targets: -1,
                 title: 'Actions',
@@ -118,7 +135,8 @@ $(function () {
                 searchable: false,
                 render: function (data, type, full, meta) {
                     return (
-                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>'
+                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>' + 
+                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>'
                     );
                 }
             }
@@ -145,9 +163,13 @@ $(function () {
                 domain: $('#domain_name').val(),
                 // is_activated: $('#is_activated').prop('checked'),
                 is_activated: 1,
-                api_key: $('#api_key').val()
+                api_key: $('#api_key').val(),
+                action_type: $("#m_action_type").val(),
+                selected_id: $("#m_selected_id").val()
             };
-    
+            
+            $(".fa-spinner").css("display", "inline-block");
+            $(".data-submit").attr("disabled", true);
             $.ajax({
                 url: _url,
                 type: "POST",
@@ -166,6 +188,11 @@ $(function () {
                         }).then( function(){
                             location.reload();
                         })
+                        // Hide offcanvas using javascript method
+                        offCanvasEl.hide();
+
+                        $(".fa-spinner").css("display", "none");
+                        $(".data-submit").removeAttr("disabled");
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -175,6 +202,9 @@ $(function () {
                                 confirmButton: 'btn btn-primary'
                             },
                         })
+                       
+                        $(".fa-spinner").css("display", "none");
+                        $(".data-submit").removeAttr("disabled");
                         return;
                     }
                 },
@@ -187,12 +217,14 @@ $(function () {
                             confirmButton: 'btn btn-primary'
                         },
                     })
+
+                    $(".fa-spinner").css("display", "none");
+                    $(".data-submit").removeAttr("disabled");
                     return;
                 },
             });
             
-            // Hide offcanvas using javascript method
-            offCanvasEl.hide();
+           
         }
     });
   
@@ -265,10 +297,20 @@ $(function () {
     // edit API key 
     $('.datatables-basic tbody').on('click', '.item-edit', function () {
         const sel_id = $(this).parents('tr').attr("data-provider_id");
-        const api_key = $(this).attr("data-api_key");
+        const api_key = $(this).parents('tr').attr("data-api_key");
+        const domain = $(this).parents('tr').attr("data-domain");
+        $("#api_key").val(api_key);
+        $("#domain_name").val(domain);
+
         $("#m_selected_id").val(sel_id);
-        $("#m_api_key").val(api_key);
-        $("#modals-change_key").modal('show');
+        $("#m_action_type").val("edit");
+        $("#exampleModalLabel").html("Update Provider");
+        $("#submit_btn_title").html("Update");
+        
+        let offCanvasElement = document.querySelector('#add-new-record');
+        offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
+        offCanvasEl.show();
+
     });
  
     $("#m_change_api_btn").on("click", function(){
