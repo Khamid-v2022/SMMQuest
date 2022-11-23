@@ -51,7 +51,7 @@ class ProviderManagement extends Controller
                     $user_provider = Provider::create([
                         'domain' => $url,
                         'is_activated' => ($request->is_activated ? 1 : 0),
-                        'api_key' => $this->encrypt($request->api_key, env('ENCRYPT_KEY')),
+                        'api_key' => $this->encrypt($request->api_key),
                         'is_valid_key' => 1,
                         'endpoint' => '/api/v2',
                         'created_at' => date("Y-m-d H:i:s")
@@ -60,7 +60,7 @@ class ProviderManagement extends Controller
                     $user_provider = Provider::where('id', $request->selected_id)->update([
                         'domain' => $url,
                         'is_activated' => ($request->is_activated ? 1 : 0),
-                        'api_key' => $this->encrypt($request->api_key, env('ENCRYPT_KEY')),
+                        'api_key' => $this->encrypt($request->api_key),
                         'is_valid_key' => 1,
                         'endpoint' => '/api/v2',
                         'updated_at' => date("Y-m-d H:i:s")
@@ -118,48 +118,14 @@ class ProviderManagement extends Controller
         return false;
     }
 
-    private function encrypt($message, $key, $encode = false)
+    private function encrypt($message)
     {
-        $nonceSize = openssl_cipher_iv_length('aes-256-ctr');
-        $nonce = openssl_random_pseudo_bytes($nonceSize);
+        $cipher_method = 'aes-128-ctr';
         
-        $ciphertext = openssl_encrypt(
-            $message,
-            'aes-256-ctr',
-            $key,
-            OPENSSL_RAW_DATA,
-            $nonce
-        );
-        
-        // Now let's pack the IV and the ciphertext together
-        // Naively, we can just concatenate
-        if ($encode) {
-            return base64_encode($nonce.$ciphertext);
-        }
-        return $nonce.$ciphertext;
+        $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
+        $crypted_key = openssl_encrypt($message, $cipher_method, env('ENCRYPT_KEY'), 0, $enc_iv) . "::" . bin2hex($enc_iv);
+
+        return $crypted_key;
     }
 
-    private function decrypt($message, $key, $encoded = false)
-    {
-        if ($encoded) {
-            $message = base64_decode($message, true);
-            if ($message === false) {
-                throw new Exception('Encryption failure');
-            }
-        }
-
-        $nonceSize = openssl_cipher_iv_length('aes-256-ctr');
-        $nonce = mb_substr($message, 0, $nonceSize, '8bit');
-        $ciphertext = mb_substr($message, $nonceSize, null, '8bit');
-        
-        $plaintext = openssl_decrypt(
-            $ciphertext,
-            'aes-256-ctr',
-            $key,
-            OPENSSL_RAW_DATA,
-            $nonce
-        );
-        
-        return $plaintext;
-    }
 }

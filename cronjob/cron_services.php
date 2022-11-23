@@ -1,6 +1,7 @@
 <?php 
     require_once "include/db_configure.php";
-    require_once "include/variable_config.php";
+    // require_once "include/variable_config.php";
+    require_once "include/functions.php";
 
     loadServices();
     $conn->close();
@@ -22,7 +23,8 @@
 
         $providers = [];
         while($row = $result->fetch_assoc()){
-            array_push($providers, array('id' => $row['id'], 'endpoint' => "https://" . $row['domain'] . $row['endpoint'], 'key' => $row['api_key']));
+            $api_key = decrypt_key($row['api_key']);
+            array_push($providers, array('id' => $row['id'], 'endpoint' => "https://" . $row['domain'] . $row['endpoint'], 'key' => $api_key));
         }
         
         // set all services status as disabled

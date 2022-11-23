@@ -1,5 +1,7 @@
 <?php 
     require_once "include/db_configure.php";
+    require_once "include/functions.php";
+    
     checkProvider();
     $conn->close();
 
@@ -24,7 +26,8 @@
             if($response){
             // website is working
                 // check API key working or not
-                $api_check = checkAPI($row['domain'], $row['endpoint'], $row['api_key']);
+                $api_key = decrypt_key($row['api_key']);
+                $api_check = checkAPI($row['domain'], $row['endpoint'], $api_key);
                 if($api_check > 0) {
                     $sql = "";
                     if($api_check == 1 && $row['is_valid_key'] == 0)
