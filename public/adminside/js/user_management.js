@@ -67,8 +67,6 @@ $(function () {
  
     var dt_basic;
     // DataTable with buttons
-    // --------------------------------------------------------------------
- 
     dt_basic = $('.datatables-basic').DataTable({
         columnDefs: [
             {
@@ -80,8 +78,7 @@ $(function () {
                 render: function (data, type, full, meta) {
                     return (
                         '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>' +
-                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>' 
-                        
+                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>'    
                     );
                 }
             }
@@ -95,9 +92,7 @@ $(function () {
     $('div.head-label').html('<h5 class="card-title mb-0">Users</h5>');
   
     // Add New record
-    // ? Remove/Update this code as per your requirements
     fv.on('core.form.valid', function () {
-
         let _url = "/admin/user-management";
         let data = {
             email: $('#m_user_email').val(),
@@ -281,7 +276,6 @@ $(function () {
                         id: user_id
                     },
                     success: function (response) {
-                        console.log(response);
                         if (response.code == 200) {
                             Swal.fire({
                                 icon: 'success',
