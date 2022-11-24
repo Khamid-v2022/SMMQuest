@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
                         // Empty fields on offCanvas open
                         (offCanvasElement.querySelector('#domain_name').value = ''),
+                        (offCanvasElement.querySelector('#end_point').value = ''),
                         // (offCanvasElement.querySelector('#is_activated').checked = false),
                         (offCanvasElement.querySelector('#api_key').value = '');
                         // Open offCanvas with form
@@ -34,6 +35,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     validators: {
                         notEmpty: {
                             message: 'The domain name is required'
+                        }
+                    }
+                },
+                end_point: {
+                    validators: {
+                        notEmpty: {
+                            message: 'End Point is required'
                         }
                     }
                 },
@@ -67,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function (e) {
     })();
 });
 
-// datatable (jquery)
 $(function () {
     $.ajaxSetup({
         headers: {
@@ -89,8 +96,9 @@ $(function () {
                 searchable: false,
                 render: function (data, type, full, meta) {
                     return (
-                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>' + 
-                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>'
+                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>' +
+                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>' 
+                        
                     );
                 }
             }
@@ -118,6 +126,7 @@ $(function () {
                 // is_activated: $('#is_activated').prop('checked'),
                 is_activated: 1,
                 api_key: $('#api_key').val(),
+                end_point: $("#end_point").val(),
                 action_type: $("#m_action_type").val(),
                 selected_id: $("#m_selected_id").val()
             };
@@ -129,7 +138,9 @@ $(function () {
                 type: "POST",
                 data: data,
                 success: function (response) {
+                    console.log(response);
                     if (response.code == 200) {
+                        
                         Swal.fire({
                             icon: 'success',
                             title: '',
@@ -265,80 +276,11 @@ $(function () {
 
     });
  
-    $("#m_change_api_btn").on("click", function(){
-        let _url = "/admin/provider-management/changeAPIKey";
-       
-        let data = {
-            selected_id: $("#m_selected_id").val(),
-            api_key: $("#m_api_key").val()
-        };
- 
-        $.ajax({
-            url: _url,
-            type: "POST",
-            data: data,
-            success: function (response) {
-                if (response.code == 200) {
-                    $("#modals-change_key").modal('toggle');
-                    location.reload();
-                } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '',
-                        text: response.message,
-                        type: 'warning',
-                        customClass: {
-                            confirmButton: 'btn btn-primary'
-                        },
-                        buttonsStyling: false
-                    })
-                    return;
-                }
-            },
-            error: function (response) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Something went wrong. Please try again later!',
-                    type: 'error',
-                    customClass: {
-                    confirmButton: 'btn btn-primary'
-                    },
-                    buttonsStyling: false
-                })
-                return;
-            },
-        });
-    })
-     
-    // activate btn 
-    $('.datatables-basic tbody').on('click', '.activate-btn', function () {
-        const sel_id = $(this).parents('tr').attr("data-provider_id");
-        
-        const is_active = $(this).prop('checked') ? 1 : 0;
-        const parent_this = this;
-        
-        let _url = "/admin/provider-management/updateActivate";
-        
-        let data = {
-          selected_id: sel_id,
-          is_active: is_active
-        };
-        $.ajax({
-            url: _url,
-            type: "POST",
-            data: data,
-            success: function (response) {
-            },
-            error: function (response) {
-            },
-        });
-    });
      // Filter form control to default size
      // ? setTimeout used for multilingual table initialization
     setTimeout(() => {
          $('.dataTables_filter .form-control').removeClass('form-control-sm');
          $('.dataTables_length .form-select').removeClass('form-select-sm');
     }, 300);
- });
+});
   

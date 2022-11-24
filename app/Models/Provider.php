@@ -19,6 +19,9 @@ class Provider extends Model
         'api_key',
         'is_valid_key',
         'is_activated',
+        'api_template',
+        'balance',
+        'currency',
         'request_by',
         'activated_at'
     ];

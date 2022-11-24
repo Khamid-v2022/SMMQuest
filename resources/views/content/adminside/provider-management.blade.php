@@ -64,6 +64,7 @@ $configData = Helper::appClasses();
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>API template</th>
                     <th>Status</th>
                     <th>Created</th>
                     <th>Action</th>
@@ -76,6 +77,7 @@ $configData = Helper::appClasses();
                     <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} >
                         <td>{{ $index }}</td>
                         <td>{{ $provider->domain }}</td>
+                        <td>{{ $provider->api_template }}</td>
                         <td>
                             @if($provider->is_activated == 1)
                                 <span class="badge bg-label-success">Enabled</span>
@@ -111,13 +113,13 @@ $configData = Helper::appClasses();
                     <input type="text" id="domain_name" class="form-control" name="domain_name" placeholder="Domain Name" aria-label="Domain Name" aria-describedby="domain_name" />
                 </div>
             </div>
-            <!-- <div class="col-sm-12">
-                <div class="form-check form-check-primary mt-3">
-                    <input class="form-check-input" type="checkbox" value="" id="is_activated" checked />
-                    <label class="form-check-label" for="is_activated">Is Active</label>
-                </div> 
-            </div> -->
-
+            <div class="col-sm-12">
+                <label class="form-label" for="end_point">End Point</label>
+                <div class="input-group input-group-merge">
+                    <!-- <span class="input-group-text"><i class="bx bx-user"></i></span> -->
+                    <input type="text" id="end_point" class="form-control" name="end_point" placeholder="/api/v2" aria-label="End Point" aria-describedby="end_point" />
+                </div>
+            </div>
             <div class="col-sm-12">
                 <label class="form-label" for="api_key">API Key</label>
                 <div class="input-group input-group-merge">
@@ -143,23 +145,4 @@ $configData = Helper::appClasses();
     </div>
 </div>
 <!--/ DataTable with Buttons -->
-
-<!-- Modal template -->
-<div class="modal fade" id="modals-change_key" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <a href="javascript:void(0);" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></a>
-                <p class="text-white text-large fw-light mb-3">Edit api key</p>
-                <div class="input-group input-group-lg mb-3">
-                    <input type="hidden" value="" id="m_selected_id">
-                    <input type="text" class="form-control bg-white border-0" id="m_api_key" placeholder="API Key" aria-describedby="" autocomplete="off">
-                    <button class="btn btn-primary" type="button" id="m_change_api_btn">Change</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 @endsection

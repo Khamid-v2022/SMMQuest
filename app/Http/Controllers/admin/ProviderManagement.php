@@ -9,6 +9,10 @@ use App\Models\Provider;
 
 use Illuminate\Support\Facades\Http;
 
+use App\Http\Controllers\admin\APItemplates\PerfectPanel;
+use App\Http\Controllers\admin\APItemplates\SmmPanel;
+use App\Http\Controllers\admin\APItemplates\MonksmmPanel;
+
 class ProviderManagement extends Controller
 {
     public function index()
@@ -23,46 +27,52 @@ class ProviderManagement extends Controller
         ]);
     }
 
-    public function addProvider(Request $request){
+    public function addProvider(Request $request) {
         $request->validate([
           'domain' => 'required'
         ]);
 
-        // remove http://, https://
-        $url = preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain);
+        // remove http://, https://, remove / from last of url
+        $domain = rtrim(preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain), '/');
+        $url = rtrim($this->check_protocol($domain), '/');
+        $end_point = '/' . rtrim(ltrim($request->end_point, '/'), '/');
 
-        $domain = "http://" . $url;
-        if($request->action_type == "add"){
+        if($request->action_type == "add") {
             // check aready registred 
-            $provider = Provider::where('domain', $url)->first();
+            $provider = Provider::where('domain', $domain)->first();
             if($provider){
                 return response()->json(['code'=>422, 'message'=>'Already registred.'], 200);
             }
         } 
 
         // checking domain is working or not
-        $response = $this->urlExists($domain);
+        $response = $this->urlExists($url);
         if($response) {
             // check API key working or not
-            $api_check = $this->checkAPI($domain, $request->api_key);
-            
-            if($api_check){
+            $api_check = $this->checkAPITemplate($url . $end_point, $request->api_key);
+            if($api_check['status']){
                 if($request->action_type == "add"){
                     $user_provider = Provider::create([
-                        'domain' => $url,
+                        'domain' => $domain,
                         'is_activated' => ($request->is_activated ? 1 : 0),
                         'api_key' => $this->encrypt($request->api_key),
                         'is_valid_key' => 1,
-                        'endpoint' => '/api/v2',
+                        'api_template' =>  $api_check['apiTemplate'],
+                        'balance' =>  $api_check['balance'],
+                        'currency' =>  $api_check['currency'],
+                        'endpoint' => $end_point,
                         'created_at' => date("Y-m-d H:i:s")
                     ]);
                 } else {
                     $user_provider = Provider::where('id', $request->selected_id)->update([
-                        'domain' => $url,
+                        'domain' => $domain,
                         'is_activated' => ($request->is_activated ? 1 : 0),
                         'api_key' => $this->encrypt($request->api_key),
                         'is_valid_key' => 1,
-                        'endpoint' => '/api/v2',
+                        'api_template' =>  $api_check['apiTemplate'],
+                        'balance' =>  $api_check['balance'],
+                        'currency' =>  $api_check['currency'],
+                        'endpoint' => $end_point,
                         'updated_at' => date("Y-m-d H:i:s")
                     ]);
                 }
@@ -76,25 +86,22 @@ class ProviderManagement extends Controller
         }
     }
 
-    public function deleteProvider(Request $request){
+    public function deleteProvider(Request $request) {
         Provider::where('id', $request->id)->delete();
         return response()->json(['code'=>200, 'message'=>'Deleted successfully'], 200);
     }
 
-    public function changeAPIKey(Request $request){
+    public function changeAPIKey(Request $request) {
         Provider::where('id', $request->selected_id)->update(['api_key' => $this->encrypt($request->api_key, env('ENCRYPT_KEY'))]);
         return response()->json(['code'=>200, 'message'=>'Updated successfully'], 200);
     }
 
-    public function updateActivate(Request $request){
+    public function updateActivate(Request $request) {
         Provider::where('id', $request->selected_id)->update(['is_activated' => $request->is_active]);
         return response()->json(['code'=>200, 'message'=>'Updated successfully'], 200);
     }
 
-    private function urlExists($url = NULL)
-    {
-        $url = preg_replace( "#^[^:/.]*[:/]+#i", "", $url);
-        $url = "http://" . $url;
+    private function urlExists($url = NULL) {
         $headers = @get_headers($url);
         if(!$headers || strpos($headers[0], '404')) {
             $exists = false;
@@ -105,17 +112,62 @@ class ProviderManagement extends Controller
         return $exists;
     }
 
-    private function checkAPI($url, $key){
-        $url = $url . '/api/v2?action=services&key=' . $key;
-        $json = file_get_contents($url);
-        
-        $response = json_decode($json, true);
-  
-        if(is_array($response) && count($response) > 0){
-            if(isset($response[0]['name']))
-                return true;
+
+    private function checkAPITemplate($url, $key) {
+        $status = false;
+        $apiTemplate = '';
+        $currentBalance = '';
+        $currency = '';
+
+        // perfect panel
+        $perfectPanel = new PerfectPanel($url, $key);
+
+        $balance = $perfectPanel->balance();
+        $balance = json_decode(json_encode($balance), true );
+        if($balance && !isset($balance['error'])){
+            return array (
+                'status'=> true, 
+                'apiTemplate'=> 'PerfectPanel', 
+                'balance' => $balance['balance'],
+                'currency' => $balance['currency']
+            );
         }
-        return false;
+
+        // SmmPanel     https://smmpanele.ru/api/v2
+        $smmPanel = new SmmPanel($url, $key);
+        $services = $smmPanel->services();
+        $services = json_decode( json_encode($services), true );
+
+        if(is_array($services) && count($services) > 0){
+            if(isset($services[0]['name'])){
+                return array (
+                    'status'=> true, 
+                    'apiTemplate'=> 'SmmPanel', 
+                    'balance' => null,
+                    'currency' => null
+                );
+            }
+        }
+
+        // https://monksmm.tech/api/v1  -- Same with Perfect panel
+        // $monksmmPanel = new MonksmmPanel($url, $key);
+        // $balance = $monksmmPanel->balance();
+        // $balance = json_decode( json_encode($balance), true );
+
+        // if(!isset($balance['error'])){
+        //     return array (
+        //         'status'=> true, 
+        //         'apiTemplate'=> 'MonksmmPanel', 
+        //         'balance' => $balance['balance'],
+        //         'currency' => $balance['currency']
+        //     );
+        // }
+
+
+
+        return array (
+            'status'=> false
+        );
     }
 
     private function encrypt($message)
@@ -128,4 +180,15 @@ class ProviderManagement extends Controller
         return $crypted_key;
     }
 
+    private function check_protocol($domain){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $domain);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+        curl_exec($ch);
+    
+        $real_url =  curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        return $real_url;
+    }
 }
