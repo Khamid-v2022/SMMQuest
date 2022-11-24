@@ -49,14 +49,22 @@ class ProviderManagement extends Controller
         $response = $this->urlExists($url);
         if($response) {
             // check API key working or not
-            $api_check = $this->checkAPITemplate($url . $end_point, $request->api_key);
-            if($api_check['status']){
+            $api_check = $this->checkAPITemplate($url . $end_point, trim($request->api_key));  
+            if($api_check['status'] > 0 ){
+                $is_valid_key = 0;
+                if($api_check['status'] == 1){
+                    $is_valid_key = 1;
+                } else {
+                    // invalid key
+                    $is_valid_key = 0;
+                }
+
                 if($request->action_type == "add"){
                     $user_provider = Provider::create([
                         'domain' => $domain,
-                        'is_activated' => ($request->is_activated ? 1 : 0),
-                        'api_key' => $this->encrypt($request->api_key),
-                        'is_valid_key' => 1,
+                        'is_activated' => 1,
+                        'api_key' => $this->encrypt(trim($request->api_key)),
+                        'is_valid_key' => $is_valid_key,
                         'api_template' =>  $api_check['apiTemplate'],
                         'balance' =>  $api_check['balance'],
                         'currency' =>  $api_check['currency'],
@@ -66,9 +74,9 @@ class ProviderManagement extends Controller
                 } else {
                     $user_provider = Provider::where('id', $request->selected_id)->update([
                         'domain' => $domain,
-                        'is_activated' => ($request->is_activated ? 1 : 0),
-                        'api_key' => $this->encrypt($request->api_key),
-                        'is_valid_key' => 1,
+                        'is_activated' => 1,
+                        'api_key' => $this->encrypt(trim($request->api_key)),
+                        'is_valid_key' => $is_valid_key,
                         'api_template' =>  $api_check['apiTemplate'],
                         'balance' =>  $api_check['balance'],
                         'currency' =>  $api_check['currency'],
@@ -76,11 +84,12 @@ class ProviderManagement extends Controller
                         'updated_at' => date("Y-m-d H:i:s")
                     ]);
                 }
-
-                return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
             } else {
-                return response()->json(['code'=>400, 'message'=>'The API key or endpoint is incorrect. Please check again!'], 200);
+                return response()->json(['code'=>400, 'message'=>'API End Point is not correct!'], 200);
             }
+
+            return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
+
         } else {
             return response()->json(['code'=>400, 'message'=>'This domain name is not exist'], 200);
         }
@@ -124,49 +133,78 @@ class ProviderManagement extends Controller
 
         $balance = $perfectPanel->balance();
         $balance = json_decode(json_encode($balance), true );
-        if($balance && !isset($balance['error'])){
-            return array (
-                'status'=> true, 
-                'apiTemplate'=> 'PerfectPanel', 
-                'balance' => $balance['balance'],
-                'currency' => $balance['currency']
-            );
+
+        if($balance){
+            if(!isset($balance['error'])){
+                return array (
+                    'status'=> 1, 
+                    'apiTemplate'=> 'PerfectPanel', 
+                    'balance' => $balance['balance'],
+                    'currency' => $balance['currency']
+                );
+            } else {
+                // wrong API key
+                return array (
+                    'status'=> 2, 
+                    'apiTemplate'=> 'PerfectPanel', 
+                    'balance' => 0,
+                    'currency' => ''
+                );
+            }
         }
 
         // SmmPanel     https://smmpanele.ru/api/v2
         $smmPanel = new SmmPanel($url, $key);
-        $services = $smmPanel->services();
-        $services = json_decode( json_encode($services), true );
-
-        if(is_array($services) && count($services) > 0){
-            if(isset($services[0]['name'])){
+        $response = $smmPanel->services();
+   
+        if($response){     
+            $services = json_decode( json_encode($response), true );
+            if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
                 return array (
-                    'status'=> true, 
+                    'status'=> 1, 
                     'apiTemplate'=> 'SmmPanel', 
                     'balance' => null,
                     'currency' => null
                 );
+            } else {
+                return array (
+                    'status'=> 2, 
+                    'apiTemplate'=> 'SmmPanel', 
+                    'balance' => 0,
+                    'currency' => ''
+                );
             }
-        }
+        } 
+
+        
 
         // https://monksmm.tech/api/v1  -- Same with Perfect panel
         // $monksmmPanel = new MonksmmPanel($url, $key);
         // $balance = $monksmmPanel->balance();
         // $balance = json_decode( json_encode($balance), true );
 
-        // if(!isset($balance['error'])){
-        //     return array (
-        //         'status'=> true, 
-        //         'apiTemplate'=> 'MonksmmPanel', 
-        //         'balance' => $balance['balance'],
-        //         'currency' => $balance['currency']
-        //     );
+        // if($balance){
+        //     if(!isset($balance['error']))
+        //         return array (
+        //             'status'=> 1, 
+        //             'apiTemplate'=> 'PerfectPanel', 
+        //             'balance' => $balance['balance'],
+        //             'currency' => $balance['currency']
+        //         );
+        //     else
+        //         return array (
+        //             'status'=> 2, 
+        //             'apiTemplate'=> 'PerfectPanel', 
+        //             'balance' => 0,
+        //             'currency' => ''
+        //         );
+                
         // }
 
 
-
+        // wrong url or endpoint
         return array (
-            'status'=> false
+            'status'=> 0
         );
     }
 

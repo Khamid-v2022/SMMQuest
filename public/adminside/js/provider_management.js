@@ -45,13 +45,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
                         }
                     }
                 },
-                api_key: {
-                    validators: {
-                        notEmpty: {
-                            message: 'API key is required'
-                        }
-                    }
-                },
+                // api_key: {
+                //     validators: {
+                //         notEmpty: {
+                //             message: 'API key is required'
+                //         }
+                //     }
+                // },
             },
             plugins: {
                 trigger: new FormValidation.plugins.Trigger(),
@@ -263,8 +263,9 @@ $(function () {
     $('.datatables-basic tbody').on('click', '.item-edit', function () {
         const sel_id = $(this).parents('tr').attr("data-provider_id");    
         const domain = $(this).parents('tr').attr("data-domain");
+        const end_point = $(this).parents('tr').attr("data-endpoint");
         $("#domain_name").val(domain);
-
+        $("#end_point").val(end_point);
         $("#m_selected_id").val(sel_id);
         $("#m_action_type").val("edit");
         $("#exampleModalLabel").html("Update Provider");

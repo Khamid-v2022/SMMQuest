@@ -74,7 +74,7 @@ $configData = Helper::appClasses();
                 @php $index = 0; @endphp
                 @foreach($providers as $provider)
                     @php $index++; @endphp
-                    <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} >
+                    <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} data-endpoint={{ $provider->endpoint }}>
                         <td>{{ $index }}</td>
                         <td>{{ $provider->domain }}</td>
                         <td>{{ $provider->api_template }}</td>
