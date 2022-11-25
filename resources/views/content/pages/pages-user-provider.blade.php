@@ -56,23 +56,41 @@ $configData = Helper::appClasses();
         <table class="datatables-basic table border-top">
             <thead>
                 <tr>
+                    <th>Index</th>
                     <th>Provider Name</th>
                     <th>Favorite</th>
-                    <th>Balance</th>
-                    <th>API Key</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Added At</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
+                @php $index = 0; @endphp
                 @foreach($providers as $provider)
+                    @php $index++; @endphp
                     <tr data-provider_id={{ $provider->id }}>
+                        <td>{{ $index }}</td>
                         <td>{{ $provider->provider->domain }}</td>
                         <td>{{ $provider->is_favorite }}</td>
-                        <td>$ {{ 0 }}</td>
-                        <td>{{ $provider->api_key }}</td>
-                        <td>{{ $provider->provider->is_activated }}</td>
-                        <td></td>
+                        <td>
+                            @if($provider->is_enabled == 1)
+                                <span class="badge bg-label-success">Enabled</span>
+                            @else
+                                <span class="badge bg-label-danger">Disabled</span>
+                            @endif 
+                            @if($provider->provider->is_hold == 1)
+                                <span class="badge bg-label-danger" title="Waiting on Admin Activation">Hold</span>
+                            @elseif($provider->is_valid_key == 0)
+                                <span class="badge bg-label-warning">Invalid API Key</span>
+                            @endif
+                        </td>
+                        <td>{{ $provider->created_at }}</td>
+                        <td>
+                            @if($provider->provider->is_hold == 0)
+                                <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key"><i class="bx bxs-edit"></i></a>
+                            @endif
+                            <a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -88,7 +106,7 @@ $configData = Helper::appClasses();
     <div class="offcanvas-body flex-grow-1">
         <form class="add-new-record pt-0 row g-2" id="form-add-new-record" onsubmit="return false">
             <div class="col-sm-12">
-                <label class="form-label" for="domain_name">Provider Domain</label>
+                <label class="form-label" for="domain_name">Provider Name</label>
                 <div class="input-group input-group-merge">
                     <!-- <span class="input-group-text"><i class="bx bx-user"></i></span> -->
                     <input type="text" id="domain_name" class="form-control" name="domain_name" placeholder="Domain Name" aria-label="Domain Name" aria-describedby="domain_name" />
@@ -100,22 +118,12 @@ $configData = Helper::appClasses();
                     <label class="form-check-label" for="favorite">Favorite</label>
                 </div> 
             </div>
-
+            
             <div class="col-sm-12">
-                <label class="form-label" for="api_key">API Key</label>
-                <div class="input-group input-group-merge">
-                    <span class="input-group-text">
-                        <!-- <i class="bx bx-envelope"></i> -->
-                        <i class='bx bxs-key'></i>
-                    </span>
-                    <input type="text" id="api_key" name="api_key" class="form-control" placeholder="API Key" />
-                </div>
-                <div class="form-text">
-                    You can use it for test
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">Submit</button>
+                <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">
+                    Submit
+                    <i class="fas fa-spinner fa-spin" style="display:none"></i>
+                </button>
                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
             </div>
         </form>
@@ -123,22 +131,32 @@ $configData = Helper::appClasses();
     </div>
 </div>
 <!--/ DataTable with Buttons -->
- <!-- Modal template -->
- <div class="modal modal-transparent fade" id="modals-change_key" tabindex="-1">
-    <div class="modal-dialog">
+
+<div class="modal fade" id="modals-change_key" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-body">
-                <a href="javascript:void(0);" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></a>
-                <p class="text-white text-large fw-light mb-3">Edit api key</p>
-                <div class="input-group input-group-lg mb-3">
-                    <input type="hidden" value="" id="m_selected_id">
-                    <input type="text" class="form-control bg-white border-0" id="m_api_key" placeholder="API Key" aria-describedby="">
-                    <button class="btn btn-primary" type="button" id="m_change_api_btn">Change</button>
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">Edit api key</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <input type="hidden" value="" id="m_selected_id">
+                <div class="col mb-3">
+                    <label for="m_api_key" class="form-label">API key</label>
+                    <input type="text" id="m_api_key" placeholder="API Key" class="form-control">
                 </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="m_change_api_btn">
+                <span>Save changes</span>
+                <i class="fas fa-spinner fa-spin" style="display:none"></i>
+            </button>
+        </div>
+        </div>
     </div>
 </div>
-
 
 @endsection

@@ -3,9 +3,6 @@
  */
 
 'use strict';
-
-// const { data } = require("jquery");
-
 let fv, offCanvasEl;
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
@@ -21,8 +18,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
            // Empty fields on offCanvas open
             (offCanvasElement.querySelector('#domain_name').value = ''),
-            (offCanvasElement.querySelector('#favorite').checked = false),
-            (offCanvasElement.querySelector('#api_key').value = '');
+            (offCanvasElement.querySelector('#favorite').checked = false);
            // Open offCanvas with form
           offCanvasEl.show();
         });
@@ -77,11 +73,10 @@ $(function () {
    // --------------------------------------------------------------------
 
     dt_basic = $('.datatables-basic').DataTable({
-        // ajax: assetsPath + '/json/table-datatable.json',
         columnDefs: [
             {
               // Favorite
-              targets: 1,
+              targets: 2,
               title: 'Favorite',
               orderable: false,
               searchable: false,
@@ -97,45 +92,11 @@ $(function () {
               }
             },
             {
-              // API Key
-              targets: -3,
-              title: 'API Key',
-              orderable: false,
-              searchable: false,
-              render: function (data, type, full, meta) {
-                  return ( data +
-                    '<a href="javascript:;" data-api_key="' + data + '" class="btn btn-sm btn-icon item-edit ms-3"><i class="bx bxs-edit"></i></a>'
-                  );
-              }
-            },
-            {
-                // Status
-                targets: -2,
-                orderable: false,
-                render: function (data, type, full, meta) {
-                    var $status = {
-                        0: { title: 'Inactivated', class: ' bg-label-warning' },
-                        1: { title: 'Activated', class: 'bg-label-primary' },
-                    };
-                    if (typeof $status[data] === 'undefined') {
-                        return data;
-                    }
-                    return (
-                        '<span class="badge ' + $status[data].class + '">' + $status[data].title + '</span>'
-                    );
-                }
-            },
-            {
               // Actions
               targets: -1,
               title: 'Actions',
               orderable: false,
               searchable: false,
-              render: function (data, type, full, meta) {
-                return (
-                    '<a href="javascript:;" class="btn btn-sm btn-icon item-delete"><i class="bx bx-trash"></i></a>'
-                );
-              }
             }
         ],
         // order: [[2, 'desc']],
@@ -159,9 +120,11 @@ $(function () {
           let data = {
             domain: $('#domain_name').val(),
             favorite: $('#favorite').prop('checked'),
-            api_key: $('#api_key').val()
           };
 
+          $(".data-submit").attr("disabled", true);
+          $(".data-submit .fa-spin").css("display", "inline-block");
+          
           $.ajax({
             url: _url,
             type: "POST",
@@ -178,6 +141,7 @@ $(function () {
                     },
                     buttonsStyling: false
                   }).then( function(){
+                    offCanvasEl.hide();
                     location.reload();
                   })
                 } else {
@@ -191,6 +155,8 @@ $(function () {
                         },
                         buttonsStyling: false
                     })
+                    $(".data-submit .fa-spinner").css("display", "none");
+                    $(".data-submit").removeAttr("disabled");
                     return;
                 }
             },
@@ -205,12 +171,14 @@ $(function () {
                     },
                     buttonsStyling: false
                 })
+                $(".data-submit .fa-spinner").css("display", "none");
+                $(".data-submit").removeAttr("disabled");
                 return;
             },
           });
           
           // Hide offcanvas using javascript method
-          offCanvasEl.hide();
+          
         }
     });
  
@@ -219,51 +187,67 @@ $(function () {
       const del_id = $(this).parents('tr').attr("data-provider_id");
       const parent_this = this;
       let _url = "/providers/delete/" + del_id;
+      
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        customClass: {
+          confirmButton: 'btn btn-primary me-3',
+          cancelButton: 'btn btn-label-secondary'
+        },
+        buttonsStyling: false
+      }).then(function (result) {
+          if (result.value) {
 
-      $.ajax({
-        url: _url,
-        type: "GET",
-        success: function (response) {
-            if (response.code == 200) {
-              Swal.fire({
-                icon: 'success',
-                title: '',
-                text: response.message,
-                type: 'success',
-                customClass: {
-                  confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false
-              }).then( function(){
-                dt_basic.row($(parent_this).parents('tr')).remove().draw();
-              })
-            } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '',
-                    text: response.message,
-                    type: 'warning',
-                    customClass: {
-                      confirmButton: 'btn btn-primary'
-                    },
-                    buttonsStyling: false
-                })
-                return;
-            }
-        },
-        error: function (response) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Something went wrong. Please try again later!',
-                type: 'error',
-                customClass: {
-                  confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false
-            })
-            return;
-        },
+            $.ajax({
+              url: _url,
+              type: "GET",
+              success: function (response) {
+                  if (response.code == 200) {
+                    Swal.fire({
+                      icon: 'success',
+                      title: '',
+                      text: response.message,
+                      type: 'success',
+                      customClass: {
+                        confirmButton: 'btn btn-primary'
+                      },
+                      buttonsStyling: false
+                    }).then( function(){
+                      dt_basic.row($(parent_this).parents('tr')).remove().draw();
+                    })
+                  } else {
+                      Swal.fire({
+                          icon: 'warning',
+                          title: '',
+                          text: response.message,
+                          type: 'warning',
+                          customClass: {
+                            confirmButton: 'btn btn-primary'
+                          },
+                          buttonsStyling: false
+                      })
+                      return;
+                  }
+              },
+              error: function (response) {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: 'Something went wrong. Please try again later!',
+                      type: 'error',
+                      customClass: {
+                        confirmButton: 'btn btn-primary'
+                      },
+                      buttonsStyling: false
+                  })
+                  return;
+              },
+            });
+          }
       });
     });
 
@@ -320,12 +304,10 @@ $(function () {
       });
     });
 
-     // edit API key 
-     $('.datatables-basic tbody').on('click', '.item-edit', function () {
+    // edit API key 
+    $('.datatables-basic tbody').on('click', '.item-edit', function () {
       const sel_id = $(this).parents('tr').attr("data-provider_id");
-      const api_key = $(this).attr("data-api_key");
       $("#m_selected_id").val(sel_id);
-      $("#m_api_key").val(api_key);
       $("#modals-change_key").modal('show');
     });
 
@@ -337,14 +319,31 @@ $(function () {
         api_key: $("#m_api_key").val()
       };
 
+      $("#m_change_api_btn").attr("disabled", true);
+      $("#m_change_api_btn .fa-spin").css("display", "inline-block");
       $.ajax({
         url: _url,
         type: "POST",
         data: data,
         success: function (response) {
             if (response.code == 200) {
-              $("#modals-change_key").modal('toggle');
-              location.reload();
+              Swal.fire({
+                icon: 'success',
+                title: '',
+                text: response.message,
+                type: 'success',
+                customClass: {
+                confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+              }).then( function(){
+                $("#modals-change_key").modal('toggle');
+                location.reload();
+              })
+
+              $("#m_change_api_btn .fa-spinner").css("display", "none");
+              $("#m_change_api_btn").removeAttr("disabled");
+             
             } else {
               Swal.fire({
                   icon: 'warning',
@@ -356,6 +355,8 @@ $(function () {
                   },
                   buttonsStyling: false
               })
+              $("#m_change_api_btn .fa-spinner").css("display", "none");
+              $("#m_change_api_btn").removeAttr("disabled");
               return;
             }
         },
@@ -370,6 +371,8 @@ $(function () {
                 },
                 buttonsStyling: false
             })
+            $("#m_change_api_btn .fa-spinner").css("display", "none");
+            $("#m_change_api_btn").removeAttr("disabled");
             return;
         },
       });

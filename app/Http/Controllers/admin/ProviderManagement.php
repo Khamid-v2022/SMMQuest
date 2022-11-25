@@ -69,6 +69,7 @@ class ProviderManagement extends Controller
                         'balance' =>  $api_check['balance'],
                         'currency' =>  $api_check['currency'],
                         'endpoint' => $end_point,
+                        'is_hold' => 0,
                         'created_at' => date("Y-m-d H:i:s")
                     ]);
                 } else {
@@ -81,6 +82,7 @@ class ProviderManagement extends Controller
                         'balance' =>  $api_check['balance'],
                         'currency' =>  $api_check['currency'],
                         'endpoint' => $end_point,
+                        'is_hold' => 0,
                         'updated_at' => date("Y-m-d H:i:s")
                     ]);
                 }

@@ -16,7 +16,9 @@ class UserProvider extends Model
         'user_id',
         'provider_id',
         'is_favorite',
-        'api_key'
+        'api_key',
+        'is_enabled',
+        'is_valid_key'
     ];
 
     public function user() {

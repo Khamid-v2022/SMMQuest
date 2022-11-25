@@ -77,7 +77,7 @@ $customizerHidden = 'customizer-hide';
           </form>
 
           <p class="text-center">
-            <span>New on our platform?</span>
+            <span>New on SMMQuest?</span>
             <!-- <a href="{{url('auth/register')}}"> -->
             <a href="#">
               <span>Create an account</span>

@@ -5,6 +5,12 @@
       "name": "Home",
       "icon": "menu-icon tf-icons bx bx-home-circle",
       "slug": "pages-home"
+    },
+    {
+      "url": "/providers",
+      "icon": "menu-icon tf-icons bx bx-food-menu",
+      "name": "My Providers",
+      "slug": "pages-my-provider"
     }
   ]
 }

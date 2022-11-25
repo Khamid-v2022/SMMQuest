@@ -23,7 +23,8 @@ class Provider extends Model
         'balance',
         'currency',
         'request_by',
-        'activated_at'
+        'activated_at',
+        'is_hold'
     ];
 
     protected $hidden = [
