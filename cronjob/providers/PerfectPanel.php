@@ -47,8 +47,7 @@ class PerfectPanel
             $this->connect([
                 'key' => $this->api_key,
                 'action' => 'services',
-            ]), true
-        );
+            ]));
     }
 
     /** Get balance */

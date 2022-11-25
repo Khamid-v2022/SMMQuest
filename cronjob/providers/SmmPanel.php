@@ -34,8 +34,7 @@ class SmmPanel
             $this->connect(array(
                 'key' => $this->api_key,
                 'action' => 'services'
-            )), true
-        );
+            )));
     }
 
 

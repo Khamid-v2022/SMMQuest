@@ -48,23 +48,42 @@
             }
             
             if($pro){
-                $response = $pro->services();   
-                foreach ($response as $item) {
-                    $sql = "SELECT * FROM services WHERE provider_id = " . $provider['id'] . " AND service = " . $item['service'];
-                    
-                    $result = $conn->query($sql);
+                $response = $pro->services();  
+                $services = json_decode( json_encode($response), true );
 
-                    if($result->num_rows == 0){
-                        $sql = "INSERT INTO services(provider_id, service, name, type, rate, min, max, dripfeed, refill, cancel, category, status, created_at) VALUES (" . $provider['id'] . ", " . $item['service'] . ", '" . $item['name'] . "', '" . $item['type'] . "', " . $item['rate'] . ", " . $item['min'] . ", " . $item['max'] . ", " . ($item['dripfeed'] ? 1 : 0) . ", " . ($item['refill'] ? 1 : 0) . ", " . ($item['cancel'] ? 1 : 0) . ", '" . $item['category'] . "', 1, '" . date("Y-m-d H:i:s") . "')";
-                        $conn->query($sql);
-                        $inserted_count++;
-                    } else {
-                        $row = $result->fetch_assoc();
+                // check if API is working correctly
+                if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
+                    foreach ($services as $item) {
+                        $sql = "SELECT * FROM services WHERE provider_id = " . $provider['id'] . " AND service = '" . $item['service'] . "'";
+                        
+                        $result = $conn->query($sql);
 
-                        $sql = "UPDATE services SET name = '" . $item['name'] . "', type = '" . $item['type'] . "', rate = " . $item['rate'] . ", min = " . $item['min'] . ", max = " . $item['max'] . ", dripfeed = " . ($item['dripfeed'] ? 1 : 0) . ", refill = " . ($item['refill'] ? 1 : 0) . ", cancel = " . ($item['cancel'] ? 1 : 0) . ", category = '" . $item['category'] . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $provider['id'] . " AND service = " . $item['service'];
-                        $conn->query($sql);
+                        if($result->num_rows == 0){
+                            $sql = "INSERT INTO services(provider_id, service, name, type, rate, min, max, dripfeed, refill, cancel, category, status, created_at) VALUES (" 
+                                . $provider['id'] . ", '" 
+                                . $item['service'] . "', '" 
+                                . str_replace("'", "''", $item['name']) . "', '" 
+                                . (isset($item['type']) ? $item['type'] : "NULL") . "', " 
+                                . ((float) $item['rate']) . ", " 
+                                . (isset($item['min']) ? ((int)$item['min']) : "NULL") . ", " 
+                                . (isset($item['max']) ? ((int)$item['max']) : "NULL")  . ", " 
+                                . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", " 
+                                . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", " 
+                                . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", '" 
+                                . str_replace("'", "''", $item['category']) . "', 1, '" 
+                                . date("Y-m-d H:i:s") . "')";
+
+                            $conn->query($sql);
+                            $inserted_count++;
+                        } else {
+                            $row = $result->fetch_assoc();
+                            $sql = "UPDATE services SET name = '" . str_replace("'", "''", $item['name']) . "', type = '" . (isset($item['type']) ? $item['type'] : "NULL") . "', rate = " . $item['rate'] . ", min = " . (isset($item['min']) ? $item['min'] : "NULL") . ", max = " . (isset($item['max']) ? $item['max'] : "NULL") . ", dripfeed = " . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", refill = " . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", cancel = " . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", category = '" . str_replace("'", "''", $item['category']) . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $provider['id'] . " AND service = '" . $item['service'] . "'";
+                          
+                            $conn->query($sql);
+                        }
                     }
                 }
+               
             }
         }
         echo "INSERTED: " . $inserted_count . "ROWS" . PHP_EOL . "<br>";

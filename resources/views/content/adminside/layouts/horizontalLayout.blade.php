@@ -136,7 +136,7 @@
                                     <li class="menu-item">
                                         <a href="/admin/provider-management" class="menu-link">
                                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                            <div>Provider Management</div>
+                                            <div>Providers</div>
                                         </a>
                                     </li>
                                 </ul>

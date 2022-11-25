@@ -79,23 +79,18 @@
                 }
                 break;
             case 'SmmPanel':
-                 // https://smmpanele.ru/api/v2
+                // https://smmpanele.ru/api/v2
                 $smmPanel = new SmmPanel($url, $key);
                 $services = $smmPanel->services();
                 $services = json_decode( json_encode($services), true );
 
-                if(is_array($services) && count($services) > 0){
-                    if(isset($services[0]['name'])){
-                        return true;
-                    }
+                if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
+                    return true;
                 }
-               
                 break;
         }
 
         return false;
     }
-
-    
 
 ?>
