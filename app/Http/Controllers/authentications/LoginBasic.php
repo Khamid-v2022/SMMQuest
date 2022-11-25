@@ -33,6 +33,9 @@ class LoginBasic extends Controller
     ]);
 
     $user = User::where('email', strtolower($request->email))->first();
+    if($user->is_delete == 1){
+      return response()->json(['code'=>201, 'message'=>'This account is not activated.'], 201);
+    }
     if(Hash::check($request->password, $user->password) && $user->verified == false){
       return response()->json(['code'=>201, 'message'=>'This account is not verified. Please check your email box.'], 201);
     }
@@ -42,6 +45,9 @@ class LoginBasic extends Controller
     if (Auth::attempt($credentials)) {
       // set login history
       $user = Auth::user();
+      $user->last_auth_at = date("Y-m-d H:i:s");
+      $user->save();
+
       $history = new LoginHistory;
       $history->user_id = $user->id;
       $history->agency = $request->header('User-Agent');
@@ -52,7 +58,7 @@ class LoginBasic extends Controller
       $location = Location::get($request->ip());
       if($location)
         $history->location = $location->countryName;
-      
+      $history->loggedin_at = date("Y-m-d H:i:s");
       $history->save();
       
       return response()->json(['code'=>200, 'message'=>'You have successfully logged in'], 200);

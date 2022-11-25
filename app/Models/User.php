@@ -35,6 +35,7 @@ class User extends Authenticatable
         'zip_code',
         'country',
         'timezone',
+        'last_auth_at',
         'is_delete',
         'deleted_at'        
     ];

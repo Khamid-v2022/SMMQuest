@@ -4,7 +4,7 @@ $configData = Helper::appClasses();
 
 @extends('content/adminside/layouts/layoutMaster')
 
-@section('title', 'Providers')
+@section('title', 'Users')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -44,18 +44,20 @@ $configData = Helper::appClasses();
 @endsection
 
 @section('page-script')
-<script src="{{asset('adminside/js/provider_management.js')}}"></script>
+<script src="{{asset('adminside/js/user_management.js')}}"></script>
 @endsection
 
-<style>
+<style type="text/css">
     .fa-spinner {
         display: none
+    }
+    .switch .switch-toggle-slider i {
+        top: 2.65px!important;
     }
 </style>
 
 @section('content')
-<h4>Providers</h4>
-<!-- <p>Register providers.</p> -->
+<h4>Users</h4>
 <!-- DataTable with Buttons -->
 <div class="card">
     <div class="card-datatable table-responsive">
@@ -63,32 +65,37 @@ $configData = Helper::appClasses();
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>API template</th>
+                    <th>Email</th>
+                    <th>Verified</th>
                     <th>Status</th>
+                    <th>Last Auth</th>
                     <th>Created</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @php $index = 0; @endphp
-                @foreach($providers as $provider)
+                @foreach($users as $user)
                     @php $index++; @endphp
-                    <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} data-endpoint={{ $provider->endpoint }}>
+                    <tr data-user_id= {{ $user->id }} data-email={{ $user->email }} data-status={{ $user->is_delete }}>
                         <td>{{ $index }}</td>
-                        <td>{{ $provider->domain }}</td>
-                        <td>{{ $provider->api_template }}</td>
+                        <td>{{ $user->email }}</td>
                         <td>
-                            @if($provider->is_activated == 1)
+                            @if($user->verified == 1)
+                                <span class="badge bg-label-success">Verified</span>
+                            @else
+                                <span class="badge bg-label-danger">Not verified</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($user->is_delete == 0)
                                 <span class="badge bg-label-success">Enabled</span>
                             @else
                                 <span class="badge bg-label-danger">Disabled</span>
                             @endif
-                            @if($provider->is_valid_key == 0)
-                                <span class="badge bg-label-warning">Invalid API Key</span>
-                            @endif
                         </td>
-                        <td>{{ $provider->created_at }}</td>
+                        <td>{{ $user->last_auth_at }}</td>
+                        <td>{{ $user->created_at }}</td>
                         <td></td>
                     </tr>
                 @endforeach
@@ -96,10 +103,11 @@ $configData = Helper::appClasses();
         </table>
     </div>
 </div>
+
 <!-- Modal to add new record -->
 <div class="offcanvas offcanvas-end" id="add-new-record">
     <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title" id="exampleModalLabel">New Provider</h5>
+        <h5 class="offcanvas-title" id="exampleModalLabel">Update User</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body flex-grow-1">
@@ -107,33 +115,34 @@ $configData = Helper::appClasses();
             <input type="hidden" id="m_selected_id">
             <input type="hidden" id="m_action_type">
             <div class="col-sm-12">
-                <label class="form-label" for="domain_name">Provider Domain</label>
+                <label class="form-label" for="m_user_email">Email</label>
                 <div class="input-group input-group-merge">
                     <!-- <span class="input-group-text"><i class="bx bx-user"></i></span> -->
-                    <input type="text" id="domain_name" class="form-control" name="domain_name" placeholder="Domain Name" aria-label="Domain Name" aria-describedby="domain_name" />
+                    <input type="email" id="m_user_email" class="form-control" name="m_user_email" placeholder="Email" aria-label="Email" aria-describedby="Email" />
                 </div>
             </div>
             <div class="col-sm-12">
-                <label class="form-label" for="end_point">End Point</label>
-                <div class="input-group input-group-merge">
-                    <!-- <span class="input-group-text"><i class="bx bx-user"></i></span> -->
-                    <input type="text" id="end_point" class="form-control" name="end_point" placeholder="/api/v2" aria-label="End Point" aria-describedby="end_point" />
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <label class="form-label" for="api_key">API Key</label>
-                <div class="input-group input-group-merge">
-                    <span class="input-group-text">
-                        <!-- <i class="bx bx-envelope"></i> -->
-                        <i class='bx bxs-key'></i>
+                <div class="">Status</div>
+                <label class="switch">
+                    <input type="checkbox" class="switch-input" id="m_is_delete"/>
+                    <span class="switch-toggle-slider">
+                        <span class="switch-on">
+                            <i class="bx bx-check"></i>
+                        </span>
+                        <span class="switch-off">
+                            <i class="bx bx-x"></i>
+                        </span>
                     </span>
-                    <input type="text" id="api_key" name="api_key" class="form-control" placeholder="API Key" autocomplete="off"/>
-                </div>
-                <div class="form-text">
-                    
-                </div>
+                </label>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12 mt-3">
+                <button type="button" class="btn btn-warning me-sm-3 me-1" id="reset_password_btn">
+                    <span>Reset Password</span>
+                    <i class="fas fa-spinner fa-spin" style="display:none"></i>
+                </button>
+            </div>
+            
+            <div class="col-sm-12 mt-3">
                 <button type="submit" class="btn btn-primary data-submit me-sm-3 me-1">
                     <span id="submit_btn_title">Submit</span>
                     <i class="fas fa-spinner fa-spin" style="display:none"></i>

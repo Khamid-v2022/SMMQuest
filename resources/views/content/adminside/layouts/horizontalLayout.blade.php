@@ -135,8 +135,14 @@
                                     </li>
                                     <li class="menu-item">
                                         <a href="/admin/provider-management" class="menu-link">
-                                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                                            <i class="menu-icon tf-icons bx bx-food-menu"></i>
                                             <div>Providers</div>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="/admin/user-management" class="menu-link">
+                                            <i class="menu-icon tf-icons bx bx-group"></i>
+                                            <div>Users</div>
                                         </a>
                                     </li>
                                 </ul>
