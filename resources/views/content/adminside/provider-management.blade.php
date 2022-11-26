@@ -87,6 +87,9 @@ $configData = Helper::appClasses();
                             @if($provider->is_valid_key == 0)
                                 <span class="badge bg-label-warning">Invalid API Key</span>
                             @endif
+                            @if($provider->is_hold == 1)
+                                <span class="badge bg-label-danger">Hold</span>
+                            @endif
                         </td>
                         <td>{{ $provider->created_at }}</td>
                         <td></td>

@@ -89,7 +89,6 @@ $configData = Helper::appClasses();
                             @if($provider->provider->is_hold == 0)
                                 <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key"><i class="bx bxs-edit"></i></a>
                             @endif
-                            <a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>
                         </td>
                     </tr>
                 @endforeach

@@ -33,7 +33,7 @@ class ProviderManagement extends Controller
         ]);
 
         // remove http://, https://, remove / from last of url
-        $domain = rtrim(preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain), '/');
+        $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain)), '/');
         $url = rtrim($this->check_protocol($domain), '/');
         $end_point = '/' . rtrim(ltrim($request->end_point, '/'), '/');
 

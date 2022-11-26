@@ -34,8 +34,8 @@ class ProviderController extends MyController
       'domain' => 'required'
     ]);
     
-    // remove http://, https://, remove / from last of url
-    $domain = rtrim(preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain), '/');
+    // remove http://, https://, www, remove / from last of url
+    $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain)), '/');
     
     // check aready registred 
     $provider = Provider::where('domain', $domain)->get();
@@ -50,7 +50,7 @@ class ProviderController extends MyController
       $user_provider = UserProvider::create([
         'user_id' => Auth::user()->id,
         'provider_id' => $provider[0]->id,
-        'is_favorite' => ($request->favorite ? 1 : 0),
+        'is_favorite' => $request->favorite,
         'is_enabled' => 1,
         'is_valid_key' => 0,
         'created_at' => date("Y-m-d H:i:s")
@@ -71,7 +71,7 @@ class ProviderController extends MyController
       $user_provider = UserProvider::create([
         'user_id' => Auth::user()->id,
         'provider_id' => $new_provider->id,
-        'is_favorite' => ($request->favorite ? 1 : 0),
+        'is_favorite' => $request->favorite,
         'is_enabled' => 1,
         'is_valid_key' => 0,
         'created_at' => date("Y-m-d H:i:s")

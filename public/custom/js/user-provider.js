@@ -119,7 +119,7 @@ $(function () {
           let _url = "/providers/add";
           let data = {
             domain: $('#domain_name').val(),
-            favorite: $('#favorite').prop('checked'),
+            favorite: $('#favorite').prop('checked') ? 1 : 0,
           };
 
           $(".data-submit").attr("disabled", true);
