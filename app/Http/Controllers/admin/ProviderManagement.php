@@ -87,7 +87,7 @@ class ProviderManagement extends Controller
                     ]);
                 }
             } else {
-                return response()->json(['code'=>400, 'message'=>'API End Point is not correct!'], 200);
+                return response()->json(['code'=>400, 'message'=>'API key/End Point is not correct!'], 200);
             }
 
             return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
@@ -110,17 +110,6 @@ class ProviderManagement extends Controller
     public function updateActivate(Request $request) {
         Provider::where('id', $request->selected_id)->update(['is_activated' => $request->is_active]);
         return response()->json(['code'=>200, 'message'=>'Updated successfully'], 200);
-    }
-
-    private function urlExists($url = NULL) {
-        $headers = @get_headers($url);
-        if(!$headers || strpos($headers[0], '404')) {
-            $exists = false;
-        }
-        else {
-            $exists = true;
-        }
-        return $exists;
     }
 
 
@@ -208,27 +197,5 @@ class ProviderManagement extends Controller
         return array (
             'status'=> 0
         );
-    }
-
-    private function encrypt($message)
-    {
-        $cipher_method = 'aes-128-ctr';
-        
-        $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
-        $crypted_key = openssl_encrypt($message, $cipher_method, env('ENCRYPT_KEY'), 0, $enc_iv) . "::" . bin2hex($enc_iv);
-
-        return $crypted_key;
-    }
-
-    private function check_protocol($domain){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $domain);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-        curl_exec($ch);
-    
-        $real_url =  curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        return $real_url;
     }
 }

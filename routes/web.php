@@ -66,3 +66,7 @@ Route::get('/auth/register/send-verify-email/{unique_str}', $controller_path . '
 Route::get('/auth/register/resend-verify-email/{unique_str}', $controller_path . '\authentications\RegisterBasic@resendVerifyEmail');
 Route::get('/email-verify/{unique_str}', $controller_path . '\authentications\RegisterBasic@verifyEmail')->name('email-verify');
 Route::get('/failed-email-verify', $controller_path . '\authentications\RegisterBasic@failedVerify')->name('failed-email-verify');
+
+// Coming Soon page
+Route::get('/coming-soon', $controller_path . '\pages\MiscComingSoon@index');
+Route::post('/coming-soon', $controller_path . '\pages\MiscComingSoon@addSubscriber');

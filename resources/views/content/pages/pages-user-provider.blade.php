@@ -79,7 +79,7 @@ $configData = Helper::appClasses();
                                 <span class="badge bg-label-danger">Disabled</span>
                             @endif 
                             @if($provider->provider->is_hold == 1)
-                                <span class="badge bg-label-danger" title="Waiting on Admin Activation">Hold</span>
+                                <span class="badge bg-label-danger" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
                             @elseif($provider->is_valid_key == 0)
                                 <span class="badge bg-label-warning">Invalid API Key</span>
                             @endif
@@ -87,7 +87,9 @@ $configData = Helper::appClasses();
                         <td>{{ $provider->created_at }}</td>
                         <td>
                             @if($provider->provider->is_hold == 0)
-                                <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key"><i class="bx bxs-edit"></i></a>
+                                <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
+                                    <i class="bx bxs-edit"></i>
+                                </a>
                             @endif
                         </td>
                     </tr>

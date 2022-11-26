@@ -58,6 +58,12 @@ class ProviderController extends MyController
 
       return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
     } else {
+      // check domain is valid URL or not
+      $url = rtrim($this->check_protocol($domain), '/');
+      $response = $this->urlExists($url);
+      if(!$response) {
+        return response()->json(['code'=>400, 'message'=>'This domain name is not exist'], 200);
+      }
       // create new provider but with not activated
       $new_provider = Provider::create([
         'domain' => $domain,
@@ -134,15 +140,7 @@ class ProviderController extends MyController
     please try again later'], 200);
   }
 
-  private function encrypt($message)
-  {
-      $cipher_method = 'aes-128-ctr';
-      
-      $enc_iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($cipher_method));
-      $crypted_key = openssl_encrypt($message, $cipher_method, env('ENCRYPT_KEY'), 0, $enc_iv) . "::" . bin2hex($enc_iv);
-
-      return $crypted_key;
-  }
+  
 
   private function checkKey($url, $key, $template) {
     switch($template){
@@ -170,17 +168,5 @@ class ProviderController extends MyController
 
     return false;
   }
-
-
-  private function check_protocol($domain){
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $domain);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-    curl_exec($ch);
-
-    $real_url =  curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-    return $real_url;
-  }
+  
 }
