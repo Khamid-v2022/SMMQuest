@@ -26,7 +26,7 @@ $controller_path = 'App\Http\Controllers';
 
 
 Route::group(['middleware' => ['auth', 'user']], function () {
-    Route::get('/', [HomePage::class, 'index'])->name('pages-home');
+    Route::get('/home', [HomePage::class, 'index'])->name('pages-home');
 
     Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile-show');
     Route::post('/profile', [AccountSettingsAccount::class, 'update']);
@@ -68,5 +68,5 @@ Route::get('/email-verify/{unique_str}', $controller_path . '\authentications\Re
 Route::get('/failed-email-verify', $controller_path . '\authentications\RegisterBasic@failedVerify')->name('failed-email-verify');
 
 // Coming Soon page
-Route::get('/coming-soon', $controller_path . '\pages\MiscComingSoon@index');
-Route::post('/coming-soon', $controller_path . '\pages\MiscComingSoon@addSubscriber');
+Route::get('/', $controller_path . '\pages\MiscComingSoon@index');
+Route::post('/', $controller_path . '\pages\MiscComingSoon@addSubscriber');

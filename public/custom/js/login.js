@@ -36,7 +36,7 @@ $(function () {
             data: data,
             success: function (response) {
                 if (response.code == 200) {
-                    location.href = "/";
+                    location.href = "/home";
                 } else if(response.code == 201){
                     Swal.fire({
                         icon: 'warning',
