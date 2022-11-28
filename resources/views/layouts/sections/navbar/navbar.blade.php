@@ -15,7 +15,7 @@ $navbarDetached = ($navbarDetached ?? '');
       <!--  Brand demo (display only for navbar-full and hide on below xl) -->
       @if(isset($navbarFull))
       <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
-        <a href="{{url('/')}}" class="app-brand-link gap-2">
+        <a href="{{url('/home')}}" class="app-brand-link gap-2">
           <span class="app-brand-logo demo">
             @include('_partials.macros',["width"=>25,"withbg"=>'#696cff'])
           </span>
@@ -67,7 +67,11 @@ $navbarDetached = ($navbarDetached ?? '');
                           {{ Auth::user()->email }}
                         @endif
                       </span>
-                      <small class="text-muted">Admin</small>
+                      <small class="text-muted">
+                        @if (Auth::check())
+                          {{ Auth::user()->first_name . " " . Auth::user()->last_name }}
+                        @endif
+                      </small>
                     </div>
                   </div>
                 </a>

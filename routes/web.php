@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     Route::post('/profile-security', [AccountSettingsSecurity::class, 'update']);
 
     // Provider
-    Route::get('/providers', [ProviderController::class, 'index']);
+    Route::get('/providers', [ProviderController::class, 'index'])->name('pages-my-provider');
     Route::post('/providers/add', [ProviderController::class, 'createNewProvider']);
     Route::get('/providers/delete/{id}', [ProviderController::class, 'deleteProvider'])->where('id', '[0-9]+');
     Route::post('/providers/favorite', [ProviderController::class, 'favoriteProvider']);
@@ -69,4 +69,4 @@ Route::get('/failed-email-verify', $controller_path . '\authentications\Register
 
 // Coming Soon page
 Route::get('/', $controller_path . '\pages\MiscComingSoon@index');
-Route::post('/', $controller_path . '\pages\MiscComingSoon@addSubscriber');
+Route::post('/coming-soon', $controller_path . '\pages\MiscComingSoon@addSubscriber');

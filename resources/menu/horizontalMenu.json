@@ -1,11 +1,12 @@
 {
   "menu": [
     {
-      "url": "/",
+      "url": "/home",
       "name": "Home",
       "icon": "menu-icon tf-icons bx bx-home-circle",
       "slug": "pages-home"
     },
+    
     {
       "url": "/providers",
       "icon": "menu-icon tf-icons bx bx-food-menu",
