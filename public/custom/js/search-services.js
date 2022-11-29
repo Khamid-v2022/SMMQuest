@@ -43,7 +43,17 @@ $(function () {
     $('.dt-column-search thead tr').clone(true).appendTo('.dt-column-search thead');
     $('.dt-column-search thead tr:eq(1) th').each(function (i) {
         var title = $(this).text();
-        $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+        if(i == 8 || i == 9 || i == 10 ){
+            let html = '<select class="form-select">';
+            html += '<option value="-1">All</option>';
+            html += '<option value="TRUE">TRUE</option>';
+            html += '<option value="FALSE">FALSE</option>';   
+            html += '</select>';
+            $(this).html(html);
+        }
+        else {
+            $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+        }
 
         // $('input', this).on('keyup change', function () {
         $('input', this).on('change', function () {
@@ -51,7 +61,18 @@ $(function () {
                 dt_basic.column(i).search(this.value).draw();
             }
         });
+
+        $('select', this).on('change', function () {
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value).draw();
+                }
+            }
+        });
     });
+
     dt_basic = $('.datatables-basic').DataTable({
         columns: [
             { data: 'domain'},
@@ -104,18 +125,18 @@ $(function () {
             },
             {
                 className: 'service-dripfeed text-center',
-                searchable: false,
+                searchable: true,
                 targets: 8,
                 render: function (data, type, full, meta) {
                     if(data == 1)
                         return '<span class="badge bg-label-success">True</span>';
                     else 
-                        return '<span class="badge bg-label-warning">False</span>'
+                        return '<span class="badge bg-label-warning">False</span>';
                 },
             },
             {
                 className: 'service-refill text-center',
-                searchable: false,
+                searchable: true,
                 targets: 9,
                 render: function (data, type, full, meta) {
                     if(data == 1)
@@ -126,7 +147,7 @@ $(function () {
             },
             {
                 className: 'service-cancel text-center',
-                searchable: false,
+                searchable: true,
                 targets: 10,
                 render: function (data, type, full, meta) {
                     if(data == 1)
@@ -232,8 +253,6 @@ $(function () {
                     const services = response.services;
 
                     services.forEach((service) => {
-                        if(service.service == 1050)
-                            console.log(service);
                         dt_basic.row.add({
                             domain: service.domain,
                             service: service.service,

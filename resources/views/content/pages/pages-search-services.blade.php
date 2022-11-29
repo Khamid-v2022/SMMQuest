@@ -90,11 +90,17 @@ $configData = Helper::appClasses();
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
-                                <label class="form-label" for="include">Words Included:</label>
+                                <label class="form-label" for="include">
+                                    Words Included
+                                    <span class="badge rounded-pill bg-label-primary" title='Press Enter or "," to add words' data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="right">?</span>
+                                </label>
                                 <input id="include" class="form-control"/>
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
-                                <label class="form-label" for="exclude">Words Excluded:</label>
+                                <label class="form-label" for="exclude">
+                                    Words Excluded
+                                    <span class="badge rounded-pill bg-label-primary" title='Press Enter or "," to add words' data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="right">?</span> 
+                                </label>
                                 <input id="exclude" class="form-control"/>
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
