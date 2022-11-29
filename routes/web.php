@@ -7,6 +7,7 @@ use App\Http\Controllers\pages\HomePage;
 use App\Http\Controllers\pages\AccountSettingsAccount;
 use App\Http\Controllers\pages\AccountSettingsSecurity;
 use App\Http\Controllers\pages\ProviderController;
+use App\Http\Controllers\pages\SearchServicesController;
 
 // use App\Http\Controllers\admin\LoginPage;
 // use App\Http\Controllers\admin\DashboardPage;
@@ -40,7 +41,11 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     Route::post('/providers/add', [ProviderController::class, 'createNewProvider']);
     Route::get('/providers/delete/{id}', [ProviderController::class, 'deleteProvider'])->where('id', '[0-9]+');
     Route::post('/providers/favorite', [ProviderController::class, 'favoriteProvider']);
-    Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']);   
+    Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']); 
+    
+    // Search Services
+    Route::get('/search-services', [SearchServicesController::class, 'index'])->name('pages-search-services');
+    Route::post('/search-services', [SearchServicesController::class, 'searchServices']);
 });
 
 // error pages
