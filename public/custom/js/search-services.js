@@ -1,5 +1,7 @@
 var dt_basic;
+var all_show_table;
 
+var previous_selected_providers = ["0"];
 $(function () {
     $.ajaxSetup({
         headers: {
@@ -12,15 +14,44 @@ $(function () {
         dropdownParent: $(".select2").parent()
     });
 
+    const collapseElementList = [].slice.call(document.querySelectorAll('.card-collapsible'));
+    collapseElementList.map(function (collapseElement) {
+        collapseElement.addEventListener('click', event => {
+            event.preventDefault();
+            // Collapse the element
+            new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
+            // Toggle collapsed class in `.card-header` element
+            collapseElement.closest('.card-header').classList.toggle('collapsed');
+            // Toggle class bx-chevron-down & bx-chevron-up
+            Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
+        });
+    })
+
+
     $('.selectpicker').selectpicker();
     const includeEl = document.querySelector('#include');
-    const TagifyInclude = new Tagify(includeEl);
+    const TagifyInclude = new Tagify(includeEl, 
+        // { delimiters: [',', ' ']}
+    );
     const includeEx = document.querySelector('#exclude');
-    const TagifyExclude = new Tagify(includeEx);
-   
+    const TagifyExclude = new Tagify(includeEx, 
+        // { delimiters: [',', ' ']}
+    );
+
     // DataTable with buttons
     // --------------------------------------------------------------------
+    $('.dt-column-search thead tr').clone(true).appendTo('.dt-column-search thead');
+    $('.dt-column-search thead tr:eq(1) th').each(function (i) {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
 
+        // $('input', this).on('keyup change', function () {
+        $('input', this).on('change', function () {
+            if (dt_basic.column(i).search() !== this.value) {
+                dt_basic.column(i).search(this.value).draw();
+            }
+        });
+    });
     dt_basic = $('.datatables-basic').DataTable({
         columns: [
             { data: 'domain'},
@@ -38,55 +69,41 @@ $(function () {
         columnDefs: [
             {
                 className: 'service-domain',
-                searchable: false,
                 targets: 0
             },
             {
                 className: 'service-id',
-                searchable: false,
                 targets: 1
             },
             {
                 className: 'service-name',
-                searchable: true,
                 targets: 2
             },
             {
                 className: 'service-category',
-                searchable: false,
                 targets: 3
             },
             {
-                className: 'service-rate',
-                searchable: false,
+                className: 'service-rate text-end',
                 targets: 4,
                 render: function(data){
-                    return data.toLocaleString('en-US', {maximumFractionDigits:2})
+                    return data.toLocaleString('en-US', {maximumFractionDigits:5})
                 }
             },
             {
-                className: 'service-min',
-                searchable: false,
-                targets: 5,
-                render: function(data){
-                    return data.toLocaleString('en-US', {maximumFractionDigits:2})
-                }
+                className: 'service-min text-end',
+                targets: 5
             },
             {
-                className: 'service-max',
-                searchable: false,
-                targets: 6,
-                render: function(data){
-                    return data.toLocaleString('en-US', {maximumFractionDigits:2})
-                }
+                className: 'service-max text-end',
+                targets: 6
             },
             {
                 className: 'service-type',
-                searchable: false,
                 targets: 7,
             },
             {
-                className: 'service-dripfeed',
+                className: 'service-dripfeed text-center',
                 searchable: false,
                 targets: 8,
                 render: function (data, type, full, meta) {
@@ -97,7 +114,7 @@ $(function () {
                 },
             },
             {
-                className: 'service-refill',
+                className: 'service-refill text-center',
                 searchable: false,
                 targets: 9,
                 render: function (data, type, full, meta) {
@@ -108,7 +125,7 @@ $(function () {
                 },
             },
             {
-                className: 'service-cancel',
+                className: 'service-cancel text-center',
                 searchable: false,
                 targets: 10,
                 render: function (data, type, full, meta) {
@@ -121,11 +138,14 @@ $(function () {
 
         ],
         // order: [[2, 'desc']],
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-        displayLength: 10,
-        lengthMenu: [10, 25, 50, 100],
-        buttons: []
+        orderCellsTop: true,
+        paging: false,
+        lengthChange: false,
+        // dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
+    // hide category, type column as default
+    dt_basic.column(3).visible(false);
+    dt_basic.column(7).visible(false);
   
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
@@ -136,9 +156,27 @@ $(function () {
 
     $("#providers").on('change', function(){
         const selected_providers = $(this).val();
-        if(selected_providers.includes("0") && selected_providers.length > 1){
+        // if select other provider not "all" 
+        if(selected_providers.length > 1 && previous_selected_providers.includes("0")){
+            // remove all
+            const index = selected_providers.indexOf("0");
+            if (index > -1) { // only splice array when item is found
+                selected_providers.splice(index, 1); // 2nd parameter means remove one item only
+                $(this).val(selected_providers).trigger("change");
+            }
+        }
+
+        if(!previous_selected_providers.includes("0") && selected_providers.includes("0") && selected_providers.length > 1){
             $(this).val(['0']).trigger("change");
         }
+        previous_selected_providers = selected_providers;
+    })
+
+    $(".show-column-item").on("click", function(){
+        // Get the column API object
+        var column = dt_basic.column($(this).attr('data-column-index'));
+        // Toggle the visibility
+        column.visible(!column.visible());
     })
 
     $("#search_form").on("submit", function(e){
@@ -174,12 +212,14 @@ $(function () {
             include,
             exclude,
             min,
-            max
+            max,
+            min_rate: $("#min_rate").val(),
+            max_rate: $("#max_rate").val()
         }
 
         const _url = "/search-services";
-        
-        // console.log(data);
+
+
         $(".data-submit").attr("disabled", true);
         $(".data-submit .fa-spinner").css("display", "inline-block");
         dt_basic.clear().draw();
@@ -190,15 +230,16 @@ $(function () {
             success: function (response) {
                 if (response.code == 200) {
                     const services = response.services;
-                    let tbody = "";
-                    let number = 0;
+
                     services.forEach((service) => {
-                        number ++;
+                        if(service.service == 1050)
+                            console.log(service);
                         dt_basic.row.add({
                             domain: service.domain,
                             service: service.service,
                             name: service.name,
                             category: service.category,
+                            // rate: new Decimal(service.rate),
                             rate: service.rate,
                             min: service.min,
                             max: service.max,
@@ -208,13 +249,20 @@ $(function () {
                             cancel: service.cancel,
                         });
                     })
+                    
                     dt_basic.columns.adjust().draw();
+
+                    let collapseElement = document.getElementById("close_card");
+                    new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
+                    // Toggle collapsed class in `.card-header` element
+                    collapseElement.closest('.card-header').classList.toggle('collapsed');
+                    // Toggle class bx-chevron-down & bx-chevron-up
+                    Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
 
                     $('.datatables-basic').DataTable();
                     $(".data-submit .fa-spinner").css("display", "none");
                     $(".data-submit").removeAttr("disabled");
                 } else {
-                    console.log(response);
                     dt_basic.columns.adjust().draw();
                     $(".data-submit .fa-spinner").css("display", "none");
                     $(".data-submit").removeAttr("disabled");
@@ -224,6 +272,7 @@ $(function () {
             error: function (response) {
                 console.log(response);
                 dt_basic.columns.adjust().draw();
+               
                 $(".data-submit .fa-spinner").css("display", "none");
                 $(".data-submit").removeAttr("disabled");
                 return;
@@ -231,5 +280,5 @@ $(function () {
         });
           
     })
-
+    
 });

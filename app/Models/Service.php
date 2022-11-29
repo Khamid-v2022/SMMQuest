@@ -43,7 +43,7 @@ class Service extends Model
             ->get();
     }
 
-    public static function search_services($user_id, $provider_ids, $type, $include, $exclude, $min, $max){
+    public static function search_services($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate){
         $result =  UserProvider::where('user_id', $user_id)
                     ->join('providers', 'providers.id' , '=', 'user_provider.provider_id')
                     ->join('services', 'services.provider_id' , '=', 'user_provider.provider_id')
@@ -74,6 +74,12 @@ class Service extends Model
                     })
                     ->when($min, function ($query) use ($min){
                         return $query->where('services.min', '>=', $min);
+                    })
+                    ->when($min_rate, function ($query) use ($min_rate){
+                        return $query->where('services.rate', '>=', $min_rate);
+                    })
+                    ->when($max_rate, function ($query) use ($max_rate){
+                        return $query->where('services.rate', '<=', $max_rate);
                     })
                     ->where('status', 1)
                     ->where('is_enabled', 1)

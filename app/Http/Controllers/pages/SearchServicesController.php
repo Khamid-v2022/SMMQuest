@@ -17,11 +17,23 @@ class SearchServicesController extends MyController
         $providers = UserProvider::with(['provider'])
           ->where('user_id', Auth::user()->id)->get();
         $types = Service::service_types(Auth::user()->id);
+        $types_val=[];
+        foreach( $types as $type ){
+            array_push($types_val, $type->type);
+        }
+        // Default as first position
+        if(in_array("Default", $types_val)){
+            $index = array_search("Default", $types_val);
+            unset($types_val[$index]);
+            array_unshift($types_val, "Default");
+        }
+
 
         return view('content.pages.pages-search-services', [
             'pageConfigs'=> $pageConfigs, 
+            'container' => 'container-fluid',
             'providers' => $providers,
-            'types' => $types
+            'types' => $types_val
         ]);
     }
 
@@ -32,6 +44,7 @@ class SearchServicesController extends MyController
         $type = $request->type;
         $include = $request->include;
         $exclude = $request->exclude;
+        
 
         $result = Service::search_services(
             Auth::user()->id,
@@ -40,10 +53,12 @@ class SearchServicesController extends MyController
             $include,
             $exclude,
             $min,
-            $max
+            $max,
+            $request->min_rate,
+            $request->max_rate
         );
 
-        return response()->json(['code'=>200, 'services'=>$result], 200);
+        return response()->json(['code'=>200, 'services'=>$result, 'min_rate'=>$request->min_rate], 200);
     }
 
 }

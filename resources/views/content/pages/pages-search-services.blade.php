@@ -44,89 +44,148 @@ $configData = Helper::appClasses();
 @endsection
 
 @section('page-script')
+<!-- <script src="{{asset('custom/js/decimal.js')}}"></script> -->
 <script src="{{asset('custom/js/search-services.js')}}"></script>
 @endsection
-<style type="text/css">
-    .service-domain {
-        max-width:80px;
-    }
-    .service-min {
-        max-width: 30px!important;
-        text-align: right;
-    } 
-    .service-rate, .service-id, .service-max {
-        max-width: 60px!important;
-        text-align: right;
-    }
-
-    .service-dripfeed, .service-refill, .service-cancel {
-        max-width: 70px!important;
-        padding: 10px 18px!important;
-    }
-</style>
-
 
 @section('content')
 <h4>Search Services</h4>
-<!-- DataTable with Buttons -->
-<div class="card">
-    <h5 class="card-header">Services</h5>
-    <div class="card-body">
-        <form id="search_form">
-            <div class="row">
-                <div class="col-12">
-                    <div class="row g-3">
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="providers">Providers:</label>
-                            <select id="providers" class="select2 form-select" multiple>
-                                <option value="0" selected>All</option>
-                                @foreach($providers as $provider)
-                                    <option value="{{ $provider->provider_id }}">{{ $provider->provider->domain }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="type">Type:</label>
-                            <select id="type" class="selectpicker w-100">
-                                @foreach($types as $type)
-                                    @if($type->type == 'Default')
-                                    <option value="{{ $type->type }}" selected>{{ $type->type }}</option>
-                                    @else
-                                    <option value="{{ $type->type }}">{{ $type->type }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="include">Include:</label>
-                            <input id="include" class="form-control"/>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="exclude">Exclude:</label>
-                            <input id="exclude" class="form-control"/>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label">Min:</label>
-                            <input type="number" id="min" class="form-control dt-input" placeholder="Min">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label">Max:</label>
-                            <input type="number" id="max" class="form-control dt-input" placeholder="Max">
-                        </div>
-                    </div>
-                    <div class="text-right pt-4 ">
-                        <button class="btn btn-primary me-sm-3 me-1 float-end data-submit" type="submit">
-                            <i class='bx bx-search-alt-2'></i> Search
-                            <i class="fas fa-spinner fa-spin" style="display:none"></i>
-                        </button>
-                    </div>
+
+<div class="row mb-3">
+    <div class="col-md">
+        <div class="card card-action mb-4">
+            <div class="card-header">
+                <div class="card-action-title">Services Filters</div>
+                <div class="card-action-element">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <a href="javascript:void(0);" class="card-collapsible" id="close_card"><i class="tf-icons bx bx-chevron-up"></i></a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </form>
+            <div class="collapse show">
+                <div class="card-body">
+                    <form id="search_form">
+                        <div class="row g-3">
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label" for="providers">Providers:</label>
+                                <select id="providers" class="select2 form-select" multiple>
+                                    <option value="0" selected>All</option>
+                                    @foreach($providers as $provider)
+                                        <option value="{{ $provider->provider_id }}">{{ $provider->provider->domain }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label" for="type">Service Type:</label>
+                                <select id="type" class="selectpicker w-100">
+                                    @foreach($types as $type)
+                                        @if($type == 'Default')
+                                        <option value="{{ $type }}" selected>{{ $type }}</option>
+                                        @else
+                                        <option value="{{ $type }}">{{ $type }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label" for="include">Words Included:</label>
+                                <input id="include" class="form-control"/>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label" for="exclude">Words Excluded:</label>
+                                <input id="exclude" class="form-control"/>
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label">Service Minimum:</label>
+                                <input type="number" id="min" class="form-control dt-input" placeholder="Service Minimum">
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label">Service Maximum:</label>
+                                <input type="number" id="max" class="form-control dt-input" placeholder="Service Maximum">
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label">Minimum Price:</label>
+                                <input type="number" id="min_rate" class="form-control dt-input" placeholder="Minimum Price">
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label">Maximum Price:</label>
+                                <input type="number" id="max_rate" class="form-control dt-input" placeholder="Maximum Price">
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <small class="text-light fw-semibold d-block">Show Columns</small>
+                            <div class="col-sm">
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-domain" data-column-index="0" id="check_provider" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_provider">Provider</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-id" data-column-index="1" id="check_id" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_id">ID</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-name" data-column-index="2" id="check_name" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_name">Name</label>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-category" data-column-index="3" id="check_category" type="checkbox" />
+                                    <label class="form-check-label" for="check_category">Category</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-rate" data-column-index="4" id="check_rate" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_rate">Rate</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-min" data-column-index="5" id="check_min" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_min">Min</label>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-max" data-column-index="6" id="check_max" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_max">Max</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-type" data-column-index="7" id="check_type" type="checkbox" />
+                                    <label class="form-check-label" for="check_type">Type</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-dripfeed" data-column-index="8" id="check_dripfeed" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_dripfeed">Dripfeed</label>
+                                </div>
+                                
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-refill" data-column-index="9" id="check_refill" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_refill">Refill</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-cancel" data-column-index="10" id="check_cancel" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_cancel">Cancel</label>
+                                </div>
+                            </div>
+                            <div class="col-12 text-right pt-2">
+                                <button class="btn btn-primary me-sm-3 me-1 float-end data-submit" type="submit">
+                                    <i class='bx bx-search-alt-2'></i> Search
+                                    <i class="fas fa-spinner fa-spin" style="display:none"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <hr class="mt-0">
+</div>
+
+<div class="card mb-4">
     <div class="card-datatable table-responsive">
-        <table class="datatables-basic table border-top">
+        <table class="dt-column-search datatables-basic table border-top">
             <thead>
                 <tr>
                     <th class='service-domain'> Provider </th>
@@ -149,3 +208,4 @@ $configData = Helper::appClasses();
     </div>
 </div>
 @endsection
+
