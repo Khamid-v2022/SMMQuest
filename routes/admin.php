@@ -23,6 +23,8 @@ Route::namespace('admin')->prefix('admin')->group(function(){
         Route::delete('/provider-management', [ProviderManagement::class, 'deleteProvider']);
         Route::post('/provider-management/changeAPIKey', [ProviderManagement::class, 'changeAPIKey']);
         Route::post('/provider-management/updateActivate', [ProviderManagement::class, 'updateActivate']);
+        Route::post('/provider-management/import_list', [ProviderManagement::class, 'importList']);
+
        
         Route::get('/user-management', [UserManagement::class, 'index']);
         Route::post('/user-management', [UserManagement::class, 'addUser']);

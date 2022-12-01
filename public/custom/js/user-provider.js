@@ -3,29 +3,14 @@
  */
 
 'use strict';
-let fv, offCanvasEl;
+let fv;
+let copy_past_fv, file_fv;
+
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
     const formAddNewRecord = document.getElementById('form-add-new-record');
- 
-    setTimeout(() => {
-      const newRecord = document.querySelector('.create-new'),
-        offCanvasElement = document.querySelector('#add-new-record');
- 
-       // To open offCanvas, to add new record
-      if (newRecord) {
-        newRecord.addEventListener('click', function () {
-          offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
-           // Empty fields on offCanvas open
-            (offCanvasElement.querySelector('#domain_name').value = ''),
-            (offCanvasElement.querySelector('#favorite').checked = false);
-           // Open offCanvas with form
-          offCanvasEl.show();
-        });
-      }
-    }, 200);
- 
-     // Form validation for Add new record
+
+    // Form validation for Add new record
     fv = FormValidation.formValidation(formAddNewRecord, {
       fields: {
         domain_name: {
@@ -56,21 +41,95 @@ document.addEventListener('DOMContentLoaded', function (e) {
         });
       }
     });
+
+    const formCopyPaste = document.getElementById('form-import-copy');
+    copy_past_fv = FormValidation.formValidation(formCopyPaste, {
+      fields: {
+        providers_list: {
+           validators: {
+             notEmpty: {
+               message: 'The field is required'
+             }
+           }
+         },
+      },
+      plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        bootstrap5: new FormValidation.plugins.Bootstrap5({
+           // Use this for enabling/changing valid/invalid class
+           // eleInvalidClass: '',
+          eleValidClass: '',
+          rowSelector: '.col-sm-12'
+        }),
+        submitButton: new FormValidation.plugins.SubmitButton(),
+        autoFocus: new FormValidation.plugins.AutoFocus()
+      },
+      init: instance => {
+        instance.on('plugins.message.placed', function (e) {
+          if (e.element.parentElement.classList.contains('input-group')) {
+            e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+          }
+        });
+      }
+    });
+
+    const formfile = document.getElementById('form-import-file');
+    file_fv = FormValidation.formValidation(formfile, {
+      fields: {
+        formFile: {
+           validators: {
+             notEmpty: {
+               message: 'Please select excel file'
+             }
+           }
+         },
+      },
+      plugins: {
+        trigger: new FormValidation.plugins.Trigger(),
+        bootstrap5: new FormValidation.plugins.Bootstrap5({
+           // Use this for enabling/changing valid/invalid class
+           // eleInvalidClass: '',
+          eleValidClass: '',
+          rowSelector: '.col-sm-12'
+        }),
+        submitButton: new FormValidation.plugins.SubmitButton(),
+        autoFocus: new FormValidation.plugins.AutoFocus()
+      },
+      init: instance => {
+        instance.on('plugins.message.placed', function (e) {
+          if (e.element.parentElement.classList.contains('input-group')) {
+            e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+          }
+        });
+      }
+    });
+
   })();
 });
  
  // datatable (jquery)
 $(function () {
+
+  $('#add-new-record').on('hidden.bs.offcanvas', function () {
+    $(this).find('form').trigger('reset');
+  })
+  $('#import_copy_modal').on('hidden.bs.offcanvas', function () {
+    $(this).find('form').trigger('reset');
+  })
+  $('#import_file_modal').on('hidden.bs.offcanvas', function () {
+    $(this).find('form').trigger('reset');
+  })
+
   $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
   });
 
-    var dt_basic;
+  var dt_basic;
  
-   // DataTable with buttons
-   // --------------------------------------------------------------------
+  // DataTable with buttons
+  // --------------------------------------------------------------------
 
     dt_basic = $('.datatables-basic').DataTable({
         columnDefs: [
@@ -100,86 +159,76 @@ $(function () {
             }
         ],
         // order: [[2, 'desc']],
-        dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         displayLength: 10,
         lengthMenu: [10, 25, 50, 100],
-        buttons: [
-            {
-                text: '<i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Add New Provider</span>',
-                className: 'create-new btn btn-primary'
-            }
-        ]
+
     });
-    $('div.head-label').html('<h5 class="card-title mb-0">Providers</h5>');
- 
+
+
     // Add New record
     // ? Remove/Update this code as per your requirements
     fv.on('core.form.valid', function () {
-        if (domain_name != '') {
-          let _url = "/providers/add";
-          let data = {
-            domain: $('#domain_name').val(),
-            favorite: $('#favorite').prop('checked') ? 1 : 0,
-          };
 
-          $(".data-submit").attr("disabled", true);
-          $(".data-submit .fa-spin").css("display", "inline-block");
-          
-          $.ajax({
-            url: _url,
-            type: "POST",
-            data: data,
-            success: function (response) {
-                if (response.code == 200) {
-                  Swal.fire({
-                    icon: 'success',
-                    title: '',
-                    text: response.message,
-                    type: 'success',
-                    customClass: {
-                      confirmButton: 'btn btn-primary'
-                    },
-                    buttonsStyling: false
-                  }).then( function(){
-                    offCanvasEl.hide();
-                    location.reload();
-                  })
-                } else {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '',
-                        text: response.message,
-                        type: 'warning',
-                        customClass: {
-                          confirmButton: 'btn btn-primary'
-                        },
-                        buttonsStyling: false
-                    })
-                    $(".data-submit .fa-spinner").css("display", "none");
-                    $(".data-submit").removeAttr("disabled");
-                    return;
-                }
-            },
-            error: function (response) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Something went wrong. Please try again later!',
-                    type: 'error',
-                    customClass: {
-                      confirmButton: 'btn btn-primary'
-                    },
-                    buttonsStyling: false
-                })
-                $(".data-submit .fa-spinner").css("display", "none");
-                $(".data-submit").removeAttr("disabled");
-                return;
-            },
-          });
-          
-          // Hide offcanvas using javascript method
-          
-        }
+      let _url = "/providers/add";
+      let data = {
+        domain: $('#domain_name').val(),
+        favorite: $('#favorite').prop('checked') ? 1 : 0,
+      };
+
+      $(".data-submit").attr("disabled", true);
+      $(".data-submit .fa-spin").css("display", "inline-block");
+      
+      $.ajax({
+        url: _url,
+        type: "POST",
+        data: data,
+        success: function (response) {
+          if (response.code == 200) {
+            Swal.fire({
+              icon: 'success',
+              title: '',
+              text: response.message,
+              type: 'success',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              },
+              buttonsStyling: false
+            }).then( function(){
+              location.reload();
+            })
+          } else {
+              Swal.fire({
+                  icon: 'warning',
+                  title: '',
+                  text: response.message,
+                  type: 'warning',
+                  customClass: {
+                    confirmButton: 'btn btn-primary'
+                  },
+                  buttonsStyling: false
+              })
+              $(".data-submit .fa-spinner").css("display", "none");
+              $(".data-submit").removeAttr("disabled");
+              return;
+          }
+        },
+        error: function (response) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Something went wrong. Please try again later!',
+              type: 'error',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              },
+              buttonsStyling: false
+          })
+          $(".data-submit .fa-spinner").css("display", "none");
+          $(".data-submit").removeAttr("disabled");
+          return;
+        },
+      });
     });
  
     // Delete Record
@@ -311,6 +360,7 @@ $(function () {
       $("#modals-change_key").modal('show');
     });
 
+    // API key submit
     $("#m_change_api_btn").on("click", function(){
       let _url = "/providers/changeAPIKey";
       
@@ -378,6 +428,103 @@ $(function () {
       });
     })
     
+
+    // Import Provider from Copy/Past Form Submit
+    copy_past_fv.on('core.form.valid', function () {
+      let providers = $("#providers_list").val().trim().split(/\n/);
+
+      let provider_list = [];
+      providers.forEach((item) => {
+        const domain = item.trim().split(";")[0];
+        const key = item.trim().split(";")[1]?item.trim().split(";")[1]:'';
+        provider_list.push({"domain": domain, "key": key});
+      })
+
+      let _url = "/providers/import_list";
+      let data = {
+        list: provider_list
+      };
+
+      $(".data-submit-copy").attr("disabled", true);
+      $(".data-submit-copy .fa-spinner").css("display", "inline-block");
+      
+      $.ajax({
+        url: _url,
+        type: "POST",
+        data: data,
+        success: function (response) {
+          if (response.code == 200) {
+            Swal.fire({
+              icon: 'success',
+              title: '',
+              text: response.message,
+              type: 'success',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              },
+              buttonsStyling: false
+            }).then( function(){
+              location.reload();
+            })
+          } else {
+              Swal.fire({
+                  icon: 'warning',
+                  title: '',
+                  text: response.message,
+                  type: 'warning',
+                  customClass: {
+                    confirmButton: 'btn btn-primary'
+                  },
+                  buttonsStyling: false
+              })
+              $(".data-submit-copy .fa-spinner").css("display", "none");
+              $(".data-submit-copy").removeAttr("disabled");
+              return;
+          }
+        },
+        error: function (response) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Something went wrong. Please try again later!',
+              type: 'error',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              },
+              buttonsStyling: false
+          })
+          $(".data-submit-copy .fa-spinner").css("display", "none");
+          $(".data-submit-copy").removeAttr("disabled");
+          return;
+        },
+      });
+    });
+
+     // Import Provider from file Form Submit
+    file_fv.on('core.form.valid', function () {
+      var fileUpload = document.getElementById("formFile");
+ 
+      //Validate whether File is valid Excel file.
+      var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+      
+      if (!regex.test(fileUpload.value.toLowerCase())) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Please upload a valid Excel file.',
+          type: 'error',
+          customClass: {
+            confirmButton: 'btn btn-primary'
+          },
+          buttonsStyling: false
+        })
+        return;
+      }
+
+      read_from_file(fileUpload);
+
+    });
+
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
     setTimeout(() => {
@@ -386,3 +533,138 @@ $(function () {
     }, 300);
 });
  
+function read_from_file(fileUpload){
+  if (typeof (FileReader) != "undefined") {
+    var reader = new FileReader();
+
+    //For Browsers other than IE.
+    if (reader.readAsBinaryString) {
+      reader.onload = function (e) {
+        return GetProdectsFromExcel(e.target.result);
+      };
+      reader.readAsBinaryString(fileUpload.files[0]);
+    } else {
+      //For IE Browser.
+      reader.onload = function (e) {
+        var data = "";
+        var bytes = new Uint8Array(e.target.result);
+        for (var i = 0; i < bytes.byteLength; i++) {
+            data += String.fromCharCode(bytes[i]);
+        }
+        return GetProdectsFromExcel(data);
+      };
+      reader.readAsArrayBuffer(fileUpload.files[0]);
+    }
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error!',
+      text: 'This browser does not support HTML5.',
+      type: 'error',
+      customClass: {
+        confirmButton: 'btn btn-primary'
+      },
+      buttonsStyling: false
+    })
+    return false;
+  }
+}
+
+function GetProdectsFromExcel(data, filename) {
+  //Read the Excel File data in binary
+  var workbook = XLSX.read(data, {
+      type: 'binary'
+  });
+
+  //get the name of First Sheet.
+  var Sheet = workbook.SheetNames[0];
+
+  //Read all rows from First Sheet into an JSON array.
+  var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[Sheet]);
+
+  var provider_list = [];
+
+  //Add the data rows from Excel file.
+  for (var i = 0; i < excelRows.length; i++) {
+    const domain = excelRows[i].domain;
+    const key  = excelRows[i].key?excelRows[i].key:'';
+    if(domain){
+      provider_list.push({
+        "domain" : domain,
+        "key": key
+      })
+    }
+  }
+  
+  if(provider_list.length == 0){
+    Swal.fire({
+      icon: 'warning',
+      title: '',
+      text: "No records in Excel file",
+      type: 'warning',
+      customClass: {
+        confirmButton: 'btn btn-primary'
+      },
+      buttonsStyling: false
+    })
+    return;
+  }
+  // upload to the server
+  let _url = "/providers/import_list";
+
+  $(".data-submit-file").attr("disabled", true);
+  $(".data-submit-file .fa-spinner").css("display", "inline-block");
+  
+  $.ajax({
+    url: _url,
+    type: "POST",
+    data: {
+      list: provider_list
+    },
+    success: function (response) {
+      if (response.code == 200) {
+        Swal.fire({
+          icon: 'success',
+          title: '',
+          text: response.message,
+          type: 'success',
+          customClass: {
+            confirmButton: 'btn btn-primary'
+          },
+          buttonsStyling: false
+        }).then( function(){
+          location.reload();
+        })
+      } else {
+          Swal.fire({
+              icon: 'warning',
+              title: '',
+              text: response.message,
+              type: 'warning',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              },
+              buttonsStyling: false
+          })
+          $(".data-submit-file .fa-spinner").css("display", "none");
+          $(".data-submit-file").removeAttr("disabled");
+          return;
+      }
+    },
+    error: function (response) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Something went wrong. Please try again later!',
+          type: 'error',
+          customClass: {
+            confirmButton: 'btn btn-primary'
+          },
+          buttonsStyling: false
+      })
+      $(".data-submit-file .fa-spinner").css("display", "none");
+      $(".data-submit-file").removeAttr("disabled");
+      return;
+    },
+  });
+};

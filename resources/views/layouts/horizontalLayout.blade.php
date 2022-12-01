@@ -1,33 +1,34 @@
 @isset($pageConfigs)
-{!! Helper::updatePageConfig($pageConfigs) !!}
+  {!! Helper::updatePageConfig($pageConfigs) !!}
 @endisset
+
 @php
-$configData = Helper::appClasses();
+  $configData = Helper::appClasses();
 @endphp
 
 @extends('layouts/commonMaster' )
 @php
 
-$menuHorizontal = true;
-$navbarFull = true;
+  $menuHorizontal = true;
+  $navbarFull = true;
 
-/* Display elements */
-$isNavbar = ($isNavbar ?? true);
-$isMenu = ($isMenu ?? true);
-$isFlex = ($isFlex ?? false);
-$isFooter = ($isFooter ?? true);
-$customizerHidden = ($customizerHidden ?? '');
-$pricingModal = ($pricingModal ?? false);
+  /* Display elements */
+  $isNavbar = ($isNavbar ?? true);
+  $isMenu = ($isMenu ?? true);
+  $isFlex = ($isFlex ?? false);
+  $isFooter = ($isFooter ?? true);
+  $customizerHidden = ($customizerHidden ?? '');
+  $pricingModal = ($pricingModal ?? false);
 
-/* HTML Classes */
-$menuFixed = (isset($configData['menuFixed']) ? $configData['menuFixed'] : '');
-$navbarFixed = (isset($configData['navbarFixed']) ? $configData['navbarFixed'] : '');
-$footerFixed = (isset($configData['footerFixed']) ? $configData['footerFixed'] : '');
-$menuCollapsed = (isset($configData['menuCollapsed']) ? $configData['menuCollapsed'] : '');
+  /* HTML Classes */
+  $menuFixed = (isset($configData['menuFixed']) ? $configData['menuFixed'] : '');
+  $navbarFixed = (isset($configData['navbarFixed']) ? $configData['navbarFixed'] : '');
+  $footerFixed = (isset($configData['footerFixed']) ? $configData['footerFixed'] : '');
+  $menuCollapsed = (isset($configData['menuCollapsed']) ? $configData['menuCollapsed'] : '');
 
-/* Content classes */
-$container = ($container ?? 'container-xxl');
-$containerNav = ($containerNav ?? 'container-xxl');
+  /* Content classes */
+  $container = ($container ?? 'container-xxl');
+  $containerNav = ($containerNav ?? 'container-xxl');
 
 @endphp
 

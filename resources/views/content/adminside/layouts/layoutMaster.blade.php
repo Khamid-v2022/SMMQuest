@@ -9,5 +9,5 @@
     @include((( $configData["layout"] === 'horizontal') ? 
         'content.adminside.layouts.horizontalLayout' :
         (( $configData["layout"] === 'blank') ? 
-            'layouts.blankLayout' : 'layouts.contentNavbarLayout') ))
+            'content.adminside.layouts.blankLayout' : 'layouts.contentNavbarLayout') ))
 @endisset

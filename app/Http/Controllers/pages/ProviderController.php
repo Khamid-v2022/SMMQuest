@@ -169,4 +169,106 @@ class ProviderController extends MyController
     return false;
   }
   
+
+  public function importListFromTxt(Request $request){
+    
+    $providers = $request->list;
+    $added_count = 0;
+    $created_count = 0;
+
+    $new_request_domains = [];
+
+    foreach($providers as $item){
+      // remove http://, https://, www, remove / from last of url
+      $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item['domain'])), '/');
+      
+      // check aready registred 
+      $provider = Provider::where('domain', $domain)->first();
+      if($provider){
+        // check aready registred in this account
+        $is_exist = UserProvider::where('provider_id', $provider->id)
+            ->where('user_id', Auth::user()->id)->first();
+        
+        if(!$is_exist){
+          $user_provider = UserProvider::create([
+            'user_id' => Auth::user()->id,
+            'provider_id' => $provider->id,
+            'is_favorite' => 0,
+            'is_enabled' => 1,
+            'is_valid_key' => 0,
+            'created_at' => date("Y-m-d H:i:s")
+          ]);
+
+          // key check 
+          if($item['key']){
+            $user_provider->api_key = $this->encrypt(trim($item['key']));
+            $user_provider->save();
+
+            // checking API key is working or not
+            if($provider['is_activated'] == 1){
+              $url = rtrim($this->check_protocol($provider['domain']), '/');
+              $api_check = $this->checkKey($url . $provider['endpoint'], trim($item['key']), $provider['api_template']);
+              if($api_check){
+                $user_provider->is_valid_key = 1;
+                $user_provider->save();
+              }
+            }
+          }
+          $added_count++;
+        }
+        
+      } else {
+        // check domain is valid URL or not
+        $url = rtrim($this->check_protocol($domain), '/');
+        $response = $this->urlExists($url);
+        if($response) {
+          // create new provider but with not activated
+          $new_provider = Provider::create([
+            'domain' => $domain,
+            'is_valid_key' => 0,
+            'is_activated' => 0,
+            'request_by' => Auth::user()->id,
+            'is_hold' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+          ]);
+
+          $user_provider = UserProvider::create([
+            'user_id' => Auth::user()->id,
+            'provider_id' => $new_provider->id,
+            'is_favorite' => 0,
+            'is_enabled' => 1,
+            'is_valid_key' => 0,
+            'created_at' => date("Y-m-d H:i:s")
+          ]);
+          $created_count++;
+          array_push($new_request_domains, $domain);
+        }       
+      }
+    }
+  
+    if($created_count > 0){
+      $porvider_str = "";
+      foreach($new_request_domains as $item){
+        $porvider_str .= '<a href="' . $item . '" target="_black">' . $item . '</a><br>';
+      }
+
+      // SEND an Email to Admin
+      $details = [
+        'title' => 'New Provider request',
+        'body' => 'There is a request to add a new provider from the following user:<br/>' 
+                  . 'User Name: ' . Auth::user()->first_name . ' ' . Auth::user()->last_name . '<br/>'
+                  . 'Email: ' . Auth::user()->email . '<br/>'
+                  . 'Provider: '  . $porvider_str
+      ];
+
+      try {
+        Mail::to(env('ADMIN_MAIL')) -> send(new Notify($details));
+      } catch (Exception $e) {
+      }
+
+      return response()->json(['code'=>200, 'message'=>'A request has been sent to the administrator to activate the new provider.'], 200);
+    } else {
+      return response()->json(['code'=>200, 'message'=>$added_count . ' providers added and sent a new request of ' . $created_count . ' providers '], 200);
+    }
+  }
 }

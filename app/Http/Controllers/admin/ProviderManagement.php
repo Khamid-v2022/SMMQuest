@@ -198,4 +198,64 @@ class ProviderManagement extends Controller
             'status'=> 0
         );
     }
+
+    public function importList(Request $request){
+        $providers = $request->list;
+        $added_count = 0;
+        $wrong_api_count = 0;
+        $wrong_domain_count = 0;
+
+        foreach($providers as $item){
+            // remove http://, https://, remove / from last of url
+            $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item['domain'])), '/');
+            $url = rtrim($this->check_protocol($domain), '/');
+            $end_point = '/' . rtrim(ltrim($item['end_point'], '/'), '/');
+
+            // check aready registred 
+            $provider = Provider::where('domain', $domain)->first();
+            if(!$provider){
+                // checking domain is working or not
+                $response = $this->urlExists($url);
+                if($response) {
+                    // check API key working or not
+                    $api_check = $this->checkAPITemplate($url . $end_point, trim($item['key']));  
+                    if($api_check['status'] > 0 ){
+                        $is_valid_key = 0;
+                        if($api_check['status'] == 1){
+                            $is_valid_key = 1;
+                        } else {
+                            // invalid key
+                            $is_valid_key = 0;
+                        }
+
+                        $user_provider = Provider::create([
+                            'domain' => $domain,
+                            'is_activated' => 1,
+                            'api_key' => $this->encrypt(trim($item['key'])),
+                            'is_valid_key' => $is_valid_key,
+                            'api_template' =>  $api_check['apiTemplate'],
+                            'balance' =>  $api_check['balance'],
+                            'currency' =>  $api_check['currency'],
+                            'endpoint' => $end_point,
+                            'is_hold' => 0,
+                            'created_at' => date("Y-m-d H:i:s")
+                        ]);
+                        $added_count ++;
+                    } else {
+                        // API key/End Point is not correct
+                        $wrong_api_count ++;
+                    }
+                } else {
+                    // Domain is not exist
+                    $wrong_domain_count++;
+                }
+            }
+        }
+        if( $added_count > 0){
+            return response()->json(['code'=>200, 'message'=>'Added ' . $added_count . ' providers'], 200);
+        }
+        else {
+            return response()->json(['code'=>400, 'message'=>'Invalid providers'], 200);
+        }
+    }
 }

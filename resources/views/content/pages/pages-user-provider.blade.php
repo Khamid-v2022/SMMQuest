@@ -45,13 +45,44 @@ $configData = Helper::appClasses();
 
 @section('page-script')
 <script src="{{asset('custom/js/user-provider.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
 @endsection
+
+<style type="text/css">
+    .light-style .swal2-container {
+        z-index: 3000!important;
+    }
+</style>
 
 @section('content')
 <h4>Providers Page</h4>
 <p>Register your providers.</p>
 <!-- DataTable with Buttons -->
 <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="card-title m-0 me-2">Providers</h5>
+        <div class="card-element">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <div class="dropdown">
+                        <button class="btn btn-label-primary" type="button" id="timelineWapper" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class='bx bx-import me-sm-2'></i> Import Providers
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="timelineWapper">
+                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#import_copy_modal" aria-controls="offcanvasEnd"><i class='bx bx-copy-alt me-sm-2'></i>Copy/Past</a>
+                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#import_file_modal" aria-controls="offcanvasEnd"><i class='bx bxs-file-import me-sm-2'></i>Excel</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-inline-item">
+                    <button class="create-new btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#add-new-record" aria-controls="offcanvasEnd">
+                        <i class="bx bx-plus me-sm-2"></i> <span class="d-none d-sm-inline-block">Add New Provider</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="card-datatable table-responsive">
         <table class="datatables-basic table border-top">
             <thead>
@@ -98,6 +129,8 @@ $configData = Helper::appClasses();
         </table>
     </div>
 </div>
+<!--/ DataTable with Buttons -->
+
 <!-- Modal to add new record -->
 <div class="offcanvas offcanvas-end" id="add-new-record">
     <div class="offcanvas-header border-bottom">
@@ -115,7 +148,7 @@ $configData = Helper::appClasses();
             </div>
             <div class="col-sm-12">
                 <div class="form-check form-check-primary mt-3">
-                    <input class="form-check-input" type="checkbox" value="" id="favorite" checked />
+                    <input class="form-check-input" type="checkbox" value="" id="favorite" />
                     <label class="form-check-label" for="favorite">Favorite</label>
                 </div> 
             </div>
@@ -131,7 +164,58 @@ $configData = Helper::appClasses();
 
     </div>
 </div>
-<!--/ DataTable with Buttons -->
+
+<!-- Modal to import Providers with Copy/Past -->
+<div class="offcanvas offcanvas-end" id="import_copy_modal"  style="z-index: 2002;">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title" id="exampleModalLabel">Import Providers</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body flex-grow-1">
+        <form class="import-copy-form pt-0 row g-2" id="form-import-copy">
+            <div class="col-sm-12">
+                <label class="form-label" for="providers_list">Providers</label>
+                <textarea id="providers_list" class="form-control" name="providers_list" placeholder="Providers List" rows="20"></textarea>
+            </div>
+            
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary data-submit-copy me-sm-3 me-1">
+                    Submit
+                    <i class="fas fa-spinner fa-spin" style="display:none"></i>
+                </button>
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- Modal to import Providers from file -->
+<div class="offcanvas offcanvas-end" id="import_file_modal"  style="z-index: 2002;">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title" id="exampleModalLabel">Import Providers</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body flex-grow-1">
+        <form class="import-file-form pt-0 row g-2" id="form-import-file">
+            <div class="col-sm-12">
+                <label for="formFile" class="form-label">Select Excel File</label>
+                <input class="form-control" type="file" id="formFile" name="formFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </div>
+            
+            <div class="col-sm-12 mt-4">
+                <button type="submit" class="btn btn-primary data-submit-file me-sm-3 me-1">
+                    Submit
+                    <i class="fas fa-spinner fa-spin" style="display:none"></i>
+                </button>
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
 
 <div class="modal fade" id="modals-change_key" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

@@ -6,7 +6,6 @@
     $configData = Helper::appClasses();
 @endphp
 
-<!-- @extends('layouts/commonMaster' ) -->
 <!DOCTYPE html>
 
 <html lang="{{ session()->get('locale') ?? app()->getLocale() }}" class="{{ $configData['style'] }}-style {{ $navbarFixed ?? '' }} {{ $menuFixed ?? '' }} {{ $menuCollapsed ?? '' }} {{ $footerFixed ?? '' }} {{ $customizerHidden ?? '' }}" dir="{{ $configData['textDirection'] }}" data-theme="{{ $configData['theme'] }}" data-assets-path="{{ asset('/assets') . '/' }}" data-base-url="{{url('/')}}" data-framework="laravel" data-template="{{ $configData['layout'] . '-menu-' . $configData['theme'] . '-' . $configData['style'] }}">
@@ -36,31 +35,32 @@
         @include('layouts/sections/scriptsIncludes')
     </head>
 
-    @php
-
-        $menuHorizontal = true;
-
-        /* Display elements */
-        $isNavbar = ($isNavbar ?? true);
-        $isMenu = ($isMenu ?? true);
-        $isFlex = ($isFlex ?? false);
-        $isFooter = ($isFooter ?? true);
-        $customizerHidden = ($customizerHidden ?? '');
-        $pricingModal = ($pricingModal ?? false);
-
-        /* HTML Classes */
-        $menuFixed = (isset($configData['menuFixed']) ? $configData['menuFixed'] : '');
-        $navbarFixed = (isset($configData['navbarFixed']) ? $configData['navbarFixed'] : '');
-        $footerFixed = (isset($configData['footerFixed']) ? $configData['footerFixed'] : '');
-        $menuCollapsed = (isset($configData['menuCollapsed']) ? $configData['menuCollapsed'] : '');
-
-        /* Content classes */
-        $container = ($container ?? 'container-xxl');
-        $containerNav = ($containerNav ?? 'container-xxl');
-
-    @endphp
-
     <body>
+        @php
+
+            $menuHorizontal = true;
+
+            /* Display elements */
+            $isNavbar = ($isNavbar ?? true);
+            $isMenu = ($isMenu ?? true);
+            $isFlex = ($isFlex ?? false);
+            $isFooter = ($isFooter ?? true);
+            $customizerHidden = ($customizerHidden ?? '');
+            $pricingModal = ($pricingModal ?? false);
+
+            /* HTML Classes */
+            $menuFixed = (isset($configData['menuFixed']) ? $configData['menuFixed'] : '');
+            $navbarFixed = (isset($configData['navbarFixed']) ? $configData['navbarFixed'] : '');
+            $footerFixed = (isset($configData['footerFixed']) ? $configData['footerFixed'] : '');
+            $menuCollapsed = (isset($configData['menuCollapsed']) ? $configData['menuCollapsed'] : '');
+
+            /* Content classes */
+            $container = ($container ?? 'container-xxl');
+            $containerNav = ($containerNav ?? 'container-xxl');
+
+        @endphp
+
+   
         <!-- Layout Content -->
         <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
             <div class="layout-container">

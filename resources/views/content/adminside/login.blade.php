@@ -2,7 +2,7 @@
 $customizerHidden = 'customizer-hide';
 @endphp
 
-@extends('layouts/layoutMaster')
+@extends('content/adminside/layouts/layoutMaster')
 
 @section('title', 'Admin Login')
 

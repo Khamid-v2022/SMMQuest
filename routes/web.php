@@ -42,6 +42,8 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     Route::get('/providers/delete/{id}', [ProviderController::class, 'deleteProvider'])->where('id', '[0-9]+');
     Route::post('/providers/favorite', [ProviderController::class, 'favoriteProvider']);
     Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']); 
+    Route::post('/providers/import_list', [ProviderController::class, 'importListFromTxt']);
+    
     
     // Search Services
     Route::get('/search-services', [SearchServicesController::class, 'index'])->name('pages-search-services');
