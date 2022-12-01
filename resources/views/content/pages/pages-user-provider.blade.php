@@ -173,6 +173,21 @@ $configData = Helper::appClasses();
     </div>
     <div class="offcanvas-body flex-grow-1">
         <form class="import-copy-form pt-0 row g-2" id="form-import-copy">
+            <div class="col-sm-12 form-text">
+                <p>
+                    One provider per line separated with ;<br>
+                    API Key is not required<br>
+                </p>
+                <p>
+                    Example:
+                    <ul style="list-style:none">
+                        <li>Website.com;APIKey</li>
+                        <li>Website.com;APIKey</li>
+                        <li>Website.com</li>
+                        <li>Website.com</li>
+                    </ul>
+                </p>
+            </div>
             <div class="col-sm-12">
                 <label class="form-label" for="providers_list">Providers</label>
                 <textarea id="providers_list" class="form-control" name="providers_list" placeholder="Providers List" rows="20"></textarea>
@@ -198,9 +213,13 @@ $configData = Helper::appClasses();
     </div>
     <div class="offcanvas-body flex-grow-1">
         <form class="import-file-form pt-0 row g-2" id="form-import-file">
+            
             <div class="col-sm-12">
                 <label for="formFile" class="form-label">Select Excel File</label>
                 <input class="form-control" type="file" id="formFile" name="formFile" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </div>
+            <div class="form-text">
+                Column Names: Domain, Key
             </div>
             
             <div class="col-sm-12 mt-4">
