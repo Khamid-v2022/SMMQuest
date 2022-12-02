@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Provider;
+use App\Models\ProviderHold;
 
 use Illuminate\Support\Facades\Http;
 
@@ -102,17 +104,6 @@ class ProviderManagement extends Controller
         return response()->json(['code'=>200, 'message'=>'Deleted successfully'], 200);
     }
 
-    public function changeAPIKey(Request $request) {
-        Provider::where('id', $request->selected_id)->update(['api_key' => $this->encrypt($request->api_key, env('ENCRYPT_KEY'))]);
-        return response()->json(['code'=>200, 'message'=>'Updated successfully'], 200);
-    }
-
-    public function updateActivate(Request $request) {
-        Provider::where('id', $request->selected_id)->update(['is_activated' => $request->is_active]);
-        return response()->json(['code'=>200, 'message'=>'Updated successfully'], 200);
-    }
-
-
     private function checkAPITemplate($url, $key) {
         $status = false;
         $apiTemplate = '';
@@ -202,53 +193,39 @@ class ProviderManagement extends Controller
     public function importList(Request $request){
         $providers = $request->list;
         $added_count = 0;
-        $wrong_api_count = 0;
-        $wrong_domain_count = 0;
 
         foreach($providers as $item){
             // remove http://, https://, remove / from last of url
-            $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item['domain'])), '/');
-            $url = rtrim($this->check_protocol($domain), '/');
+            $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item['domain'])), '/');  
             $end_point = '/' . rtrim(ltrim($item['end_point'], '/'), '/');
-
+            
             // check aready registred 
             $provider = Provider::where('domain', $domain)->first();
             if(!$provider){
-                // checking domain is working or not
-                $response = $this->urlExists($url);
-                if($response) {
-                    // check API key working or not
-                    $api_check = $this->checkAPITemplate($url . $end_point, trim($item['key']));  
-                    if($api_check['status'] > 0 ){
-                        $is_valid_key = 0;
-                        if($api_check['status'] == 1){
-                            $is_valid_key = 1;
-                        } else {
-                            // invalid key
-                            $is_valid_key = 0;
-                        }
-
-                        $user_provider = Provider::create([
-                            'domain' => $domain,
-                            'is_activated' => 1,
-                            'api_key' => $this->encrypt(trim($item['key'])),
-                            'is_valid_key' => $is_valid_key,
-                            'api_template' =>  $api_check['apiTemplate'],
-                            'balance' =>  $api_check['balance'],
-                            'currency' =>  $api_check['currency'],
-                            'endpoint' => $end_point,
-                            'is_hold' => 0,
-                            'created_at' => date("Y-m-d H:i:s")
-                        ]);
-                        $added_count ++;
-                    } else {
-                        // API key/End Point is not correct
-                        $wrong_api_count ++;
-                    }
+                if($item['key']){
+                    // save to hold_provider table
+                    ProviderHold::updateOrCreate(['domain' => $domain, 'request_by_admin' => 1 ], [
+                        'domain' => $domain,
+                        'endpoint' => $end_point,
+                        'api_key' => $this->encrypt(trim($item['key'])),
+                        'request_by_admin' => 1,                //user request
+                        'request_by_id' => Auth::user()->id,
+                        'is_only_key_check' => 0,
+                        'created_at' => date("Y-m-d H:i:s")
+                    ]);
                 } else {
-                    // Domain is not exist
-                    $wrong_domain_count++;
+                    // save to hold_provider table
+                    ProviderHold::updateOrCreate(['domain' => $domain, 'request_by_admin' => 1 ], [
+                        'domain' => $domain,
+                        'endpoint' => $end_point,
+                        'api_key' => NULL,
+                        'request_by_admin' => 1,                //user request
+                        'request_by_id' => Auth::user()->id,
+                        'is_only_key_check' => 0,
+                        'created_at' => date("Y-m-d H:i:s")
+                    ]);
                 }
+                $added_count++;
             }
         }
         if( $added_count > 0){
@@ -258,4 +235,64 @@ class ProviderManagement extends Controller
             return response()->json(['code'=>400, 'message'=>'Invalid providers'], 200);
         }
     }
+
+    // public function importList_backup(Request $request){
+    //     $providers = $request->list;
+    //     $added_count = 0;
+    //     $wrong_api_count = 0;
+    //     $wrong_domain_count = 0;
+
+    //     foreach($providers as $item){
+    //         // remove http://, https://, remove / from last of url
+    //         $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item['domain'])), '/');
+    //         $url = rtrim($this->check_protocol($domain), '/');
+    //         $end_point = '/' . rtrim(ltrim($item['end_point'], '/'), '/');
+
+    //         // check aready registred 
+    //         $provider = Provider::where('domain', $domain)->first();
+    //         if(!$provider){
+    //             // checking domain is working or not
+    //             $response = $this->urlExists($url);
+    //             if($response) {
+    //                 // check API key working or not
+    //                 $api_check = $this->checkAPITemplate($url . $end_point, trim($item['key']));  
+    //                 if($api_check['status'] > 0 ){
+    //                     $is_valid_key = 0;
+    //                     if($api_check['status'] == 1){
+    //                         $is_valid_key = 1;
+    //                     } else {
+    //                         // invalid key
+    //                         $is_valid_key = 0;
+    //                     }
+
+    //                     $user_provider = Provider::create([
+    //                         'domain' => $domain,
+    //                         'is_activated' => 1,
+    //                         'api_key' => $this->encrypt(trim($item['key'])),
+    //                         'is_valid_key' => $is_valid_key,
+    //                         'api_template' =>  $api_check['apiTemplate'],
+    //                         'balance' =>  $api_check['balance'],
+    //                         'currency' =>  $api_check['currency'],
+    //                         'endpoint' => $end_point,
+    //                         'is_hold' => 0,
+    //                         'created_at' => date("Y-m-d H:i:s")
+    //                     ]);
+    //                     $added_count ++;
+    //                 } else {
+    //                     // API key/End Point is not correct
+    //                     $wrong_api_count ++;
+    //                 }
+    //             } else {
+    //                 // Domain is not exist
+    //                 $wrong_domain_count++;
+    //             }
+    //         }
+    //     }
+    //     if( $added_count > 0){
+    //         return response()->json(['code'=>200, 'message'=>'Added ' . $added_count . ' providers'], 200);
+    //     }
+    //     else {
+    //         return response()->json(['code'=>400, 'message'=>'Invalid providers'], 200);
+    //     }
+    // }
 }

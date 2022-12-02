@@ -467,19 +467,19 @@ $(function () {
               location.reload();
             })
           } else {
-              Swal.fire({
-                  icon: 'warning',
-                  title: '',
-                  text: response.message,
-                  type: 'warning',
-                  customClass: {
-                    confirmButton: 'btn btn-primary'
-                  },
-                  buttonsStyling: false
-              })
-              $(".data-submit-copy .fa-spinner").css("display", "none");
-              $(".data-submit-copy").removeAttr("disabled");
-              return;
+            Swal.fire({
+                icon: 'warning',
+                title: '',
+                text: response.message,
+                type: 'warning',
+                customClass: {
+                  confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            })
+            $(".data-submit-copy .fa-spinner").css("display", "none");
+            $(".data-submit-copy").removeAttr("disabled");
+            return;
           }
         },
         error: function (response) {
@@ -498,6 +498,8 @@ $(function () {
           return;
         },
       });
+
+    
     });
 
      // Import Provider from file Form Submit
