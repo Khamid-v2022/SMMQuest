@@ -113,10 +113,27 @@ $configData = Helper::appClasses();
                                 <span class="badge bg-label-warning">Invalid API Key</span>
                             @endif
                             @if($provider->is_hold == 1)
-                                <span class="badge bg-label-danger">Hold</span>
+                                <span class="badge bg-label-danger" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
                             @endif
                         </td>
                         <td>{{ $provider->created_at }}</td>
+                        <td>
+                            <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>
+                            <a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>
+                        </td>
+                    </tr>
+                @endforeach
+
+                @foreach($hold_providers as $item)
+                    @php $index++; @endphp
+                    <tr>
+                        <td>{{ $index }}</td>
+                        <td>{{ $item->domain }}</td>
+                        <td></td>
+                        <td>
+                            <span class="badge bg-label-info">Being Added</span>
+                        </td>
+                        <td></td>
                         <td></td>
                     </tr>
                 @endforeach

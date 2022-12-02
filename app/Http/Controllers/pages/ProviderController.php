@@ -23,11 +23,16 @@ class ProviderController extends MyController
 
     $providers = UserProvider::with(['user', 'provider'])
       ->where('user_id', Auth::user()->id)->get();
+    $hold_providers = ProviderHold::select('domain')
+      ->where('request_by_id', Auth::user()->id)
+      ->where('request_by_admin', 0)
+      ->groupBy('domain')->get();
     
-      return view('content.pages.pages-user-provider', [
-        'pageConfigs'=> $pageConfigs, 
-        'providers' => $providers
-      ]);
+    return view('content.pages.pages-user-provider', [
+      'pageConfigs'=> $pageConfigs, 
+      'providers' => $providers,
+      'hold_providers' => $hold_providers
+    ]);
   }
 
   public function createNewProvider(Request $request){

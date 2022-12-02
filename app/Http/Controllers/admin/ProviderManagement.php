@@ -22,10 +22,12 @@ class ProviderManagement extends Controller
         $pageConfigs = ['myLayout' => 'horizontal'];
 
         $providers = Provider::get();
-        
+        $hold_providers = ProviderHold::select('domain')->groupBy('domain')->get();
+
         return view('content.adminside.provider-management', [
             'pageConfigs'=> $pageConfigs, 
-            'providers' => $providers
+            'providers' => $providers,
+            'hold_providers' => $hold_providers
         ]);
     }
 

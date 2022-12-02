@@ -17,6 +17,10 @@
         $inserted_count = 0;
 
         $sql = "SELECT * FROM providers WHERE api_key IS NOT NULL AND is_activated = 1 AND is_valid_key = 1 AND is_hold = 0";
+        
+        // test
+        // $sql = "SELECT * FROM providers";
+        
         $result = $conn->query($sql);
         if($result->num_rows == 0){
             echo "No providers" . PHP_EOL . "<br/>";

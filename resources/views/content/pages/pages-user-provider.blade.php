@@ -125,6 +125,21 @@ $configData = Helper::appClasses();
                         </td>
                     </tr>
                 @endforeach
+
+                @foreach($hold_providers as $provider)
+                    @php $index++; @endphp
+                    <tr>
+                        <td>{{ $index }}</td>
+                        <td>{{ $provider->domain }}</td>
+                        <td></td>
+                        <td>
+                            <span class="badge bg-label-info">Being Added</span>
+                        </td>
+                        <td></td>
+                        <td>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

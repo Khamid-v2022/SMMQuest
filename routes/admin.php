@@ -21,7 +21,6 @@ Route::namespace('admin')->prefix('admin')->group(function(){
         Route::get('/provider-management', [ProviderManagement::class, 'index']);
         Route::post('/provider-management', [ProviderManagement::class, 'addProvider']);
         Route::delete('/provider-management', [ProviderManagement::class, 'deleteProvider']);
-        Route::post('/provider-management/updateActivate', [ProviderManagement::class, 'updateActivate']);
         Route::post('/provider-management/import_list', [ProviderManagement::class, 'importList']);
 
        

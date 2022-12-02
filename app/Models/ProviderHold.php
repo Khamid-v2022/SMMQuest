@@ -9,7 +9,6 @@ class ProviderHold extends Model
 {
     use HasFactory;
     protected $table = 'hold_providers';
-    protected $primaryKey = 'id';
     public $timestamps = true;
 
     protected $fillable = [

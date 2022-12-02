@@ -14,7 +14,11 @@
 
         global $conn;
 
-        $sql = "SELECT * FROM providers WHERE api_key IS NOT NULL AND is_hold = 0";
+        // $sql = "SELECT * FROM providers WHERE api_key IS NOT NULL AND is_hold = 0";
+
+        // test
+        $sql = "SELECT * FROM providers WHERE real_url IS NULL";
+
         $result = $conn->query($sql);
         if($result->num_rows == 0){
             echo "No providers" . PHP_EOL . "<br/>";
@@ -24,30 +28,34 @@
 
         $enabled = 0;
         $disabled = 0;
+
         while($row = $result->fetch_assoc()){
+
             $url = rtrim(check_protocol($row['domain']), '/');
-            $response = urlExists($url);
-            
-            if($response){
-                // website is working
-                // check API key working or not
-                $api_key = decrypt_key($row['api_key']);
-                $api_check = checkAPITemplate($url . $row['endpoint'], $api_key, $row['api_template']);
-                if($api_check) {
-                    $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 1 WHERE id = " . $row['id'];
-                    if($row['is_activated'] == 0){
-                        $enabled++;
-                    }
-                } else {
-                    $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 0 WHERE id = " . $row['id'];
-                }
-                $conn->query($sql);
-            } else if (!$response && $row['is_activated'] == 1){
-                // website is not working
-                $sql = "UPDATE providers SET is_activated = 0 WHERE id = " . $row['id'];
-                $conn->query($sql);
-                $disabled++;
-            }
+            // echo $url;
+            // $response = urlExists($url);
+            $sql = "UPDATE providers SET real_url = '" . $url . "' WHERE id = " . $row['id'];
+            $conn->query($sql);
+            // if($response){
+            //     // website is working
+            //     // check API key working or not
+            //     $api_key = decrypt_key($row['api_key']);
+            //     $api_check = checkAPITemplate($url . $row['endpoint'], $api_key, $row['api_template']);
+            //     if($api_check) {
+            //         $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 1 WHERE id = " . $row['id'];
+            //         if($row['is_activated'] == 0){
+            //             $enabled++;
+            //         }
+            //     } else {
+            //         $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 0 WHERE id = " . $row['id'];
+            //     }
+            //     $conn->query($sql);
+            // } else if (!$response && $row['is_activated'] == 1){
+            //     // website is not working
+            //     $sql = "UPDATE providers SET is_activated = 0 WHERE id = " . $row['id'];
+            //     $conn->query($sql);
+            //     $disabled++;
+            // }
         }
         echo "ENABLED: " . $enabled . PHP_EOL . "<br/>";
         echo "DISABLED: " . $disabled . PHP_EOL . "<br/>";

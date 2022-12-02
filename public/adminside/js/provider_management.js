@@ -141,13 +141,13 @@ $(function () {
                 title: 'Actions',
                 orderable: false,
                 searchable: false,
-                render: function (data, type, full, meta) {
-                    return (
-                        '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>' +
-                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>' 
+                // render: function (data, type, full, meta) {
+                //     return (
+                //         '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>' +
+                //         '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>' 
                         
-                    );
-                }
+                //     );
+                // }
             }
         ],
         // order: [[2, 'desc']],
