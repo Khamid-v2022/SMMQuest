@@ -66,7 +66,7 @@
             } 
             else {
                 // check domain aready exist or not
-                $exist_sql = "SELECT * FROM providers WHERE domain = '" . $row['domain'] . "' ";
+                $exist_sql = "SELECT * FROM providers WHERE domain = '" . $row['domain'] . "'";
                 $result_exist = $conn->query($exist_sql);
                 
                 // added by admin?
@@ -109,7 +109,7 @@
                                         . $real_url . "', '"
                                         . $row['endpoint'] . "', '"
                                         . $row['api_key'] . "', "
-                                        . "0, 0, 0, '"
+                                        . "0, 1, 0, '"
                                         . $row['created_at']
                                         . "')";
                                 }
@@ -120,11 +120,10 @@
                                         . $row['domain'] . "', '"
                                         . $real_url . "', '"
                                         . $row['endpoint'] . "', "
-                                        . "NULL, 0, 0, 0, '"
+                                        . "NULL, 0, 1, 0, '"
                                         . $row['created_at']
                                         . "')";
                             }
-
                             $conn->query($sql_add_by_admin);
                         } else {
                             // domain name is not exist - fake
@@ -142,7 +141,7 @@
                             $sql_add_by_user = "INSERT INTO providers(domain, real_url, is_valid_key, is_activated, is_hold, request_by, created_at) VALUES ('"
                                         . $row['domain'] . "', '"
                                         . $real_url . "', "
-                                        . " 0, 0, 1, " 
+                                        . " 0, 1, 1, " 
                                         . $row['request_by_id'] . ", '"
                                         . $row['created_at']
                                         . "')";
@@ -199,17 +198,6 @@
         echo "FUNCTION ENDED: " . date("Y-m-d H:i:s");
     }
 
-    function urlExists($url) {
-        $headers = @get_headers($url);
-        if(!$headers || strpos($headers[0], '404')) {
-            $exists = false;
-        }
-        else {
-            $exists = true;
-        }
-        return $exists;
-    }
-
     function checkAPIKey($url, $key, $template) {
         
         switch($template){
@@ -255,8 +243,8 @@
                 return array (
                     'status'=> 1, 
                     'apiTemplate'=> 'PerfectPanel', 
-                    'balance' => $balance['balance'],
-                    'currency' => $balance['currency']
+                    'balance' => isset($balance['balance'])?$balance['balance']:'NULL',
+                    'currency' => isset($balance['currency'])?$balance['currency']:'NULL'
                 );
             } else {
                 // wrong API key

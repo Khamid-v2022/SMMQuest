@@ -35,6 +35,14 @@ class Controller extends BaseController
         return $crypted_key;
     }
 
+    protected function decrypt($message)
+    {
+        list($crypted_token, $enc_iv) = explode("::", $message);
+        $cipher_method = 'aes-128-ctr';
+        $token = openssl_decrypt($crypted_token, $cipher_method, env('ENCRYPT_KEY'), 0, hex2bin($enc_iv));
+        return $token;
+    }
+
     protected function check_protocol($domain){
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $domain);

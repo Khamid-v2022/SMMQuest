@@ -314,6 +314,115 @@ $(function () {
 
     });
 
+    $('.datatables-basic tbody').on('click', '.item-start-scrap', function () {
+        const parent_this = this;
+
+        Swal.fire({
+            text: 'Would you like to import the services of this provider?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            showLoaderOnConfirm: true,
+            customClass: {
+              confirmButton: 'btn btn-primary me-3',
+              cancelButton: 'btn btn-label-danger'
+            },
+            preConfirm: login => {
+                const id = $(parent_this).parents('tr').attr("data-provider_id");
+                      let _url = "/admin/provider-management/importOne/" + id;
+                return  $.ajax({
+                            url: _url,
+                            type: "GET",
+                            success: function (response) {
+                                if (response.code == 200) {
+                                    return response.message;
+                                } else {
+                                    return response.message;
+                                }
+                            },
+                            error: function (response) {
+                                return response.message;
+                            },
+                        });
+            },
+            backdrop: true,
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then(result => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    text: result.value.message,
+                    customClass: {
+                        confirmButtonText: 'Close me!',
+                        confirmButton: 'btn btn-primary'
+                    }
+                }).then( function(){
+                    location.reload();
+                });
+            }
+        });
+
+
+
+        // Swal.fire({
+        //     title: 'Are you sure?',
+        //     text: "Would you like to import the services of this provider?",
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonText: 'Yes!',
+        //     customClass: {
+        //       confirmButton: 'btn btn-primary me-3',
+        //       cancelButton: 'btn btn-label-secondary'
+        //     },
+        //     buttonsStyling: false
+        // }).then(function (result) {
+        //     if (result.value) {
+        //         const id = $(parent_this).parents('tr').attr("data-provider_id");
+        //         console.log(id);
+        //         let _url = "/admin/provider-management/importOne/" + id;
+        //         $.ajax({
+        //             url: _url,
+        //             type: "GET",
+        //             success: function (response) {
+        //                 if (response.code == 200) {
+        //                     Swal.fire({
+        //                         icon: 'success',
+        //                         title: '',
+        //                         text: response.message,
+        //                         customClass: {
+        //                           confirmButton: 'btn btn-success'
+        //                         }
+        //                     }).then( function(){
+        //                         dt_basic.row($(parent_this).parents('tr')).remove().draw();
+        //                     });
+        //                 } else {
+        //                     Swal.fire({
+        //                         icon: 'warning',
+        //                         title: '',
+        //                         text: response.message,
+        //                         customClass: {
+        //                         confirmButton: 'btn btn-primary'
+        //                         },
+        //                     })
+        //                     return;
+        //                 }
+        //             },
+        //             error: function (response) {
+        //                 Swal.fire({
+        //                     icon: 'error',
+        //                     title: 'Error!',
+        //                     text: 'Something went wrong. Please try again later!',
+        //                     customClass: {
+        //                         confirmButton: 'btn btn-primary'
+        //                     },
+        //                 })
+        //                 return;
+        //             },
+        //         });              
+        //     }
+        // });
+    });
+    
+
     // Import Provider from Copy/Past Form Submit
     copy_past_fv.on('core.form.valid', function () {
         let providers = $("#providers_list").val().trim().split(/\n/);

@@ -120,8 +120,11 @@ $configData = Helper::appClasses();
                         </td>
                         <td>{{ $provider->created_at }}</td>
                         <td>
+                            @if($provider->is_activated == 1)
+                                <a href="javascript:;" class="btn btn-sm btn-icon item-start-scrap" title="Start scrap services" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class='bx bx-play-circle'></i></a>
+                            @endif
                             <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>
-                            <a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>
+                            <a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a> 
                         </td>
                     </tr>
                 @endforeach

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Provider;
 use App\Models\ProviderHold;
+use App\Models\Service;
 
 use Illuminate\Support\Facades\Http;
 
@@ -298,4 +299,103 @@ class ProviderManagement extends Controller
     //         return response()->json(['code'=>400, 'message'=>'Invalid providers'], 200);
     //     }
     // }
+
+    public function importOneProviderServiceList($provider_id){
+        // 
+        $provider = Provider::where('id', $provider_id)->first();
+        if(!$provider['endpoint'] || !$provider['api_key']){
+            return response()->json(['code'=>400, 'message'=>'Invalid API Key/Endpoint'], 200);
+        }
+
+        $api_key = $this->decrypt($provider['api_key']);
+        
+        $domain = $provider['domain'];
+        $url = rtrim($this->check_protocol($domain), '/');
+        $end_point = $provider['endpoint'];
+        $response = $this->urlExists($url);
+        
+        if(!$response) {
+            $provider->is_activated = 0;
+            $provider->save();
+            return response()->json(['code'=>400, 'message'=>'Domain name is not exist'], 200);
+        }
+       
+        // check API template from DB
+        if($provider['api_template']){
+            $result_status = $this->scraping_services($url . $end_point, $api_key, $provider['api_template'], $provider_id);
+            if($result_status)
+                return response()->json(['code'=>200, 'message'=>'Successfully added ' . $result_status . ' records'], 200);
+        } 
+
+        // check API template
+        $api_check = $this->checkAPITemplate($url . $end_point, $api_key);  
+                    
+        if($api_check['status'] != 1){
+            return response()->json(['code'=>400, 'message'=>'Make sure APIKey/Endpoint or Add API template'], 200);
+        } 
+
+        $provider->api_template = 0;
+        $provider->real_url = $url;
+        $provider->save();
+        
+        // start scraping
+        $result_status = $this->scraping_services($url . $end_point, $api_key, $api_check['apiTemplate'], $provider_id);
+        if($result_status)
+            return response()->json(['code'=>200, 'message'=>'Successfully added ' . $result_status . ' records'], 200);
+        
+        return response()->json(['code'=>400, 'message'=>'Invalid API Key/EndPoint or Need to add API Template'], 200); 
+
+    }
+
+    private function scraping_services($url, $key, $template, $provider_id){
+        $pro = null;
+        $added_count = 0;
+        switch($template){
+            case 'PerfectPanel':
+                $pro = new PerfectPanel($url, $key);
+                break;
+            case 'SmmPanel':
+                $pro = new SmmPanel($url, $key);
+                break;
+        }
+        if(!$pro)
+            return false;
+      
+        $response = $pro->services();  
+        $services = json_decode( json_encode($response), true );
+
+        // check if API is working correctly
+        if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
+            foreach ($services as $item) {
+                $service  = Service::where('provider_id', $provider_id)->where('service', $item['service'])->first();
+                         
+                $rate = ((float) $item['rate']);       
+                // have a over flow bug
+                if($rate > 99999999999)
+                    $rate = 99999999999;
+
+                Service::updateOrCreate(['provider_id' => $provider_id, 'service' => $item['service']], [
+                    'provider_id' => $provider_id,
+                    'service' => $item['service'],
+                    'name' => str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])),
+                    'type' => (isset($item['type']) ? $item['type'] : "NULL"),
+                    'rate' => $rate,
+                    'min' =>  (isset($item['min']) ? ((int)$item['min']) : "NULL"),
+                    'max' =>  (isset($item['max']) ? ((int)$item['max']) : "NULL"),
+                    'dripfeed' => (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0),
+                    'refill' => (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0),
+                    'cancel' => (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0),
+                    'category' => str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])),
+                    'status' => 1,
+                    'created_at' => date("Y-m-d H:i:s")
+                ]);
+                $added_count++;
+            }
+        } else {
+            return false;
+        }
+      
+
+        return $added_count;
+    }
 }

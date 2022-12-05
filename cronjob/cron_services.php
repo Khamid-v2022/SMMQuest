@@ -12,7 +12,9 @@
 
     function loadServices() {
         echo "FUNCTION STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
-
+        // $time_start = microtime(true);
+        // $flag = false;
+        
         global $conn;
         $inserted_count = 0;
 
@@ -51,7 +53,7 @@
 
         while($row = $result->fetch_assoc()){
             $api_key = decrypt_key($row['api_key']);
-            
+
             $sql = "UPDATE services SET status = 0 WHERE provider_id = " . $row['id'];
             $conn->query($sql);
 
@@ -87,7 +89,7 @@
                                 $sql_insert = "INSERT INTO services(provider_id, service, name, type, rate, min, max, dripfeed, refill, cancel, category, status, created_at) VALUES (" 
                                     . $row['id'] . ", '" 
                                     . $item['service'] . "', '" 
-                                    . str_replace("'", "''", $item['name']) . "', '" 
+                                    . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', '" 
                                     . (isset($item['type']) ? $item['type'] : "NULL") . "', " 
                                     . $rate . ", " 
                                     . (isset($item['min']) ? ((int)$item['min']) : "NULL") . ", " 
@@ -95,13 +97,17 @@
                                     . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", " 
                                     . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", " 
                                     . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", '" 
-                                    . str_replace("'", "''", $item['category']) . "', 1, '" 
+                                    . str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])) . "', 1, '" 
                                     . date("Y-m-d H:i:s") . "')";
 
+                                // if($flag) {
+                                //     var_dump($item) . "<br>";
+                                //     echo $sql_insert;
+                                // }
                                 $conn->query($sql_insert);
                                 $inserted_count++;
                             } else {
-                                $sql_update = "UPDATE services SET name = '" . str_replace("'", "''", $item['name']) . "', type = '" . (isset($item['type']) ? $item['type'] : "NULL") . "', rate = '" . $rate . "', min = " . (isset($item['min']) ? $item['min'] : "NULL") . ", max = " . (isset($item['max']) ? $item['max'] : "NULL") . ", dripfeed = " . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", refill = " . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", cancel = " . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", category = '" . str_replace("'", "''", $item['category']) . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";
+                                $sql_update = "UPDATE services SET name = '" . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', type = '" . (isset($item['type']) ? $item['type'] : "NULL") . "', rate = '" . $rate . "', min = " . (isset($item['min']) ? $item['min'] : "NULL") . ", max = " . (isset($item['max']) ? $item['max'] : "NULL") . ", dripfeed = " . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", refill = " . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", cancel = " . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", category = '" . str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])) . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";
                               
                                 $conn->query($sql_update);
                             }
@@ -113,10 +119,14 @@
             // update cron config table
             $cron_update_sql = "UPDATE cron_check SET last_service_check_provider_id = " . $row['id'] . " WHERE id = " . $cron_config['id'];
             $conn->query($cron_update_sql);
+
+            // $time_end = microtime(true);
+
+            // // set running time as 1 hour
+            // if(($time_end - $time_start)/60 > 60){
+            //     break;
+            // }
         }
-        
-        $cron_update_sql = "UPDATE cron_check SET last_service_check_provider_id = 0 WHERE id = " . $cron_config['id'];
-        $conn->query($cron_update_sql);
 
         echo "INSERTED: " . $inserted_count . "ROWS" . PHP_EOL . "<br>";
         echo "FUNCTION ENDED: " . date("Y-m-d H:i:s");

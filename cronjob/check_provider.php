@@ -7,11 +7,12 @@
     require_once "providers/SmmPanel.php";
 
     checkProvider();
+    // getAllProviders();
     $conn->close();
 
     function checkProvider() {
         echo "CHECK PROVIDER FUNCTION STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
-
+        $time_start = microtime(true);
         global $conn;
 
         $sql_total = "SELECT * FROM providers WHERE api_key IS NOT NULL AND is_hold = 0";
@@ -119,8 +120,8 @@
                     }
                 }
             } else {
-                // key, endpoint, api_template is not provided
-                if($row['endpoint'] && $row['api_template']){
+                // key is not provided
+                // if($row['endpoint'] && $row['api_template']){
                     // check domain is working
                     $url = rtrim(check_protocol($row['domain']), '/');
                     $response = urlExists($url);
@@ -129,36 +130,28 @@
                     } else {
                         $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 0, is_valid_key = 0 WHERE id = " . $row['id'];
                     }
-                } else {
-                    $sql = "UPDATE providers SET is_activated = 0, is_valid_key = 0 WHERE id = " . $row['id'];
-                }
+                // } else {
+                //     $sql = "UPDATE providers SET is_activated = 0, is_valid_key = 0 WHERE id = " . $row['id'];
+                // }
                 $conn->query($sql);
             }
 
             // update cron config table
             $cron_update_sql = "UPDATE cron_check SET last_provider_check_id = " . $row['id'] . " WHERE id = " . $cron_config['id'];
             $conn->query($cron_update_sql);
+            
+            $time_end = microtime(true);
 
+            // set running time as 1 hour
+            if(($time_end - $time_start)/60 > 60){
+                break;
+            }
         }
 
-        $cron_update_sql = "UPDATE cron_check SET last_provider_check_id = 0 WHERE id = " . $cron_config['id'];
-        $conn->query($cron_update_sql);
-
-        // echo "ENABLED: " . $enabled . PHP_EOL . "<br/>";
-        // echo "DISABLED: " . $disabled . PHP_EOL . "<br/>";
         echo "FUNCTION ENDED: " . date("Y-m-d H:i:s");
     }
 
-    function urlExists($url) {
-        $headers = @get_headers($url);
-        if(!$headers || strpos($headers[0], '404')) {
-            $exists = false;
-        }
-        else {
-            $exists = true;
-        }
-        return $exists;
-    }
+    
 
     function checkAPITemplate($url, $key, $template) {
         
@@ -187,5 +180,27 @@
 
         return false;
     }
+
+
+    // function getAllProviders(){
+    //     global $conn;
+    //     $sql_total = "SELECT * FROM providers WHERE api_key IS NOT NULL AND is_hold = 0";
+    //     $result_total = $conn->query($sql_total);
+
+    //     $temp = [];
+
+    //     $total_count = 0;
+    //     while($row = $result_total->fetch_assoc()){
+
+    //         if(!in_array($row['domain'], $temp)){
+    //             $api_key = decrypt_key($row['api_key']);
+    //             echo $row['domain'] . ";" . $row['endpoint'] . ";" . $api_key . "<br>";
+    //             array_push($temp, $row['domain']);
+    //             $total_count++;
+    //         }
+            
+    //     }
+
+    // }
 
 ?>

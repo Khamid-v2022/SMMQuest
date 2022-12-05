@@ -23,4 +23,16 @@
         $real_url =  curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         return $real_url;
     }
+
+    // check URL is working or not(404 error)
+    function urlExists($url) {
+        $headers = @get_headers($url);
+        if(!$headers || strpos($headers[0], '404')) {
+            $exists = false;
+        }
+        else {
+            $exists = true;
+        }
+        return $exists;
+    }
 ?>
