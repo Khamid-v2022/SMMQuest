@@ -178,7 +178,6 @@ $(function () {
                 type: "POST",
                 data: data,
                 success: function (response) {
-                    console.log(response);
                     if (response.code == 200) {
                         
                         Swal.fire({
@@ -581,7 +580,7 @@ function GetProdectsFromExcel(data, filename) {
         url: _url,
         type: "POST",
         data: {
-            list: provider_list
+            list: JSON.stringify(provider_list)
         },
         success: function (response) {
             if (response.code == 200) {
