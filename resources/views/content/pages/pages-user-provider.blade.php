@@ -104,16 +104,21 @@ $configData = Helper::appClasses();
                         <td>{{ $provider->provider->domain }}</td>
                         <td>{{ $provider->is_favorite }}</td>
                         <td>
-                            @if($provider->is_enabled == 1)
-                                <span class="badge bg-label-success">Enabled</span>
-                            @else
-                                <span class="badge bg-label-danger">Disabled</span>
-                            @endif 
                             @if($provider->provider->is_hold == 1)
                                 <span class="badge bg-label-danger" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
-                            @elseif($provider->is_valid_key == 0)
-                                <span class="badge bg-label-warning">Invalid API Key</span>
+                            @else
+                                @if($provider->is_enabled == 1)
+                                    <span class="badge bg-label-success">Enabled</span>
+                                @else
+                                    <span class="badge bg-label-danger">Disabled</span>
+                                @endif 
+                                @if($provider->is_valid_key == 0)
+                                    <span class="badge bg-label-warning">Invalid API Key</span>
+                                @endif
                             @endif
+                            
+                           
+                           
                         </td>
                         <td>{{ $provider->created_at }}</td>
                         <td>
