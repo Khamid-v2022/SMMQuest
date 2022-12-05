@@ -193,23 +193,24 @@ class ProviderManagement extends Controller
     }
 
     public function importList(Request $request){
-        $providers = $request->list;
+        $providers = json_decode($request->list);
         $added_count = 0;
+        set_time_limit(300);
 
         foreach($providers as $item){
             // remove http://, https://, remove / from last of url
-            $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item['domain'])), '/');  
-            $end_point = '/' . rtrim(ltrim($item['end_point'], '/'), '/');
+            $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item->domain)), '/');  
+            $end_point = '/' . rtrim(ltrim($item->end_point, '/'), '/');
             
             // check aready registred 
             $provider = Provider::where('domain', $domain)->first();
             if(!$provider){
-                if($item['key']){
+                if($item->key){
                     // save to hold_provider table
                     ProviderHold::updateOrCreate(['domain' => $domain, 'request_by_admin' => 1 ], [
                         'domain' => $domain,
                         'endpoint' => $end_point,
-                        'api_key' => $this->encrypt(trim($item['key'])),
+                        'api_key' => $this->encrypt(trim($item->key)),
                         'request_by_admin' => 1,                //user request
                         'request_by_id' => Auth::user()->id,
                         'is_only_key_check' => 0,

@@ -152,8 +152,8 @@ $(function () {
         ],
         // order: [[2, 'desc']],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-        displayLength: 10,
-        lengthMenu: [10, 25, 50, 100]
+        displayLength: 100,
+        lengthMenu: [100, 250, 500]
     });
   
     // Add New record
@@ -385,8 +385,9 @@ $(function () {
         }
 
         let _url = "/admin/provider-management/import_list";
+
         let data = {
-            list: provider_list
+            list: JSON.stringify(provider_list)
         };
   
         $(".data-submit-copy").attr("disabled", true);

@@ -178,8 +178,8 @@ class ProviderController extends MyController
   
 
   public function importList(Request $request){
-    
-    $providers = $request->list;
+    set_time_limit(300);
+    $providers = json_decode($request->list);
     $added_count = 0;
     $created_count = 0;
 
@@ -187,7 +187,7 @@ class ProviderController extends MyController
 
     foreach($providers as $item){
       // remove http://, https://, www, remove / from last of url
-      $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item['domain'])), '/');
+      $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item->domain)), '/');
       
       // check aready registred 
       $provider = Provider::where('domain', $domain)->first();
@@ -198,11 +198,11 @@ class ProviderController extends MyController
         
         if(!$is_exist){
           
-          if($item['key']){
+          if($item->key){
             // save to hold_provider table to check API key in cronjob
             ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
               'domain' => $domain,
-              'api_key' => $this->encrypt(trim($item['key'])),
+              'api_key' => $this->encrypt(trim($item->key)),
               'request_by_admin' => 0,                //user request
               'request_by_id' => Auth::user()->id,
               'is_only_key_check' => 1,
@@ -224,10 +224,10 @@ class ProviderController extends MyController
         
       } else {
         // store hold table
-        if($item['key']){
+        if($item->key){
           ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
             'domain' => $domain,
-            'api_key' => $this->encrypt(trim($item['key'])),
+            'api_key' => $this->encrypt(trim($item->key)),
             'request_by_admin' => 0,                //user request
             'request_by_id' => Auth::user()->id,
             'is_only_key_check' => 0,
