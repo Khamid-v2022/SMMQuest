@@ -141,13 +141,6 @@ $(function () {
                 title: 'Actions',
                 orderable: false,
                 searchable: false,
-                // render: function (data, type, full, meta) {
-                //     return (
-                //         '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>' +
-                //         '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a>' 
-                        
-                //     );
-                // }
             }
         ],
         // order: [[2, 'desc']],
@@ -179,7 +172,6 @@ $(function () {
                 data: data,
                 success: function (response) {
                     if (response.code == 200) {
-                        
                         Swal.fire({
                             icon: 'success',
                             title: '',
@@ -193,6 +185,18 @@ $(function () {
                             location.reload();
                         })
 
+                        $(".fa-spinner").css("display", "none");
+                        $(".data-submit").removeAttr("disabled");
+                    } else if(response.code == 201){
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '',
+                            text: response.message,
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        })
                         $(".fa-spinner").css("display", "none");
                         $(".data-submit").removeAttr("disabled");
                     } else {
@@ -225,8 +229,6 @@ $(function () {
                     return;
                 },
             });
-            
-           
         }
     });
   
@@ -311,9 +313,9 @@ $(function () {
         let offCanvasElement = document.querySelector('#add-new-record');
         let offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
         offCanvasEl.show();
-
     });
 
+    // scrap services
     $('.datatables-basic tbody').on('click', '.item-start-scrap', function () {
         const parent_this = this;
 
@@ -360,66 +362,6 @@ $(function () {
                 });
             }
         });
-
-
-
-        // Swal.fire({
-        //     title: 'Are you sure?',
-        //     text: "Would you like to import the services of this provider?",
-        //     icon: 'warning',
-        //     showCancelButton: true,
-        //     confirmButtonText: 'Yes!',
-        //     customClass: {
-        //       confirmButton: 'btn btn-primary me-3',
-        //       cancelButton: 'btn btn-label-secondary'
-        //     },
-        //     buttonsStyling: false
-        // }).then(function (result) {
-        //     if (result.value) {
-        //         const id = $(parent_this).parents('tr').attr("data-provider_id");
-        //         console.log(id);
-        //         let _url = "/admin/provider-management/importOne/" + id;
-        //         $.ajax({
-        //             url: _url,
-        //             type: "GET",
-        //             success: function (response) {
-        //                 if (response.code == 200) {
-        //                     Swal.fire({
-        //                         icon: 'success',
-        //                         title: '',
-        //                         text: response.message,
-        //                         customClass: {
-        //                           confirmButton: 'btn btn-success'
-        //                         }
-        //                     }).then( function(){
-        //                         dt_basic.row($(parent_this).parents('tr')).remove().draw();
-        //                     });
-        //                 } else {
-        //                     Swal.fire({
-        //                         icon: 'warning',
-        //                         title: '',
-        //                         text: response.message,
-        //                         customClass: {
-        //                         confirmButton: 'btn btn-primary'
-        //                         },
-        //                     })
-        //                     return;
-        //                 }
-        //             },
-        //             error: function (response) {
-        //                 Swal.fire({
-        //                     icon: 'error',
-        //                     title: 'Error!',
-        //                     text: 'Something went wrong. Please try again later!',
-        //                     customClass: {
-        //                         confirmButton: 'btn btn-primary'
-        //                     },
-        //                 })
-        //                 return;
-        //             },
-        //         });              
-        //     }
-        // });
     });
     
 
@@ -578,8 +520,8 @@ $(function () {
     });
 
  
-     // Filter form control to default size
-     // ? setTimeout used for multilingual table initialization
+    // Filter form control to default size
+    // ? setTimeout used for multilingual table initialization
     setTimeout(() => {
         $('.dataTables_filter .form-control').removeClass('form-control-sm');
         $('.dataTables_length .form-select').removeClass('form-select-sm');

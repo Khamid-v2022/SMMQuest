@@ -58,7 +58,7 @@
                     $api_key = decrypt_key($row['api_key']);
                     $api_check = checkAPITemplate($row['real_url'] . $row['endpoint'], $api_key, $row['api_template']);
                     if($api_check) {
-                        $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 1 WHERE id = " . $row['id'];
+                        $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 1, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                         if($row['is_activated'] == 0){
                             $enabled++;
                         }
@@ -71,16 +71,16 @@
                             // website is working 
                             if($url == $row['real_url']){
                                 // website is working but invalid key
-                                $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 0 WHERE id = " . $row['id'];
+                                $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                                 $conn->query($sql);
                             } else {
                                 // check again with updated $url
                                 $api_key = decrypt_key($row['api_key']);
                                 $api_check_again = checkAPITemplate($url . $row['endpoint'], $api_key, $row['api_template']);
                                 if($api_check_again) {
-                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1 WHERE id = " . $row['id'];
+                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                                 } else {
-                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0 WHERE id = " . $row['id'];
+                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                                 }
                                 
                                 $conn->query($sql);
@@ -91,7 +91,7 @@
                             
                         } else { 
                             // website is not working
-                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 0, is_valid_key = 0 WHERE id = " . $row['id'];
+                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 0, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                             $conn->query($sql);
                         }
                     }
@@ -104,9 +104,9 @@
                         $api_key = decrypt_key($row['api_key']);
                         $api_check = checkAPITemplate($url . $row['endpoint'], $api_key, $row['api_template']);
                         if($api_check) {
-                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1 WHERE id = " . $row['id'];
+                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                         } else {
-                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0 WHERE id = " . $row['id'];
+                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                         }
                         
                         $conn->query($sql);
@@ -115,7 +115,7 @@
                         }
                     } else { 
                         // website is not working
-                        $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 0, is_valid_key = 0 WHERE id = " . $row['id'];
+                        $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 0, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                         $conn->query($sql);
                     }
                 }
@@ -126,12 +126,12 @@
                     $url = rtrim(check_protocol($row['domain']), '/');
                     $response = urlExists($url);
                     if($response){
-                        $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0 WHERE id = " . $row['id'];
+                        $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                     } else {
-                        $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 0, is_valid_key = 0 WHERE id = " . $row['id'];
+                        $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 0, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                     }
                 // } else {
-                //     $sql = "UPDATE providers SET is_activated = 0, is_valid_key = 0 WHERE id = " . $row['id'];
+                //     $sql = "UPDATE providers SET is_activated = 0, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                 // }
                 $conn->query($sql);
             }

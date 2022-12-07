@@ -18,6 +18,7 @@ class SearchServicesController extends MyController
           ->where('user_id', Auth::user()->id)->get();
         $types = Service::service_types(Auth::user()->id);
         $types_val=[];
+        
         foreach( $types as $type ){
             array_push($types_val, $type->type);
         }
@@ -27,7 +28,6 @@ class SearchServicesController extends MyController
             unset($types_val[$index]);
             array_unshift($types_val, "Default");
         }
-
 
         return view('content.pages.pages-search-services', [
             'pageConfigs'=> $pageConfigs, 

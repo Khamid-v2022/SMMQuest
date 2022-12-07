@@ -92,6 +92,7 @@ $configData = Helper::appClasses();
                     <th>Favorite</th>
                     <th>Status</th>
                     <th>Added At</th>
+                    <th>Updated At</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -101,7 +102,10 @@ $configData = Helper::appClasses();
                     @php $index++; @endphp
                     <tr data-provider_id={{ $provider->id }}>
                         <td>{{ $index }}</td>
-                        <td>{{ $provider->provider->domain }}</td>
+                        <td>
+                            {{ $provider->provider->domain }}
+                            <span class="badge bg-label-info">{{count($provider->provider->services)}} Services</span>
+                        </td>
                         <td>{{ $provider->is_favorite }}</td>
                         <td>
                             @if($provider->provider->is_hold == 1)
@@ -116,11 +120,12 @@ $configData = Helper::appClasses();
                                     <span class="badge bg-label-warning">Invalid API Key</span>
                                 @endif
                             @endif
-                            
-                           
                            
                         </td>
-                        <td>{{ $provider->created_at }}</td>
+                        <!-- user added time -->
+                        <td>{{ $provider->created_at }}</td>        
+                        <!-- updated time in back-end side -->
+                        <td>{{ $provider->provider->updated_at }}</td>
                         <td>
                             @if($provider->provider->is_hold == 0)
                                 <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
@@ -141,8 +146,8 @@ $configData = Helper::appClasses();
                             <span class="badge bg-label-info">Being Added</span>
                         </td>
                         <td></td>
-                        <td>
-                        </td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 @endforeach
             </tbody>

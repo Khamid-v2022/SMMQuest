@@ -10,19 +10,16 @@
     $conn->close();
 
     function checkHoldProvider() {
-        echo "CHECK HOLD PROVIDER STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
-
         global $conn;
 
         $sql = "SELECT * FROM hold_providers ORDER BY request_by_admin DESC, created_at";
 
         $result = $conn->query($sql);
         if($result->num_rows == 0){
-            echo "No holded providers" . PHP_EOL . "<br/>";
-            echo "FUNCTION ENDED: " . date("Y-m-d H:i:s");
             return;
         }
-
+        
+        echo "CHECK HOLD PROVIDER STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
         while($row = $result->fetch_assoc()){
             if($row['is_only_key_check'] == 1){
                 // domain is working, only need to verify key
@@ -191,11 +188,9 @@
             // delete from temp table
             
             $delete_sql = "DELETE FROM hold_providers WHERE domain = '" . $row['domain'] . "' AND request_by_admin = " . $row['request_by_admin'] . " AND request_by_id = " . $row['request_by_id'];
-            $conn->query($delete_sql);
-          
+            $conn->query($delete_sql);  
         }
-     
-        echo "FUNCTION ENDED: " . date("Y-m-d H:i:s");
+        echo "FUNCTION ENDED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
     }
 
     function checkAPIKey($url, $key, $template) {

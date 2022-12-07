@@ -43,26 +43,44 @@ $(function () {
     $('.dt-column-search thead tr').clone(true).appendTo('.dt-column-search thead');
     $('.dt-column-search thead tr:eq(1) th').each(function (i) {
         var title = $(this).text();
-        if(i == 8 || i == 9 || i == 10 ){
-            let html = '<select class="form-select">';
-            html += '<option value="-1">All</option>';
-            html += '<option value="TRUE">TRUE</option>';
-            html += '<option value="FALSE">FALSE</option>';   
+        if(i == 0){
+            let html = '<select class="form-select" id="search_provider">';
+            html += '<option value="-1">All</option>';  
             html += '</select>';
             $(this).html(html);
         }
-        else {
+        else if(i == 5) {
+            let html = '<select class="form-select" id="search_min">';
+            html += '<option value="-1">All</option>';  
+            html += '</select>';
+            $(this).html(html);
+        } else if(i == 6) {
+            let html = '<select class="form-select" id="search_max">';
+            html += '<option value="-1">All</option>';  
+            html += '</select>';
+            $(this).html(html);
+        } else if(i == 8 || i == 9 || i == 10 ){
+            let html = '<select class="form-select search-status">';
+            html += '<option value="-1">All</option>';
+            html += '<option value="Yes">Yes</option>';
+            html += '<option value="No">No</option>';   
+            html += '</select>';
+            $(this).html(html);
+        } else {
             $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
         }
 
         // $('input', this).on('keyup change', function () {
         $('input', this).on('change', function () {
+            blockDataTable();
             if (dt_basic.column(i).search() !== this.value) {
                 dt_basic.column(i).search(this.value).draw();
             }
+            $("#data_table").unblock();
         });
 
-        $('select', this).on('change', function () {
+        $('select.search-status', this).on('change', function () {
+            blockDataTable();
             if(this.value == -1){
                 dt_basic.column(i).search("").draw();
             } else {
@@ -70,7 +88,45 @@ $(function () {
                     dt_basic.column(i).search(this.value).draw();
                 }
             }
+            $("#data_table").unblock();
         });
+
+        $('#search_provider', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+        $('#search_min', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+        $('#search_max', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
     });
 
     dt_basic = $('.datatables-basic').DataTable({
@@ -85,12 +141,19 @@ $(function () {
             { data: 'type'},
             { data: 'dripfeed'},
             { data: 'refill'},
-            { data: 'cancel'}
+            { data: 'cancel'},
+            { data: 'is_favorite'}
         ],
         columnDefs: [
             {
                 className: 'service-domain',
-                targets: 0
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    let domain = data;
+                    if(full.is_favorite == 1)
+                        domain += '<i class="bx bxs-like text-warning" ></i>'
+                    return domain;
+                }
             },
             {
                 className: 'service-id',
@@ -129,9 +192,9 @@ $(function () {
                 targets: 8,
                 render: function (data, type, full, meta) {
                     if(data == 1)
-                        return '<span class="badge bg-label-success">True</span>';
+                        return '<span class="badge bg-label-success">Yes</span>';
                     else 
-                        return '<span class="badge bg-label-warning">False</span>';
+                        return '<span class="badge bg-label-warning">No</span>';
                 },
             },
             {
@@ -140,9 +203,9 @@ $(function () {
                 targets: 9,
                 render: function (data, type, full, meta) {
                     if(data == 1)
-                        return '<span class="badge bg-label-success">True</span>';
+                        return '<span class="badge bg-label-success">Yes</span>';
                     else 
-                        return '<span class="badge bg-label-warning">False</span>'
+                        return '<span class="badge bg-label-warning">No</span>'
                 },
             },
             {
@@ -151,14 +214,17 @@ $(function () {
                 targets: 10,
                 render: function (data, type, full, meta) {
                     if(data == 1)
-                        return '<span class="badge bg-label-success">True</span>';
+                        return '<span class="badge bg-label-success">Yes</span>';
                     else 
-                        return '<span class="badge bg-label-warning">False</span>'
+                        return '<span class="badge bg-label-warning">No</span>'
                 },
             },
-
+            {
+                className: 'service-favorite',
+                targets: 11
+            },
         ],
-        // order: [[2, 'desc']],
+        order: [[4, 'asc']],
         orderCellsTop: true,
         paging: false,
         lengthChange: false,
@@ -167,6 +233,7 @@ $(function () {
     // hide category, type column as default
     dt_basic.column(3).visible(false);
     dt_basic.column(7).visible(false);
+    dt_basic.column(11).visible(false);
   
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
@@ -194,14 +261,26 @@ $(function () {
     })
 
     $(".show-column-item").on("click", function(){
+        blockDataTable();
         // Get the column API object
         var column = dt_basic.column($(this).attr('data-column-index'));
         // Toggle the visibility
         column.visible(!column.visible());
+        $("#data_table").unblock();
+    })
+
+    $("#check_favorite").on("click", function(){
+        blockDataTable();
+        const is_favorite = $(this).prop('checked') ? 1 : "";
+        if (dt_basic.column(11).search() !== is_favorite) {
+            dt_basic.column(11).search(is_favorite).draw();
+        }
+        $("#data_table").unblock();
     })
 
     $("#search_form").on("submit", function(e){
         e.preventDefault();
+
         const providers = $("#providers").val();
         const type = $("#type").val();
         const min = $("#min").val();
@@ -243,7 +322,9 @@ $(function () {
 
         $(".data-submit").attr("disabled", true);
         $(".data-submit .fa-spinner").css("display", "inline-block");
+        
         dt_basic.clear().draw();
+        blockDataTable();
         $.ajax({
             url: _url,
             type: "POST",
@@ -251,6 +332,10 @@ $(function () {
             success: function (response) {
                 if (response.code == 200) {
                     const services = response.services;
+
+                    let min_array = [];
+                    let max_array = [];
+                    let providers = [];
 
                     services.forEach((service) => {
                         dt_basic.row.add({
@@ -266,10 +351,41 @@ $(function () {
                             dripfeed: service.dripfeed,
                             refill: service.refill,
                             cancel: service.cancel,
+                            is_favorite: service.is_favorite
                         });
+                        if(!providers.includes(service.domain))
+                            providers.push(service.domain);
+                        if(!min_array.includes(service.min))
+                            min_array.push(service.min);
+                        if(!max_array.includes(service.max))
+                            max_array.push(service.max);
                     })
                     
+                    min_array.sort((a, b) => a - b);
+                    max_array.sort((a, b) => a - b);
+
                     dt_basic.columns.adjust().draw();
+
+                    let min_sel_html = '<option value="-1">All</option>';
+                    let max_sel_html = '<option value="-1">All</option>';
+                    let providers_html = '<option value="-1">All</option>';
+                    
+                    min_array.forEach((item) => {
+                        min_sel_html += '<option value="' + item + '">' + item + '</option>';
+                    })
+
+                    max_array.forEach((item) => {
+                        max_sel_html += '<option value="' + item + '">' + item + '</option>';
+                    })
+
+                    providers.forEach((item) => {
+                        providers_html += '<option value="' + item + '">' + item + '</option>';
+                    })
+
+                    $("#search_min").html(min_sel_html);
+                    $("#search_max").html(max_sel_html);
+                    $("#search_provider").html(providers_html);
+
 
                     let collapseElement = document.getElementById("close_card");
                     new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
@@ -281,17 +397,28 @@ $(function () {
                     $('.datatables-basic').DataTable();
                     $(".data-submit .fa-spinner").css("display", "none");
                     $(".data-submit").removeAttr("disabled");
+                    $("#data_table").unblock();
                 } else {
                     dt_basic.columns.adjust().draw();
+                    let sel_html = '<option value="-1">All</option>';
+                    $("#search_min").html(sel_html);
+                    $("#search_max").html(sel_html);
+                    $("#search_provider").html(sel_html);
+
                     $(".data-submit .fa-spinner").css("display", "none");
                     $(".data-submit").removeAttr("disabled");
+                    $("#data_table").unblock();
                     return;
                 }
             },
             error: function (response) {
                 console.log(response);
                 dt_basic.columns.adjust().draw();
-               
+                let sel_html = '<option value="-1">All</option>';
+                $("#search_min").html(sel_html);
+                $("#search_max").html(sel_html);
+                $("#search_provider").html(sel_html);
+
                 $(".data-submit .fa-spinner").css("display", "none");
                 $(".data-submit").removeAttr("disabled");
                 return;
@@ -301,3 +428,18 @@ $(function () {
     })
     
 });
+
+function blockDataTable() {
+    $("#data_table").block({
+        message:
+          '<div class="spinner-border text-primary" role="status"></div>',
+        css: {
+          backgroundColor: 'transparent',
+          border: '0'
+        },
+        overlayCSS: {
+            backgroundColor: '#fff',
+            opacity: 0.8
+        }
+    });
+}

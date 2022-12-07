@@ -38,7 +38,7 @@ class ProviderManagement extends Controller
         ]);
 
         // remove http://, https://, remove / from last of url
-        $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain)), '/');
+        $domain = $this->getDomain($request->domain);
         $url = rtrim($this->check_protocol($domain), '/');
         $end_point = '/' . rtrim(ltrim($request->end_point, '/'), '/');
 
@@ -55,8 +55,9 @@ class ProviderManagement extends Controller
         if($response) {
             // check API key working or not
             $api_check = $this->checkAPITemplate($url . $end_point, trim($request->api_key));  
+            $is_valid_key = 0;
+
             if($api_check['status'] > 0 ){
-                $is_valid_key = 0;
                 if($api_check['status'] == 1){
                     $is_valid_key = 1;
                 } else {
@@ -92,11 +93,12 @@ class ProviderManagement extends Controller
                     ]);
                 }
             } else {
-                return response()->json(['code'=>400, 'message'=>'API key/End Point is not correct!'], 200);
+                return response()->json(['code'=>400, 'message'=>'Domain / API End Point is not correct!'], 200);
             }
-
-            return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
-
+            if($is_valid_key)
+                return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
+            else
+                return response()->json(['code'=>401, 'message'=>'Added/Updated! But API key is not correct!'], 200);
         } else {
             return response()->json(['code'=>400, 'message'=>'This domain name is not exist'], 200);
         }
@@ -200,7 +202,7 @@ class ProviderManagement extends Controller
 
         foreach($providers as $item){
             // remove http://, https://, remove / from last of url
-            $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item->domain)), '/');  
+            $domain = $this->getDomain($item->domain);
             $end_point = '/' . rtrim(ltrim($item->end_point, '/'), '/');
             
             // check aready registred 

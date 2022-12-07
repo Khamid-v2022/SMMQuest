@@ -92,6 +92,7 @@ $configData = Helper::appClasses();
                     <th>API template</th>
                     <th>Status</th>
                     <th>Created</th>
+                    <th>Updated</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -119,6 +120,7 @@ $configData = Helper::appClasses();
                             @endif
                         </td>
                         <td>{{ $provider->created_at }}</td>
+                        <td>{{ $provider->updated_at }}</td>
                         <td>
                             @if($provider->is_activated == 1)
                                 <a href="javascript:;" class="btn btn-sm btn-icon item-start-scrap" title="Start scrap services" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class='bx bx-play-circle'></i></a>
@@ -138,6 +140,7 @@ $configData = Helper::appClasses();
                         <td>
                             <span class="badge bg-label-info">Being Added</span>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                     </tr>

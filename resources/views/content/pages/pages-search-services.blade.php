@@ -104,20 +104,20 @@ $configData = Helper::appClasses();
                                 <input id="exclude" class="form-control"/>
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
-                                <label class="form-label">Service Minimum:</label>
-                                <input type="number" id="min" class="form-control dt-input" placeholder="Service Minimum">
+                                <label class="form-label">Minimum Quantity:</label>
+                                <input type="number" id="min" class="form-control dt-input" placeholder="Minimum Quantity">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
-                                <label class="form-label">Service Maximum:</label>
-                                <input type="number" id="max" class="form-control dt-input" placeholder="Service Maximum">
+                                <label class="form-label">Maximum Quantity:</label>
+                                <input type="number" id="max" class="form-control dt-input" placeholder="Maximum Quantity">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label">Minimum Price:</label>
-                                <input type="number" id="min_rate" class="form-control dt-input" placeholder="Minimum Price">
+                                <input type="number" id="min_rate" class="form-control dt-input" placeholder="Minimum Price" step="any">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label">Maximum Price:</label>
-                                <input type="number" id="max_rate" class="form-control dt-input" placeholder="Maximum Price">
+                                <input type="number" id="max_rate" class="form-control dt-input" placeholder="Maximum Price" step="any">
                             </div>
                         </div>
                         <div class="row pt-3">
@@ -143,7 +143,7 @@ $configData = Helper::appClasses();
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-rate" data-column-index="4" id="check_rate" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_rate">Rate</label>
+                                    <label class="form-check-label" for="check_rate">Price</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-min" data-column-index="5" id="check_min" type="checkbox" checked />
@@ -168,11 +168,15 @@ $configData = Helper::appClasses();
                             <div class="col-sm">
                                 <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-refill" data-column-index="9" id="check_refill" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_refill">Refill</label>
+                                    <label class="form-check-label" for="check_refill">Refill Button</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-cancel" data-column-index="10" id="check_cancel" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_cancel">Cancel</label>
+                                    <label class="form-check-label" for="check_cancel">Cancel Button</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input" id="check_favorite" type="checkbox" />
+                                    <label class="form-check-label" for="check_favorite">Favorite Providers Only</label>
                                 </div>
                             </div>
                             <div class="col-12 text-right pt-2">
@@ -191,24 +195,25 @@ $configData = Helper::appClasses();
 
 <div class="card mb-4">
     <div class="card-datatable table-responsive">
-        <table class="dt-column-search datatables-basic table border-top">
+        <table class="dt-column-search datatables-basic table border-top" id="data_table">
             <thead>
                 <tr>
                     <th class='service-domain'> Provider </th>
                     <th class='service-id'>ID</th>
                     <th class='service-name'>Name</th>
                     <th class='service-category'>Category</th>
-                    <th class='service-rate'>Rate</th>
+                    <th class='service-rate'>Price</th>
                     <th class='service-min'>Min</th>
                     <th class='service-max'>Max</th>
                     <th class='service-type'>Type</th>
                     <th class='service-dripfeed'>Dripfeed</th>
-                    <th class='service-refill'>Refill</th>
-                    <th class='service-cancel'>Cancel</th>
+                    <th class='service-refill'>Refill Button</th>
+                    <th class='service-cancel'>Cancel Button</th>
+                    <th class='service-favorite'>Is Favorite</th>
                 </tr>
             </thead>
             <tbody id="tbl-body">
-               
+                
             </tbody>
         </table>
     </div>

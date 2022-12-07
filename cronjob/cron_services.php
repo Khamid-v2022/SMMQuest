@@ -13,7 +13,7 @@
     function loadServices() {
         echo "FUNCTION STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
         // $time_start = microtime(true);
-        // $flag = false;
+        $flag = false;
         
         global $conn;
         $inserted_count = 0;
@@ -54,7 +54,7 @@
         while($row = $result->fetch_assoc()){
             $api_key = decrypt_key($row['api_key']);
 
-            $sql = "UPDATE services SET status = 0 WHERE provider_id = " . $row['id'];
+            $sql = "UPDATE services SET status = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE provider_id = " . $row['id'];
             $conn->query($sql);
 
             if($row['real_url']){
@@ -75,11 +75,15 @@
                     // check if API is working correctly
                     if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
                         foreach ($services as $item) {
+                            
+                            
+                           
                             $sql_service = "SELECT * FROM services WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";
                             
                             $result_service = $conn->query($sql_service);
-
-                            $rate = ((float) $item['rate']);
+                                                     
+                            $rate = isset($item['rate']) ? ((float) $item['rate']) : 'NULL';
+                            $category = isset($item['category']) ? str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])) : 'NULL';
                             
                             // have a over flow bug
                             if($rate > 99999999999)
@@ -97,17 +101,13 @@
                                     . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", " 
                                     . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", " 
                                     . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", '" 
-                                    . str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])) . "', 1, '" 
+                                    . $category . "', 1, '" 
                                     . date("Y-m-d H:i:s") . "')";
 
-                                // if($flag) {
-                                //     var_dump($item) . "<br>";
-                                //     echo $sql_insert;
-                                // }
                                 $conn->query($sql_insert);
                                 $inserted_count++;
                             } else {
-                                $sql_update = "UPDATE services SET name = '" . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', type = '" . (isset($item['type']) ? $item['type'] : "NULL") . "', rate = '" . $rate . "', min = " . (isset($item['min']) ? $item['min'] : "NULL") . ", max = " . (isset($item['max']) ? $item['max'] : "NULL") . ", dripfeed = " . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", refill = " . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", cancel = " . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", category = '" . str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])) . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";
+                                $sql_update = "UPDATE services SET name = '" . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', type = '" . (isset($item['type']) ? $item['type'] : "NULL") . "', rate = '" . $rate . "', min = " . (isset($item['min']) ? ((int)$item['min']) : "NULL") . ", max = " . (isset($item['max']) ? ((int)$item['max']) : "NULL") . ", dripfeed = " . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", refill = " . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", cancel = " . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", category = '" . $category . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";
                               
                                 $conn->query($sql_update);
                             }

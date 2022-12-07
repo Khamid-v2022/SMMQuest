@@ -454,6 +454,7 @@ $(function () {
         data: data,
         success: function (response) {
           if (response.code == 200) {
+            console.log(response);
             Swal.fire({
               icon: 'success',
               title: '',

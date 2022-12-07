@@ -21,8 +21,16 @@ class ProviderController extends MyController
   {
     $pageConfigs = ['myLayout' => 'horizontal'];
 
-    $providers = UserProvider::with(['user', 'provider'])
-      ->where('user_id', Auth::user()->id)->get();
+    $providers = UserProvider::with([
+        'user', 
+        'provider', 
+        'provider.services' => function($q) {
+          $q->where('status', '1');
+        }
+      ])
+      ->where('user_id', Auth::user()->id)
+      ->get();
+
     $hold_providers = ProviderHold::select('domain')
       ->where('request_by_id', Auth::user()->id)
       ->where('request_by_admin', 0)
@@ -41,7 +49,8 @@ class ProviderController extends MyController
     ]);
     
     // remove http://, https://, www, remove / from last of url
-    $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain)), '/');
+    // $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain)), '/');
+    $domain = $this->getDomain($request->domain);
     
     // check aready registred 
     $provider = Provider::where('domain', $domain)->get();
@@ -147,7 +156,6 @@ class ProviderController extends MyController
     please try again later'], 200);
   }
 
-  
 
   private function checkKey($url, $key, $template) {
     switch($template){
@@ -186,67 +194,67 @@ class ProviderController extends MyController
     $new_request_domains = [];
 
     foreach($providers as $item){
-      // remove http://, https://, www, remove / from last of url
-      $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $item->domain)), '/');
-      
-      // check aready registred 
-      $provider = Provider::where('domain', $domain)->first();
-      if($provider){
-        // check aready registred in this account
-        $is_exist = UserProvider::where('provider_id', $provider->id)
-            ->where('user_id', Auth::user()->id)->first();
-        
-        if(!$is_exist){
+      $domain = $this->getDomain($item->domain);
+      if($domain){
+        // check aready registred 
+        $provider = Provider::where('domain', $domain)->first();
+        if($provider){
+          // check aready registred in this account
+          $is_exist = UserProvider::where('provider_id', $provider->id)
+              ->where('user_id', Auth::user()->id)->first();
           
+          if(!$is_exist){
+            
+            if($item->key){
+              // save to hold_provider table to check API key in cronjob
+              ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
+                'domain' => $domain,
+                'api_key' => $this->encrypt(trim($item->key)),
+                'request_by_admin' => 0,                //user request
+                'request_by_id' => Auth::user()->id,
+                'is_only_key_check' => 1,
+                'created_at' => date("Y-m-d H:i:s")
+              ]);
+            } else {
+              $user_provider = UserProvider::create([
+                'user_id' => Auth::user()->id,
+                'provider_id' => $provider->id,
+                'is_favorite' => 0,
+                'is_enabled' => 1,
+                'is_valid_key' => 0,
+                'created_at' => date("Y-m-d H:i:s")
+              ]);
+            }
+            
+            $added_count++;
+          }
+          
+        } else {
+          // store hold table
           if($item->key){
-            // save to hold_provider table to check API key in cronjob
             ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
               'domain' => $domain,
               'api_key' => $this->encrypt(trim($item->key)),
               'request_by_admin' => 0,                //user request
               'request_by_id' => Auth::user()->id,
-              'is_only_key_check' => 1,
-              'created_at' => date("Y-m-d H:i:s")
-            ]);
-          } else {
-            $user_provider = UserProvider::create([
-              'user_id' => Auth::user()->id,
-              'provider_id' => $provider->id,
-              'is_favorite' => 0,
-              'is_enabled' => 1,
-              'is_valid_key' => 0,
+              'is_only_key_check' => 0,
               'created_at' => date("Y-m-d H:i:s")
             ]);
           }
-          
-          $added_count++;
-        }
-        
-      } else {
-        // store hold table
-        if($item->key){
-          ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
-            'domain' => $domain,
-            'api_key' => $this->encrypt(trim($item->key)),
-            'request_by_admin' => 0,                //user request
-            'request_by_id' => Auth::user()->id,
-            'is_only_key_check' => 0,
-            'created_at' => date("Y-m-d H:i:s")
-          ]);
-        }
-        else {
-          ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
-            'domain' => $domain,
-            'request_by_admin' => 0,                //user request
-            'api_key' => NULL,
-            'request_by_id' => Auth::user()->id,
-            'is_only_key_check' => 0,
-            'created_at' => date("Y-m-d H:i:s")
-          ]);
-        }
+          else {
+            ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
+              'domain' => $domain,
+              'request_by_admin' => 0,                //user request
+              'api_key' => NULL,
+              'request_by_id' => Auth::user()->id,
+              'is_only_key_check' => 0,
+              'created_at' => date("Y-m-d H:i:s")
+            ]);
+          }
 
-        $created_count++;
-        array_push($new_request_domains, $domain);
+          $created_count++;
+          array_push($new_request_domains, $domain);
+        }
       }
     }
   

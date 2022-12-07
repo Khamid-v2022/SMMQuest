@@ -84,7 +84,8 @@ class Service extends Model
                     ->where('status', 1)
                     ->where('is_enabled', 1)
                     // ->where('user_provider.is_valid_key', 1)
-                    ->select("domain", "service", "name", "type", "rate", "min", "max", "dripfeed", "refill", "cancel", "category", "status", "services.created_at", "services.updated_at")
+                    ->select("domain", "is_favorite", "service", "name", "type", "rate", "min", "max", "dripfeed", "refill", "cancel", "category", "status", "services.created_at", "services.updated_at")
+                    ->orderBy("rate")
                     ->get();
         return $result;
     } 
