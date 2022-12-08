@@ -14,9 +14,10 @@ class SearchServicesController extends MyController
     {
         $pageConfigs = ['myLayout' => 'horizontal'];
 
-        $providers = UserProvider::with(['provider'])
-          ->where('user_id', Auth::user()->id)->get();
-        $types = Service::service_types(Auth::user()->id);
+        // $providers = UserProvider::with(['provider'])
+        //   ->where('user_id', Auth::user()->id)->get();
+        $providers = UserProvider::getProviderList(Auth::user()->id);
+        $types = Service::service_types_with_query(Auth::user()->id);
         $types_val=[];
         
         foreach( $types as $type ){
@@ -38,6 +39,8 @@ class SearchServicesController extends MyController
     }
 
     public function searchServices(Request $request){
+        ini_set('memory_limit', '2048M');
+
         $providers = $request->providers;
         $min = $request->min;
         $max = $request->max;
@@ -46,7 +49,7 @@ class SearchServicesController extends MyController
         $exclude = $request->exclude;
         
 
-        $result = Service::search_services(
+        $result = Service::search_services_with_query(
             Auth::user()->id,
             $providers,
             $type,
@@ -58,7 +61,7 @@ class SearchServicesController extends MyController
             $request->max_rate
         );
 
-        return response()->json(['code'=>200, 'services'=>$result, 'min_rate'=>$request->min_rate], 200);
+        return response()->json(['code'=>200, 'services'=>$result], 200);
     }
 
 }

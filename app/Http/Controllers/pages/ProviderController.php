@@ -10,7 +10,7 @@ use App\Models\Provider;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Notify;
-
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\admin\APItemplates\PerfectPanel;
 use App\Http\Controllers\admin\APItemplates\SmmPanel;
@@ -21,15 +21,16 @@ class ProviderController extends MyController
   {
     $pageConfigs = ['myLayout' => 'horizontal'];
 
-    $providers = UserProvider::with([
-        'user', 
-        'provider', 
-        'provider.services' => function($q) {
-          $q->where('status', '1');
-        }
-      ])
-      ->where('user_id', Auth::user()->id)
-      ->get();
+    // $providers = UserProvider::with([
+    //     'provider', 
+    //     'provider.services' => function($q) {
+    //       $q->where('status', '1');
+    //     }
+    //   ])
+    //   ->where('user_id', Auth::user()->id)
+    //   ->get();
+
+    $providers = UserProvider::getProviderListWithDetail(Auth::user()->id);
 
     $hold_providers = ProviderHold::select('domain')
       ->where('request_by_id', Auth::user()->id)

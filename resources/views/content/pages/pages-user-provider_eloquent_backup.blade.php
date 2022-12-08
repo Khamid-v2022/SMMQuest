@@ -103,12 +103,12 @@ $configData = Helper::appClasses();
                     <tr data-provider_id={{ $provider->id }}>
                         <td>{{ $index }}</td>
                         <td>
-                            {{ $provider->domain }}
-                            <span class="badge bg-label-info">{{$provider->ctn}} Services</span>
+                            {{ $provider->provider->domain }}
+                            <!-- <span class="badge bg-label-info">{{count($provider->provider->services)}} Services</span> -->
                         </td>
                         <td>{{ $provider->is_favorite }}</td>
                         <td>
-                            @if($provider->is_hold == 1)
+                            @if($provider->provider->is_hold == 1)
                                 <span class="badge bg-label-danger" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
                             @else
                                 @if($provider->is_enabled == 1)
@@ -125,9 +125,9 @@ $configData = Helper::appClasses();
                         <!-- user added time -->
                         <td>{{ $provider->created_at }}</td>        
                         <!-- updated time in back-end side -->
-                        <td>{{ $provider->last_updated }}</td>
+                        <td>{{ $provider->provider->updated_at }}</td>
                         <td>
-                            @if($provider->is_hold == 0)
+                            @if($provider->provider->is_hold == 0)
                                 <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
                                     <i class="bx bxs-edit"></i>
                                 </a>

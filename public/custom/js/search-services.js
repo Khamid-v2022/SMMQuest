@@ -330,6 +330,7 @@ $(function () {
             type: "POST",
             data: data,
             success: function (response) {
+                console.log(response);
                 if (response.code == 200) {
                     const services = response.services;
 

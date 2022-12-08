@@ -73,7 +73,7 @@ $configData = Helper::appClasses();
                                 <select id="providers" class="select2 form-select" multiple>
                                     <option value="0" selected>All</option>
                                     @foreach($providers as $provider)
-                                        <option value="{{ $provider->provider_id }}">{{ $provider->provider->domain }}</option>
+                                        <option value="{{ $provider->id }}">{{ $provider->domain }}</option>
                                     @endforeach
                                 </select>
                             </div>
