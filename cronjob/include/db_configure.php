@@ -15,6 +15,4 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // $conn->close();
-
 ?>

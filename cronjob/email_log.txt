@@ -1,0 +1,5 @@
+flock: failed to execute /var/www/html/SMMQuest/cronjob/balance_alert_email.sh: Permission denied
+flock: failed to execute /var/www/html/SMMQuest/cronjob/balance_alert_email.sh: Permission denied
+flock: failed to execute /var/www/html/SMMQuest/cronjob/balance_alert_email.sh: Permission denied
+flock: failed to execute /var/www/html/SMMQuest/cronjob/balance_alert_email.sh: Permission denied
+flock: failed to execute /var/www/html/SMMQuest/cronjob/balance_alert_email.sh: Permission denied

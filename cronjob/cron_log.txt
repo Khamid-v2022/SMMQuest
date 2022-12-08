@@ -1,0 +1,176 @@
+FUNCTION STARTED: 2022-12-07 16:00:01
+<br/>INSERTED: 43142ROWS
+<br>FUNCTION ENDED: 2022-12-07 18:06:02CHECK HOLD PROVIDER STARTED: 2022-12-07 20:04:01
+<br/>FUNCTION ENDED: 2022-12-07 20:04:35
+<br/>FUNCTION STARTED: 2022-12-08 00:00:01
+<br/>CHECK PROVIDER FUNCTION STARTED: 2022-12-08 01:00:01
+<br/>FUNCTION ENDED: 2022-12-08 01:03:59INSERTED: 4052ROWS
+<br>FUNCTION ENDED: 2022-12-08 01:55:49FUNCTION STARTED: 2022-12-08 08:00:01
+<br/>INSERTED: 5973ROWS
+<br>FUNCTION ENDED: 2022-12-08 09:55:41PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+/bin/sh: 1: /var/www/html/SMMQuest/cronjob/check_balance.sh: Permission denied
+PHP Warning:  require_once(../../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/db_configure.php:2
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Warning:  require_once(../../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/db_configure.php:2
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Warning:  require_once(../../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/db_configure.php:2
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Warning:  require_once(../../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/db_configure.php:2
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Warning:  require_once(../../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/db_configure.php:2
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 2
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:3
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 3
+PHP Fatal error:  Uncaught Error: Class "Dotenv\Dotenv" not found in /var/www/html/SMMQuest/cronjob/include/db_configure.php:4
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(2): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/db_configure.php on line 4
+PHP Fatal error:  Uncaught Error: mysqli object is already closed in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php:17
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(17): mysqli->query()
+#1 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(9): checkHoldProvider()
+#2 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php on line 17
+PHP Fatal error:  Uncaught Error: mysqli object is already closed in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php:17
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(17): mysqli->query()
+#1 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(9): checkHoldProvider()
+#2 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php on line 17
+PHP Fatal error:  Uncaught Error: mysqli object is already closed in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php:17
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(17): mysqli->query()
+#1 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(9): checkHoldProvider()
+#2 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php on line 17
+127.0.0.1PHP Fatal error:  Uncaught Error: mysqli object is already closed in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php:17
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(17): mysqli->query()
+#1 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(9): checkHoldProvider()
+#2 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php on line 17
+FUNCTION STARTED: 2022-12-08 16:00:01
+<br/>

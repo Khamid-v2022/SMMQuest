@@ -151,6 +151,13 @@ $(function () {
               }
             },
             {
+              // status
+              targets: 4,
+              className: 'text-end',
+              orderable: false,
+              searchable: false,
+            },
+            {
               // Actions
               targets: -1,
               title: 'Actions',
@@ -427,7 +434,95 @@ $(function () {
         },
       });
     })
+
+
+    // Change Balance Limit
+    $('.datatables-basic tbody').on('click', '.change_balance_limit', function () {
+      const sel_id = $(this).parents('tr').attr("data-provider_id");
+      $("#m_sel_id").val(sel_id);
+      $("#m_balance_limit").val($(this).attr("data-alert-limit"));
+
+      $("#modals-change_balance_limit").modal('show');
+    })
+
+    // Set Balance Limit
+    $('.datatables-basic tbody').on('click', '.set_balance_limit', function () {
+      const sel_id = $(this).parents('tr').attr("data-provider_id");
+      $("#m_sel_id").val(sel_id);
+      $("#m_balance_limit").val("");
+
+      $("#modals-change_balance_limit").modal('show');
+    })
+
     
+
+    $("#m_change_alert_btn").on("click", function(){
+      let _url = "/providers/changeBalanceAlertLimit";
+      
+      let data = {
+        selected_id: $("#m_sel_id").val(),
+        limit: $("#m_balance_limit").val()
+      };
+
+      $("#m_change_alert_btn").attr("disabled", true);
+      $("#m_change_alert_btn .fa-spinner").css("display", "inline-block");
+      $.ajax({
+        url: _url,
+        type: "POST",
+        data: data,
+        success: function (response) {
+            if (response.code == 200) {
+              Swal.fire({
+                icon: 'success',
+                title: '',
+                text: response.message,
+                type: 'success',
+                customClass: {
+                confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+              }).then( function(){
+                $("#modals-change_balance_limit").modal('toggle');
+                location.reload();
+              })
+
+              $("#m_change_alert_btn .fa-spinner").css("display", "none");
+              $("#m_change_alert_btn").removeAttr("disabled");
+             
+            } else {
+              Swal.fire({
+                  icon: 'warning',
+                  title: '',
+                  text: response.message,
+                  type: 'warning',
+                  customClass: {
+                    confirmButton: 'btn btn-primary'
+                  },
+                  buttonsStyling: false
+              })
+              $("#m_change_alert_btn .fa-spinner").css("display", "none");
+              $("#m_change_alert_btn").removeAttr("disabled");
+              return;
+            }
+        },
+        error: function (response) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Something went wrong. Please try again later!',
+                type: 'error',
+                customClass: {
+                  confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            })
+            $("#m_change_alert_btn .fa-spinner").css("display", "none");
+            $("#m_change_alert_btn").removeAttr("disabled");
+            return;
+        },
+      });
+    })
+
 
     // Import Provider from Copy/Past Form Submit
     copy_past_fv.on('core.form.valid', function () {

@@ -112,8 +112,10 @@ class Service extends Model
         $sql .= " ) `pro` ";
         $sql .= " LEFT JOIN `services` `s` ON `pro`.`id` = `s`.`provider_id` AND `status` = 1 ";
         $sql .= " WHERE ";
-        $sql .= " `type` = '{$type}' ";
-        
+        if($type)
+            $sql .= " `type` = '{$type}' ";
+        else
+            $sql .= " `type` LIKE '%' ";
         //check provider 
         if($provider_ids && !(count($provider_ids) == 1 && $provider_ids[0] == '0')){
             $provider_ids_str = " (";

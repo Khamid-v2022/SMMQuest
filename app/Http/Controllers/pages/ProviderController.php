@@ -184,6 +184,13 @@ class ProviderController extends MyController
 
     return false;
   }
+
+  public function changeBalanceAlertLimit(Request $request){
+    $user_provider = UserProvider::where('id', $request->selected_id)->first();
+    $user_provider->balance_alert_limit = $request->limit;
+    $user_provider->save();
+    return response()->json(['code'=>200, 'message'=>'Changed'], 200);
+  }
   
 
   public function importList(Request $request){

@@ -18,6 +18,9 @@ class UserProvider extends Model
         'provider_id',
         'is_favorite',
         'api_key',
+        'user_balance',
+        'balance_currency',
+        'balance_alert_limit',
         'is_enabled',
         'is_valid_key'
     ];

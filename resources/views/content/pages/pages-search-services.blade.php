@@ -80,12 +80,9 @@ $configData = Helper::appClasses();
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="type">Service Type:</label>
                                 <select id="type" class="selectpicker w-100">
+                                    <option value="" selected>All</option>
                                     @foreach($types as $type)
-                                        @if($type == 'Default')
-                                        <option value="{{ $type }}" selected>{{ $type }}</option>
-                                        @else
                                         <option value="{{ $type }}">{{ $type }}</option>
-                                        @endif
                                     @endforeach
                                 </select>
                             </div>

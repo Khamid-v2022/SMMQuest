@@ -13,7 +13,6 @@
     function loadServices() {
         echo "FUNCTION STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
         // $time_start = microtime(true);
-        $flag = false;
         
         global $conn;
         $inserted_count = 0;

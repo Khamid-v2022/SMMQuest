@@ -151,7 +151,7 @@ $(function () {
                 render: function (data, type, full, meta) {
                     let domain = data;
                     if(full.is_favorite == 1)
-                        domain += '<i class="bx bxs-like text-warning" ></i>'
+                        domain += '<i class="bx bxs-like text-warning" style="display:inline"></i>';
                     return domain;
                 }
             },
@@ -176,11 +176,17 @@ $(function () {
             },
             {
                 className: 'service-min text-end',
-                targets: 5
+                targets: 5,
+                render: function (data, type, full, meta) {
+                    return data.toLocaleString('en-US');
+                }
             },
             {
                 className: 'service-max text-end',
-                targets: 6
+                targets: 6,
+                render: function (data, type, full, meta) {
+                    return data.toLocaleString('en-US');
+                }
             },
             {
                 className: 'service-type',
@@ -372,11 +378,11 @@ $(function () {
                     let providers_html = '<option value="-1">All</option>';
                     
                     min_array.forEach((item) => {
-                        min_sel_html += '<option value="' + item + '">' + item + '</option>';
+                        min_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
                     })
 
                     max_array.forEach((item) => {
-                        max_sel_html += '<option value="' + item + '">' + item + '</option>';
+                        max_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
                     })
 
                     providers.forEach((item) => {

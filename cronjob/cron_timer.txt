@@ -1,0 +1,4 @@
+balance_check.php 						check user balances from user-provider table / every 5h - run time limit 1h
+check_hold_provider_to_add.php			check holded provider to add from hold_provider table / every minute
+check_provider.php						check provider is working(domain, api key, endpoint, template) from providers table / every day
+check_services.php						check services(add/update status) from providers, services table / every 8h
