@@ -112,7 +112,7 @@ class Service extends Model
         $sql .= " ) `pro` ";
         $sql .= " LEFT JOIN `services` `s` ON `pro`.`id` = `s`.`provider_id` AND `status` = 1 ";
         $sql .= " WHERE ";
-        if($type)
+        if(trim($type))
             $sql .= " `type` = '{$type}' ";
         else
             $sql .= " `type` LIKE '%' ";

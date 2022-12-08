@@ -80,7 +80,7 @@ $configData = Helper::appClasses();
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="type">Service Type:</label>
                                 <select id="type" class="selectpicker w-100">
-                                    <option value="" selected>All</option>
+                                    <option value=" " selected>All</option>
                                     @foreach($types as $type)
                                         <option value="{{ $type }}">{{ $type }}</option>
                                     @endforeach
