@@ -114,7 +114,10 @@ $configData = Helper::appClasses();
                                 @else
                                     <span class="badge bg-label-danger">Disabled</span>
                                 @endif
-                                @if($provider->is_valid_key == 0)
+                                
+                                @if($provider->is_frozon == 1)
+                                    <span class="badge bg-info">Frozon</span>
+                                @elseif($provider->is_valid_key == 0)
                                     <span class="badge bg-label-warning">Invalid API Key</span>
                                 @endif
                             @endif
@@ -122,7 +125,7 @@ $configData = Helper::appClasses();
                         <td>{{ $provider->created_at }}</td>
                         <td>{{ $provider->updated_at }}</td>
                         <td>
-                            @if($provider->is_activated == 1)
+                            @if($provider->is_activated == 1 && $provider->is_frozon == 0)
                                 <a href="javascript:;" class="btn btn-sm btn-icon item-start-scrap" title="Start scrap services" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class='bx bx-play-circle'></i></a>
                             @endif
                             <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>

@@ -147,7 +147,7 @@ class Service extends Model
         if($max_rate)
             $sql .= " AND `rate` <= {$max_rate} ";
         // $sql .= " ORDER BY `rate`";
-        $sql .= " LIMIT 3000 ";
+        $sql .= " LIMIT 50000 ";
 
         $result =  DB::select($sql);
        

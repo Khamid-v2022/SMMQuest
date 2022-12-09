@@ -45,20 +45,20 @@ class UserProvider extends Model
     public static function getProviderListWithDetail($user_id){
         return DB::select("SELECT `pro`.*, `s`.`ctn` FROM
         (
-        SELECT `up`.*, `p`.`domain`, `p`.`is_hold`, `p`.`updated_at` AS `last_updated` 
-        FROM (	
-            SELECT *
-            FROM `user_provider`
-            WHERE `user_id` = {$user_id}
-        ) `up`
-        LEFT JOIN `providers` `p` ON `up`.`provider_id` = `p`.`id`
+            SELECT `up`.*, `p`.`domain`, `p`.`is_hold`, `p`.`is_frozon`, `p`.`updated_at` AS `last_updated` 
+            FROM (	
+                SELECT *
+                FROM `user_provider`
+                WHERE `user_id` = {$user_id}
+            ) `up`
+            LEFT JOIN `providers` `p` ON `up`.`provider_id` = `p`.`id`
         ) `pro`
         LEFT JOIN 
         (
-        SELECT `provider_id`, COUNT(`id`) AS `ctn`
-        FROM `services`
-        WHERE `status` = 1
-        GROUP BY `provider_id`
+            SELECT `provider_id`, COUNT(`id`) AS `ctn`
+            FROM `services`
+            WHERE `status` = 1
+            GROUP BY `provider_id`
         ) `s` ON `pro`.`provider_id` = `s`.`provider_id`");
     }
 }

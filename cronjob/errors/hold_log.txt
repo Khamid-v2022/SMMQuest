@@ -1,0 +1,906 @@
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.php(3): require_once()
+#1 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7

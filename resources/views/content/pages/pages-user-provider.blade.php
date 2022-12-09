@@ -118,7 +118,10 @@ $configData = Helper::appClasses();
                                 @else
                                     <span class="badge bg-label-danger">Disabled</span>
                                 @endif 
-                                @if($provider->is_valid_key == 0)
+                               
+                                @if($provider->is_frozon == 1)
+                                    <span class="badge bg-info">Frozon</span>
+                                @elseif($provider->is_valid_key == 0)
                                     <span class="badge bg-label-warning">Invalid API Key</span>
                                 @endif
                             @endif

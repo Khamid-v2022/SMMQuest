@@ -154,7 +154,6 @@ $(function () {
               // status
               targets: 4,
               className: 'text-end',
-              orderable: false,
               searchable: false,
             },
             {

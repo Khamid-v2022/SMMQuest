@@ -2,15 +2,11 @@
     require_once "include/db_configure.php";
     require_once "include/functions.php";
 
-    // providers
-    require_once "providers/PerfectPanel.php";
-    require_once "providers/SmmPanel.php";
-
-    loadServices();
+    check_balance();
     $conn->close();
 
-    function loadServices() {
-        echo "BALANCE STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
+    function check_balance() {
+        echo "STARTED: " . date("Y-m-d H:i:s") . PHP_EOL;
         $time_start = microtime(true);
         
         global $conn;
@@ -26,8 +22,8 @@
         $result_total = $conn->query($sql_total);
 
         if($result_total->num_rows == 0){
-            echo "No providers to check balance " . PHP_EOL . "<br/>";
-            echo "BALANCE ENDED: " . date("Y-m-d H:i:s");
+            echo "No providers to check balance " . PHP_EOL;
+            echo "ENDED: " . date("Y-m-d H:i:s") . PHP_EOL;
             return;
         }
 
@@ -61,27 +57,12 @@
         while($row = $result->fetch_assoc()){
             $api_key = decrypt_key($row['api_key']);
             if($row['real_url']){
-                $pro = null;
-                switch($row['api_template']){
-                    case 'PerfectPanel':
-                        $pro = new PerfectPanel($row['real_url'] . $row['endpoint'], $api_key);
-
-                        $balance = $pro->balance();
-                        $balance = json_decode( json_encode($balance), true );
-                        if($balance && !isset($balance['error'])){
-                            // update
-                            $balance_value = isset($balance['balance'])?$balance['balance']:'NULL';
-                            $balance_currency = isset($balance['currency'])?$balance['currency']:'NULL';
-                            
-                            $update_sql = "UPDATE user_provider SET user_balance = " . $balance_value . ", balance_currency = '" . $balance_currency . "' WHERE id = " . $row['id'];
-                            $conn->query($update_sql);
-                        }
-                        break;
-                    case 'SmmPanel':
-                        // not provide balance from this panel
-                        break;
+                $api_check = checkAPIKeyWithTemplate($row['real_url'] . $row['endpoint'], $api_key, $row['api_template'] );
+                
+                if($api_check['status']) {
+                    $update_sql = "UPDATE user_provider SET user_balance = " . $api_check['balance'] . ", balance_currency = '" . $api_check['currency'] . "' WHERE id = " . $row['id'];
+                    $conn->query($update_sql);
                 }
-
             }
 
             // update cron config table

@@ -19,7 +19,7 @@
             return;
         }
         
-        echo "CHECK HOLD PROVIDER STARTED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
+        echo "HOLD STARTED: " . date("Y-m-d H:i:s") . PHP_EOL;
         while($row = $result->fetch_assoc()){
             if($row['is_only_key_check'] == 1){
                 // domain is working, only need to verify key
@@ -32,15 +32,16 @@
                     
                     if($row['api_key']){
                         $api_key = decrypt_key($row['api_key']);
-                        $api_check = checkAPIKey($sel_provider['real_url'] . $sel_provider['endpoint'], $api_key, $sel_provider['api_template']);
-                        if($api_check) {
+                        $api_check = checkAPIKeyWithTemplate($sel_provider['real_url'] . $sel_provider['endpoint'], $api_key, $sel_provider['api_template']);
+                        if($api_check['status'] == 1) {
                             $sql_add = "INSERT INTO user_provider( user_id, provider_id, is_favorite, api_key, is_enabled, is_valid_key, created_at) VALUES (" 
                                 . $row['request_by_id'] . ", " 
                                 . $sel_provider['id'] . ", " 
                                 . "0, '" 
                                 . $row['api_key'] . "', " 
                                 . "1, 1, '" . $item['created_at'] . "')";
-                        } else {
+                        } else if($api_check['status'] == 2){
+                            // invalid
                             $sql_add = "INSERT INTO user_provider( user_id, provider_id, is_favorite, api_key, is_enabled, is_valid_key, created_at) VALUES (" 
                                 . $row['request_by_id'] . ", " 
                                 . $sel_provider['id'] . ", " 
@@ -77,22 +78,22 @@
                             if($row['api_key']){
                                 // check API key working or not
                                 $api_key = decrypt_key($row['api_key']);
-                                $api_check = checkAPITemplate($real_url . $row['endpoint'], $api_key);
+                                $api_check = detectAPITemplate($real_url . $row['endpoint'], $api_key);
                                 if($api_check['status'] > 0 ){
                                     $is_valid_key = 0;
+                                    $is_frozon = 0;
                                     if($api_check['status'] == 1){
                                         $is_valid_key = 1;
-                                    } else {
-                                        // invalid key
-                                        $is_valid_key = 0;
+                                    } else if($api_check['status'] == 3) {
+                                       $is_frozon = 1;
                                     }
 
-                                    $sql_add_by_admin = "INSERT INTO providers(domain, real_url, endpoint, api_key, is_valid_key, is_activated, api_template, balance, currency, activated_at, is_hold, created_at) VALUES ('"
+                                    $sql_add_by_admin = "INSERT INTO providers(domain, real_url, endpoint, api_key, is_valid_key, is_activated, is_frozon, api_template, balance, currency, activated_at, is_hold, created_at) VALUES ('"
                                         . $row['domain'] . "', '"
                                         . $real_url . "', '"
                                         . $row['endpoint'] . "', '"
                                         . $row['api_key'] . "', "
-                                        . $is_valid_key . ", 1, '"
+                                        . $is_valid_key . ", 1, " . $is_frozon . ", '"
                                         . $api_check['apiTemplate'] . "', "
                                         . $api_check['balance'] . ", '"
                                         . $api_check['currency'] . "', '"
@@ -101,6 +102,7 @@
                                         . "')";
 
                                 } else {
+                                    // wrong EndPoint
                                     $sql_add_by_admin = "INSERT INTO providers(domain, real_url, endpoint, api_key, is_valid_key, is_activated, is_hold, created_at) VALUES ('"
                                         . $row['domain'] . "', '"
                                         . $real_url . "', '"
@@ -162,12 +164,11 @@
                         $row_exist = $result_exist->fetch_assoc();
                         
                         $is_valid_key = 0;
-
                         if($row_exist['is_activated'] == "1"){
                             // check API key is valid
                             $api_key = decrypt_key($row['api_key']);
-                            $api_check = checkAPIKey($row_exist['real_url'] . $row_exist['endpoint'], $api_key, $row_exist['api_template']);
-                            if($api_check) {
+                            $api_check = checkAPIKeyWithTemplate($row_exist['real_url'] . $row_exist['endpoint'], $api_key, $row_exist['api_template']);
+                            if($api_check['status'] == 1) {
                                 $is_valid_key = 1;
                             }
                         }
@@ -190,95 +191,7 @@
             $delete_sql = "DELETE FROM hold_providers WHERE domain = '" . $row['domain'] . "' AND request_by_admin = " . $row['request_by_admin'] . " AND request_by_id = " . $row['request_by_id'];
             $conn->query($delete_sql);  
         }
-        echo "FUNCTION ENDED: " . date("Y-m-d H:i:s") . PHP_EOL . "<br/>";
-    }
-
-    function checkAPIKey($url, $key, $template) {
-        
-        switch($template){
-            case 'PerfectPanel':
-                $perfectPanel = new PerfectPanel($url, $key);
-
-                $balance = $perfectPanel->balance();
-                $balance = json_decode( json_encode($balance), true );
-
-                if($balance && !isset($balance['error'])){
-                    return true;
-                }
-                break;
-            case 'SmmPanel':
-                // https://smmpanele.ru/api/v2
-                $smmPanel = new SmmPanel($url, $key);
-                $services = $smmPanel->services();
-                $services = json_decode( json_encode($services), true );
-
-                if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
-                    return true;
-                }
-                break;
-        }
-
-        return false;
-    }
-
-    function checkAPITemplate($url, $key) {
-        $status = false;
-        $apiTemplate = '';
-        $currentBalance = '';
-        $currency = '';
-
-        // perfect panel
-        $perfectPanel = new PerfectPanel($url, $key);
-
-        $balance = $perfectPanel->balance();
-        $balance = json_decode(json_encode($balance), true );
-
-        if($balance){
-            if(!isset($balance['error'])){
-                return array (
-                    'status'=> 1, 
-                    'apiTemplate'=> 'PerfectPanel', 
-                    'balance' => isset($balance['balance'])?$balance['balance']:'NULL',
-                    'currency' => isset($balance['currency'])?$balance['currency']:'NULL'
-                );
-            } else {
-                // wrong API key
-                return array (
-                    'status'=> 2, 
-                    'apiTemplate'=> 'PerfectPanel', 
-                    'balance' => 0,
-                    'currency' => ''
-                );
-            }
-        }
-
-        // SmmPanel     https://smmpanele.ru/api/v2
-        $smmPanel = new SmmPanel($url, $key);
-        $response = $smmPanel->services();
-   
-        if($response){     
-            $services = json_decode( json_encode($response), true );
-            if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
-                return array (
-                    'status'=> 1, 
-                    'apiTemplate'=> 'SmmPanel', 
-                    'balance' => null,
-                    'currency' => null
-                );
-            } else {
-                return array (
-                    'status'=> 2, 
-                    'apiTemplate'=> 'SmmPanel', 
-                    'balance' => 0,
-                    'currency' => ''
-                );
-            }
-        } 
-
-        // wrong url or endpoint
-        return array (
-            'status'=> 0
-        );
+        echo "HOLD ENDED: " . date("Y-m-d H:i:s") . PHP_EOL;
     }
 
 ?>

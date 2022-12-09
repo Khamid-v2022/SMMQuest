@@ -1,12 +1,12 @@
 <?php 
     require_once "include/db_configure.php";
     require_once "include/functions.php";
-
+    
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
+    require_once "../vendor/autoload.php";
 
-
-    sendEmail();
+    // sendEmail();
     $conn->close();
 
     function sendEmail() {

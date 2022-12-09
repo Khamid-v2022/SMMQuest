@@ -151,7 +151,7 @@ $(function () {
                 render: function (data, type, full, meta) {
                     let domain = data;
                     if(full.is_favorite == 1)
-                        domain += '<i class="bx bxs-like text-warning" style="display:inline"></i>';
+                        domain += '<i class="bx bxs-like text-warning ms-1" style="display:inline"></i>';
                     return domain;
                 }
             },
@@ -171,21 +171,23 @@ $(function () {
                 className: 'service-rate text-end',
                 targets: 4,
                 render: function(data){
-                    return data.toLocaleString('en-US', {maximumFractionDigits:5})
+                    return data ? data.toLocaleString('en-US', {maximumFractionDigits:5}) : '';
+                   
                 }
             },
             {
                 className: 'service-min text-end',
                 targets: 5,
                 render: function (data, type, full, meta) {
-                    return data.toLocaleString('en-US');
+                    return data ? data.toLocaleString('en-US') : '';
                 }
             },
             {
                 className: 'service-max text-end',
                 targets: 6,
                 render: function (data, type, full, meta) {
-                    return data.toLocaleString('en-US');
+                    
+                    return data ? data.toLocaleString('en-US') : '';
                 }
             },
             {
@@ -304,6 +306,24 @@ $(function () {
             exclude_val = [];
 
         let include = [], exclude = [];
+
+        if(include_val.length < 2 || (include_val.length == 2 && (include_val[0].value.length < 2 || include_val[1].value.length < 2))){
+            Swal.fire({
+                icon: 'warning',
+                title: '',
+                text: "At least two word must be entered in the Words Included field.",
+                customClass: {
+                  confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            }).then(function(){
+                setTimeout(function(){
+                    $("#include").focus();
+                }, 50);
+            })
+            return;
+        }
+
         include_val.forEach((item) => {
             include.push(item.value)
         })
@@ -337,62 +357,12 @@ $(function () {
             data: data,
             success: function (response) {
                 if (response.code == 200) {
+                    console.log(response);
                     const services = response.services;
 
-                    let min_array = [];
-                    let max_array = [];
-                    let providers = [];
-
-                    services.forEach((service) => {
-                        dt_basic.row.add({
-                            domain: service.domain,
-                            service: service.service,
-                            name: service.name,
-                            category: service.category,
-                            // rate: new Decimal(service.rate),
-                            rate: service.rate,
-                            min: service.min,
-                            max: service.max,
-                            type: service.type,
-                            dripfeed: service.dripfeed,
-                            refill: service.refill,
-                            cancel: service.cancel,
-                            is_favorite: service.is_favorite
-                        });
-                        if(!providers.includes(service.domain))
-                            providers.push(service.domain);
-                        if(!min_array.includes(service.min))
-                            min_array.push(service.min);
-                        if(!max_array.includes(service.max))
-                            max_array.push(service.max);
-                    })
+                    // drawTableManually(services);
+                    drawTableWithAPI(services);
                     
-                    min_array.sort((a, b) => a - b);
-                    max_array.sort((a, b) => a - b);
-
-                    dt_basic.columns.adjust().draw();
-
-                    let min_sel_html = '<option value="-1">All</option>';
-                    let max_sel_html = '<option value="-1">All</option>';
-                    let providers_html = '<option value="-1">All</option>';
-                    
-                    min_array.forEach((item) => {
-                        min_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
-                    })
-
-                    max_array.forEach((item) => {
-                        max_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
-                    })
-
-                    providers.forEach((item) => {
-                        providers_html += '<option value="' + item + '">' + item + '</option>';
-                    })
-
-                    $("#search_min").html(min_sel_html);
-                    $("#search_max").html(max_sel_html);
-                    $("#search_provider").html(providers_html);
-
-
                     let collapseElement = document.getElementById("close_card");
                     new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
                     // Toggle collapsed class in `.card-header` element
@@ -448,4 +418,63 @@ function blockDataTable() {
             opacity: 0.8
         }
     });
+}
+
+function drawTableWithAPI(services){
+    let min_array = [];
+    let max_array = [];
+    let providers = [];
+
+    let records = [];
+
+    services.forEach((service) => {
+        records.push({
+            domain: service.domain,
+            service: service.service,
+            name: service.name,
+            category: service.category,
+            rate: service.rate,
+            min: service.min,
+            max: service.max,
+            type: service.type,
+            dripfeed: service.dripfeed,
+            refill: service.refill,
+            cancel: service.cancel,
+            is_favorite: service.is_favorite
+        });
+
+        if(!providers.includes(service.domain))
+            providers.push(service.domain);
+        if(!min_array.includes(service.min))
+            min_array.push(service.min);
+        if(!max_array.includes(service.max))
+            max_array.push(service.max);
+    })
+    dt_basic.rows.add(records);
+    
+    min_array.sort((a, b) => a - b);
+    max_array.sort((a, b) => a - b);
+
+    dt_basic.columns.adjust().draw();
+    // dt_basic.draw();
+
+    let min_sel_html = '<option value="-1">All</option>';
+    let max_sel_html = '<option value="-1">All</option>';
+    let providers_html = '<option value="-1">All</option>';
+    
+    min_array.forEach((item) => {
+        min_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
+    })
+
+    max_array.forEach((item) => {
+        max_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
+    })
+
+    providers.forEach((item) => {
+        providers_html += '<option value="' + item + '">' + item + '</option>';
+    })
+
+    $("#search_min").html(min_sel_html);
+    $("#search_max").html(max_sel_html);
+    $("#search_provider").html(providers_html);
 }
