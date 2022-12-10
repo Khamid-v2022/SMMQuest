@@ -49,8 +49,6 @@ class ProviderController extends MyController
       'domain' => 'required'
     ]);
     
-    // remove http://, https://, www, remove / from last of url
-    // $domain = rtrim(preg_replace('#^www\.(.+\.)#i', '$1', preg_replace( "#^[^:/.]*[:/]+#i", "", $request->domain)), '/');
     $domain = $this->getDomain($request->domain);
     
     // check aready registred 
@@ -72,7 +70,7 @@ class ProviderController extends MyController
         'created_at' => date("Y-m-d H:i:s")
       ]);
 
-      return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
+      return response()->json(['code'=>200, 'message'=>'Success'], 200);
     } else {
       // check domain is valid URL or not
       $url = rtrim($this->check_protocol($domain), '/');
@@ -142,15 +140,23 @@ class ProviderController extends MyController
     if($provider['is_activated'] == 1){
       // $url = rtrim($this->check_protocol($provider['domain']), '/');
       $api_check = $this->checkKey($provider['real_url'] . $provider['endpoint'], trim($request->api_key), $provider['api_template']);
-      if($api_check){
+      if($api_check['status'] == 1){
+
         $user_provider->is_valid_key = 1;
+        $user_provider->user_balance = $api_check['balance'];
+        $user_provider->balance_currency = $api_check['currency'];
+
         $user_provider->save();
+
         return response()->json(['code'=>200, 'message'=>'The API Key verified.'], 200);
-      } else {
+      } else if($api_check['status'] == 2) {
         $user_provider->is_valid_key = 0;
+        $user_provider->user_balance = $api_check['balance'];
+        $user_provider->balance_currency = $api_check['currency'];
         $user_provider->save();
         return response()->json(['code'=>400, 'message'=>'The API Key cannot be verified. Please make sure your key'], 200);
       }
+      
     }
 
     return response()->json(['code'=>400, 'message'=>'Since the site is inactive, the API Key cannot be verified.
@@ -166,8 +172,30 @@ class ProviderController extends MyController
           $balance = $perfectPanel->balance();
           $balance = json_decode( json_encode($balance), true );
 
-          if($balance && !isset($balance['error'])){
-              return true;
+          if($balance){
+            if(!isset($balance['error'])){
+              return array (
+                'status'=> 1, 
+                'balance' => $balance['balance'],
+                'currency' => $balance['currency']
+              );
+            } else {
+              if($balance['error'] == "Incorrect request"){
+                // Frozon status
+                return array (
+                    'status'=> 3, 
+                    'balance' => NULL,
+                    'currency' => NULL
+                );
+              } else {
+                  // wrong API key
+                  return array (
+                      'status'=> 2, 
+                      'balance' => NULL,
+                      'currency' => NULL
+                  );
+              }
+            }
           }
           break;
       case 'SmmPanel':
@@ -177,12 +205,25 @@ class ProviderController extends MyController
           $services = json_decode( json_encode($services), true );
 
           if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
-              return true;
+            return array (
+              'status'=> 1,
+              'balance' => NULL,
+              'currency' => NULL
+            );
+          } else {
+            return array (
+              'status'=> 2,
+              'balance' => NULL,
+              'currency' => NULL
+            );
           }
           break;
     }
 
-    return false;
+    // wrong url or endpoint
+    return array (
+      'status'=> 0
+    );
   }
 
   public function changeBalanceAlertLimit(Request $request){

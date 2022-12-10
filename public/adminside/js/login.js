@@ -82,9 +82,8 @@ $(function () {
                                 icon: 'warning',
                                 title: 'Warning!',
                                 text: response.message,
-                                type: 'warning',
                                 customClass: {
-                                confirmButton: 'btn btn-primary'
+                                  confirmButton: 'btn btn-primary'
                                 },
                                 buttonsStyling: false
                             })
@@ -95,9 +94,8 @@ $(function () {
                             icon: 'error',
                             title: 'Error!',
                             text: "Something went wrong. Plase try again later",
-                            type: 'error',
                             customClass: {
-                            confirmButton: 'btn btn-primary'
+                              confirmButton: 'btn btn-primary'
                             },
                             buttonsStyling: false
                         })

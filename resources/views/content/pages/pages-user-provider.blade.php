@@ -108,7 +108,7 @@ $configData = Helper::appClasses();
                             <span class="badge bg-label-info">{{$provider->ctn}} Services</span>
                         </td>
                         <td>{{ $provider->is_favorite }}</td>
-                        <td>{{ $provider->user_balance . $provider->balance_currency }}</td>
+                        <td>{{ $provider->user_balance . " " . $provider->balance_currency }}</td>
                         <td>
                             @if($provider->is_hold == 1)
                                 <span class="badge bg-label-danger" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>

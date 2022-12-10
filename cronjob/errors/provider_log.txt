@@ -1,0 +1,6 @@
+New STARTED: 2022-12-10 01:00:02
+New ENDED: 2022-12-10 01:06:01
+STARTED: 2022-12-10 01:06:01
+PHP Warning:  Undefined array key "balance" in /var/www/html/SMMQuest/cronjob/include/functions.php on line 57
+PHP Warning:  Undefined array key "currency" in /var/www/html/SMMQuest/cronjob/include/functions.php on line 58
+ENDED: 2022-12-10 01:25:34

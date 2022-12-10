@@ -90,9 +90,8 @@ $(function () {
                         icon: 'success',
                         title: '',
                         text: response.message,
-                        type: 'success',
                         customClass: {
-                        confirmButton: 'btn btn-primary'
+                            confirmButton: 'btn btn-primary'
                         },
                         buttonsStyling: false
                     }).then( function(){
@@ -204,7 +203,7 @@ $(function () {
                                 title: '',
                                 text: response.message,
                                 customClass: {
-                                confirmButton: 'btn btn-primary'
+                                    confirmButton: 'btn btn-primary'
                                 },
                             })
                             $("#reset_password_btn .fa-spinner").css("display", "none");

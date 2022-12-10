@@ -102,7 +102,7 @@
                                 title: 'Updated!',
                                 text: '',
                                 customClass: {
-                                confirmButton: 'btn btn-success'
+                                  confirmButton: 'btn btn-success'
                                 }
                             }).then(function(result){
                                 document.getElementById("formAccountSettings").reset();
@@ -114,7 +114,7 @@
                                 title: '',
                                 text: response.message,
                                 customClass: {
-                                confirmButton: 'btn btn-success'
+                                  confirmButton: 'btn btn-success'
                                 }
                             })
                         }
@@ -125,7 +125,7 @@
                             title: '',
                             text: "Something went wrong. Please try again later",
                             customClass: {
-                            confirmButton: 'btn btn-success'
+                              confirmButton: 'btn btn-success'
                             }
                         })
                     },

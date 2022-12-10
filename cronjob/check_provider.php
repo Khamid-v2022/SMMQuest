@@ -4,10 +4,10 @@
     
 
     // check New providers at first
-    checkNewProviders();
+    $checked_ids = checkNewProviders();
 
     // check old providers
-    checkProvider();
+    checkProvider($checked_ids);
 
     $conn->close();
 
@@ -15,17 +15,21 @@
     function checkNewProviders() {
         
         global $conn;
+
+        $checked = [];
         
         $sql = "SELECT * FROM providers WHERE domain IS NOT NULL AND ENDPOINT IS NOT NULL AND api_key IS NOT NULL AND (is_valid_key = 0 OR api_template IS NULL OR is_activated = 0)";
         $result = $conn->query($sql);
         
         if($result->num_rows == 0){
-            return;
+            return $checked;
         }
 
         echo "New STARTED: " . date("Y-m-d H:i:s") . PHP_EOL;
 
         while($row = $result->fetch_assoc()){
+
+            array_push($checked, $row['id']);
 
             $real_url = '';
             if($row['real_url']){
@@ -75,9 +79,10 @@
             $conn->query($sql_update);
         }
         echo "New ENDED: " . date("Y-m-d H:i:s") . PHP_EOL;
+        return $checked;
     }
 
-    function checkProvider() {
+    function checkProvider($checked_ids) {
         echo "STARTED: " . date("Y-m-d H:i:s") . PHP_EOL;
         $time_start = microtime(true);
         global $conn;
@@ -117,7 +122,10 @@
         $disabled = 0;
 
         while($row = $result->fetch_assoc()){
-
+            if(in_array($row['id'], $checked_ids)){
+                // skip
+                continue;
+            }
             // check with db url 
             // check API key working or not
             if($row['api_key'] && $row['endpoint'] && $row['api_template']){
@@ -221,13 +229,12 @@
 
             // set running time as 1 hour
             if(($time_end - $time_start)/60 > 60){
+                echo "TIME UP" . PHP_EOL;
                 break;
             }
         }
 
         echo "ENDED: " . date("Y-m-d H:i:s") . PHP_EOL;
     }
-
-   
 
 ?>

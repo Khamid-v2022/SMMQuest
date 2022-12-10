@@ -37,7 +37,7 @@ class UserManagement extends Controller
             'is_delete' => $request->is_delete
         ]);
 
-        return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
+        return response()->json(['code'=>200, 'message'=>'Success'], 200);
 
     }
 

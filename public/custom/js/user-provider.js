@@ -137,6 +137,7 @@ $(function () {
               // Favorite
               targets: 2,
               title: 'Favorite',
+              className: 'text-center',
               orderable: false,
               searchable: false,
               render: function (data, type, full, meta) {
@@ -149,6 +150,11 @@ $(function () {
                     '<a href="javascript:;" class="btn btn-sm btn-icon item-favorite"><i class=" bx bxs-like" ></i></a>'
                   );
               }
+            },
+            {
+              // Favorite
+              targets: 3,
+              className: 'text-end'
             },
             {
               // status
@@ -195,7 +201,6 @@ $(function () {
               icon: 'success',
               title: '',
               text: response.message,
-              type: 'success',
               customClass: {
                 confirmButton: 'btn btn-primary'
               },
@@ -208,7 +213,6 @@ $(function () {
                   icon: 'warning',
                   title: '',
                   text: response.message,
-                  type: 'warning',
                   customClass: {
                     confirmButton: 'btn btn-primary'
                   },
@@ -224,7 +228,6 @@ $(function () {
               icon: 'error',
               title: 'Error!',
               text: 'Something went wrong. Please try again later!',
-              type: 'error',
               customClass: {
                 confirmButton: 'btn btn-primary'
               },
@@ -266,7 +269,6 @@ $(function () {
                       icon: 'success',
                       title: '',
                       text: response.message,
-                      type: 'success',
                       customClass: {
                         confirmButton: 'btn btn-primary'
                       },
@@ -279,7 +281,6 @@ $(function () {
                           icon: 'warning',
                           title: '',
                           text: response.message,
-                          type: 'warning',
                           customClass: {
                             confirmButton: 'btn btn-primary'
                           },
@@ -293,7 +294,6 @@ $(function () {
                       icon: 'error',
                       title: 'Error!',
                       text: 'Something went wrong. Please try again later!',
-                      type: 'error',
                       customClass: {
                         confirmButton: 'btn btn-primary'
                       },
@@ -334,7 +334,6 @@ $(function () {
                     icon: 'warning',
                     title: '',
                     text: response.message,
-                    type: 'warning',
                     customClass: {
                       confirmButton: 'btn btn-primary'
                     },
@@ -348,7 +347,6 @@ $(function () {
                 icon: 'error',
                 title: 'Error!',
                 text: 'Something went wrong. Please try again later!',
-                type: 'error',
                 customClass: {
                   confirmButton: 'btn btn-primary'
                 },
@@ -387,7 +385,6 @@ $(function () {
                 icon: 'success',
                 title: '',
                 text: response.message,
-                type: 'success',
                 customClass: {
                 confirmButton: 'btn btn-primary'
                 },
@@ -405,7 +402,6 @@ $(function () {
                   icon: 'warning',
                   title: '',
                   text: response.message,
-                  type: 'warning',
                   customClass: {
                     confirmButton: 'btn btn-primary'
                   },
@@ -421,7 +417,6 @@ $(function () {
                 icon: 'error',
                 title: 'Error!',
                 text: 'Something went wrong. Please try again later!',
-                type: 'error',
                 customClass: {
                   confirmButton: 'btn btn-primary'
                 },
@@ -475,9 +470,8 @@ $(function () {
                 icon: 'success',
                 title: '',
                 text: response.message,
-                type: 'success',
                 customClass: {
-                confirmButton: 'btn btn-primary'
+                  confirmButton: 'btn btn-primary'
                 },
                 buttonsStyling: false
               }).then( function(){
@@ -493,7 +487,6 @@ $(function () {
                   icon: 'warning',
                   title: '',
                   text: response.message,
-                  type: 'warning',
                   customClass: {
                     confirmButton: 'btn btn-primary'
                   },
@@ -509,7 +502,6 @@ $(function () {
                 icon: 'error',
                 title: 'Error!',
                 text: 'Something went wrong. Please try again later!',
-                type: 'error',
                 customClass: {
                   confirmButton: 'btn btn-primary'
                 },
@@ -553,7 +545,6 @@ $(function () {
               icon: 'success',
               title: '',
               text: response.message,
-              type: 'success',
               customClass: {
                 confirmButton: 'btn btn-primary'
               },
@@ -566,7 +557,6 @@ $(function () {
                 icon: 'warning',
                 title: '',
                 text: response.message,
-                type: 'warning',
                 customClass: {
                   confirmButton: 'btn btn-primary'
                 },
@@ -582,7 +572,6 @@ $(function () {
               icon: 'error',
               title: 'Error!',
               text: 'Something went wrong. Please try again later!',
-              type: 'error',
               customClass: {
                 confirmButton: 'btn btn-primary'
               },
@@ -609,7 +598,6 @@ $(function () {
           icon: 'error',
           title: 'Error!',
           text: 'Please upload a valid Excel file.',
-          type: 'error',
           customClass: {
             confirmButton: 'btn btn-primary'
           },
@@ -657,7 +645,6 @@ function read_from_file(fileUpload){
       icon: 'error',
       title: 'Error!',
       text: 'This browser does not support HTML5.',
-      type: 'error',
       customClass: {
         confirmButton: 'btn btn-primary'
       },
@@ -698,7 +685,6 @@ function GetProdectsFromExcel(data, filename) {
       icon: 'warning',
       title: '',
       text: "No records in Excel file",
-      type: 'warning',
       customClass: {
         confirmButton: 'btn btn-primary'
       },
@@ -724,7 +710,6 @@ function GetProdectsFromExcel(data, filename) {
           icon: 'success',
           title: '',
           text: response.message,
-          type: 'success',
           customClass: {
             confirmButton: 'btn btn-primary'
           },
@@ -737,7 +722,6 @@ function GetProdectsFromExcel(data, filename) {
               icon: 'warning',
               title: '',
               text: response.message,
-              type: 'warning',
               customClass: {
                 confirmButton: 'btn btn-primary'
               },
@@ -753,7 +737,6 @@ function GetProdectsFromExcel(data, filename) {
           icon: 'error',
           title: 'Error!',
           text: 'Something went wrong. Please try again later!',
-          type: 'error',
           customClass: {
             confirmButton: 'btn btn-primary'
           },

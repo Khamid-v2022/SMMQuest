@@ -93,7 +93,7 @@
                                             title: '',
                                             text: 'Something went wrong. Please try again later',
                                             customClass: {
-                                            confirmButton: 'btn btn-success'
+                                                confirmButton: 'btn btn-success'
                                             }
                                         })
                                     }
@@ -104,7 +104,7 @@
                                         title: '',
                                         text: 'Something went wrong. Please try again later',
                                         customClass: {
-                                        confirmButton: 'btn btn-success'
+                                            confirmButton: 'btn btn-success'
                                         }
                                     })
                                 },
@@ -116,7 +116,7 @@
                                 text: 'Deactivation Cancelled!!',
                                 icon: 'error',
                                 customClass: {
-                                confirmButton: 'btn btn-success'
+                                    confirmButton: 'btn btn-success'
                                 }
                             });
                         }

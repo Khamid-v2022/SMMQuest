@@ -75,7 +75,7 @@ $(function () {
                                 title: 'Please check your email box!',
                                 text: 'Email sent successfully',
                                 customClass: {
-                                confirmButton: 'btn btn-success'
+                                    confirmButton: 'btn btn-success'
                                 }
                             });
                         } else {
@@ -98,7 +98,7 @@ $(function () {
                             title: '',
                             text: "Something went wrong. Please try again later",
                             customClass: {
-                            confirmButton: 'btn btn-success'
+                                confirmButton: 'btn btn-success'
                             }
                         })
                         $(".fa-spinner").css("display", "none");

@@ -37,8 +37,11 @@ class ProviderManagement extends Controller
           'domain' => 'required'
         ]);
 
-        // remove http://, https://, remove / from last of url
+        // get only domain name without http://, https://, www.
         $domain = $this->getDomain($request->domain);
+        if($domain == '' )
+            return response()->json(['code'=>400, 'message'=>'Wrong domain name'], 200);
+
         $url = rtrim($this->check_protocol($domain), '/');
         $end_point = '/' . rtrim(ltrim($request->end_point, '/'), '/');
 
@@ -65,7 +68,7 @@ class ProviderManagement extends Controller
                     // frozon status
                     $is_frozon = 1;
                 }
-
+                
                 if($request->action_type == "add"){
                     $user_provider = Provider::create([
                         'domain' => $domain,
@@ -99,7 +102,7 @@ class ProviderManagement extends Controller
                 return response()->json(['code'=>400, 'message'=>'Domain / API End Point is not correct!'], 200);
             }
             if($is_valid_key)
-                return response()->json(['code'=>200, 'message'=>'Sussess'], 200);
+                return response()->json(['code'=>200, 'message'=>'Success'], 200);
             else
                 return response()->json(['code'=>401, 'message'=>'Added/Updated! But API key is not correct!'], 200);
         } else {
@@ -188,7 +191,7 @@ class ProviderManagement extends Controller
         set_time_limit(300);
 
         foreach($providers as $item){
-            // remove http://, https://, remove / from last of url
+            // get only domain name without http://, https://, www.
             $domain = $this->getDomain($item->domain);
             $end_point = '/' . rtrim(ltrim($item->end_point, '/'), '/');
             
@@ -223,6 +226,8 @@ class ProviderManagement extends Controller
 
    
     public function importOneProviderServiceList($provider_id){
+        // set max running time as 20min
+        ini_set('max_execution_time', 1200);
         // 
         $provider = Provider::where('id', $provider_id)->first();
         if(!$provider['endpoint'] || !$provider['api_key']){
@@ -317,7 +322,6 @@ class ProviderManagement extends Controller
             return false;
         }
       
-
         return $added_count;
     }
 }

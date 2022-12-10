@@ -117,7 +117,6 @@ $(function () {
                                 icon: 'warning',
                                 title: '',
                                 text: response.message,
-                                type: 'warning',
                                 customClass: {
                                   confirmButton: 'btn btn-primary'
                                 },
@@ -134,7 +133,6 @@ $(function () {
                             icon: 'error',
                             title: 'Error!',
                             text: 'Something went wrong. Please try again later!',
-                            type: 'error',
                             customClass: {
                               confirmButton: 'btn btn-primary'
                             },

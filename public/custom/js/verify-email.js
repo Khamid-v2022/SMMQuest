@@ -19,7 +19,6 @@ $(function () {
                         icon: 'success',
                         title: 'Success!',
                         text: response.message,
-                        type: 'success',
                         customClass: {
                           confirmButton: 'btn btn-primary'
                         },
@@ -32,7 +31,6 @@ $(function () {
                         icon: 'warning',
                         title: 'Warning!',
                         text: response.message,
-                        type: 'warning',
                         customClass: {
                           confirmButton: 'btn btn-primary'
                         },
@@ -47,7 +45,6 @@ $(function () {
                     icon: 'error',
                     title: 'Error!',
                     text: "Something went wrong. Please try again later",
-                    type: 'error',
                     customClass: {
                       confirmButton: 'btn btn-primary'
                     },

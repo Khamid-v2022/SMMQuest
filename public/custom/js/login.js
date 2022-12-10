@@ -15,7 +15,6 @@ $(function () {
                 icon: 'warning',
                 title: 'Warning!',
                 text: 'Please fill out the following form',
-                type: 'warning',
                 customClass: {
                   confirmButton: 'btn btn-primary'
                 },
@@ -41,7 +40,6 @@ $(function () {
                     Swal.fire({
                         icon: 'warning',
                         title: response.message,
-                        type: 'warning',
                         text: '',
                         customClass: {
                             confirmButton: 'btn btn-success'
@@ -54,7 +52,6 @@ $(function () {
                         icon: 'warning',
                         title: 'Warning!',
                         text: response.message,
-                        type: 'warning',
                         customClass: {
                           confirmButton: 'btn btn-primary'
                         },
@@ -66,9 +63,7 @@ $(function () {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    // text: response.responseJSON.message,
                     text: "Something went wrong. Please try again later",
-                    type: 'error',
                     customClass: {
                       confirmButton: 'btn btn-primary'
                     },

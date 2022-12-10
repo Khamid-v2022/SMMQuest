@@ -162,7 +162,7 @@ $configData = Helper::appClasses();
     <div class="offcanvas-body flex-grow-1">
         <form class="add-new-record pt-0 row g-2" id="form-add-new-record" onsubmit="return false">
             <input type="hidden" id="m_selected_id">
-            <input type="hidden" id="m_action_type">
+            <input type="hidden" id="m_action_type" value="add">
             <div class="col-sm-12">
                 <label class="form-label" for="domain_name">Provider Domain</label>
                 <div class="input-group input-group-merge">

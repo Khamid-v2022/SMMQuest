@@ -375,11 +375,13 @@ $(function () {
                     $(".data-submit").removeAttr("disabled");
                     $("#data_table").unblock();
                 } else {
-                    dt_basic.columns.adjust().draw();
+                    
                     let sel_html = '<option value="-1">All</option>';
                     $("#search_min").html(sel_html);
                     $("#search_max").html(sel_html);
                     $("#search_provider").html(sel_html);
+                    resetSearchFilterOfDataTable();
+                    dt_basic.columns.adjust().draw();
 
                     $(".data-submit .fa-spinner").css("display", "none");
                     $(".data-submit").removeAttr("disabled");
@@ -389,12 +391,14 @@ $(function () {
             },
             error: function (response) {
                 console.log(response);
-                dt_basic.columns.adjust().draw();
+                
                 let sel_html = '<option value="-1">All</option>';
                 $("#search_min").html(sel_html);
                 $("#search_max").html(sel_html);
                 $("#search_provider").html(sel_html);
-
+                resetSearchFilterOfDataTable();
+                dt_basic.columns.adjust().draw();
+                
                 $(".data-submit .fa-spinner").css("display", "none");
                 $(".data-submit").removeAttr("disabled");
                 return;
@@ -455,7 +459,7 @@ function drawTableWithAPI(services){
     min_array.sort((a, b) => a - b);
     max_array.sort((a, b) => a - b);
 
-    dt_basic.columns.adjust().draw();
+    
     // dt_basic.draw();
 
     let min_sel_html = '<option value="-1">All</option>';
@@ -477,4 +481,14 @@ function drawTableWithAPI(services){
     $("#search_min").html(min_sel_html);
     $("#search_max").html(max_sel_html);
     $("#search_provider").html(providers_html);
+
+    resetSearchFilterOfDataTable();
+
+
+    dt_basic.columns.adjust().draw();
+}
+
+function resetSearchFilterOfDataTable(){
+    $(".dt-column-search th select").val(-1).trigger('change');
+    $(".dt-column-search th input").val("").trigger('change');
 }

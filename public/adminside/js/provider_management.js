@@ -121,6 +121,7 @@ $(function () {
     
     $('#add-new-record').on('hidden.bs.offcanvas', function () {
         $(this).find('form').trigger('reset');
+        $("#m_action_type").val('add');
     })
     $('#import_copy_modal').on('hidden.bs.offcanvas', function () {
         $(this).find('form').trigger('reset');
@@ -176,9 +177,8 @@ $(function () {
                             icon: 'success',
                             title: '',
                             text: response.message,
-                            type: 'success',
                             customClass: {
-                            confirmButton: 'btn btn-primary'
+                                confirmButton: 'btn btn-primary'
                             },
                             buttonsStyling: false
                         }).then( function(){
@@ -275,7 +275,7 @@ $(function () {
                                 title: '',
                                 text: response.message,
                                 customClass: {
-                                confirmButton: 'btn btn-primary'
+                                    confirmButton: 'btn btn-primary'
                                 },
                             })
                             return;
@@ -375,9 +375,8 @@ $(function () {
                 icon: 'warning',
                 title: '',
                 text: "Domain and End point is required",
-                type: 'warning',
                 customClass: {
-                confirmButton: 'btn btn-primary'
+                    confirmButton: 'btn btn-primary'
                 },
                 buttonsStyling: false
             })
@@ -392,7 +391,6 @@ $(function () {
             //         icon: 'warning',
             //         title: '',
             //         text: "Domain and End point is required",
-            //         type: 'warning',
             //         customClass: {
             //         confirmButton: 'btn btn-primary'
             //         },
@@ -407,9 +405,8 @@ $(function () {
                     icon: 'warning',
                     title: '',
                     text: "Domain and End point is required",
-                    type: 'warning',
                     customClass: {
-                    confirmButton: 'btn btn-primary'
+                        confirmButton: 'btn btn-primary'
                     },
                     buttonsStyling: false
                 })
@@ -425,9 +422,8 @@ $(function () {
                 icon: 'warning',
                 title: '',
                 text: " Domain and End point is required",
-                type: 'warning',
                 customClass: {
-                confirmButton: 'btn btn-primary'
+                    confirmButton: 'btn btn-primary'
                 },
                 buttonsStyling: false
             })
@@ -453,9 +449,8 @@ $(function () {
                         icon: 'success',
                         title: '',
                         text: response.message,
-                        type: 'success',
                         customClass: {
-                        confirmButton: 'btn btn-primary'
+                            confirmButton: 'btn btn-primary'
                         },
                         buttonsStyling: false
                     }).then( function(){
@@ -466,9 +461,8 @@ $(function () {
                         icon: 'warning',
                         title: '',
                         text: response.message,
-                        type: 'warning',
                         customClass: {
-                        confirmButton: 'btn btn-primary'
+                            confirmButton: 'btn btn-primary'
                         },
                         buttonsStyling: false
                     })
@@ -482,9 +476,8 @@ $(function () {
                     icon: 'error',
                     title: 'Error!',
                     text: 'Something went wrong. Please try again later!',
-                    type: 'error',
                     customClass: {
-                    confirmButton: 'btn btn-primary'
+                        confirmButton: 'btn btn-primary'
                     },
                     buttonsStyling: false
                 })
@@ -507,7 +500,6 @@ $(function () {
                 icon: 'error',
                 title: 'Error!',
                 text: 'Please upload a valid Excel file.',
-                type: 'error',
                 customClass: {
                     confirmButton: 'btn btn-primary'
                 },
@@ -556,7 +548,6 @@ function read_from_file(fileUpload){
             icon: 'error',
             title: 'Error!',
             text: 'This browser does not support HTML5.',
-            type: 'error',
             customClass: {
                 confirmButton: 'btn btn-primary'
             },
@@ -590,7 +581,6 @@ function GetProdectsFromExcel(data, filename) {
                 icon: 'warning',
                 title: '',
                 text: "Some records are missing domains or endpoints",
-                type: 'warning',
                 customClass: {
                     confirmButton: 'btn btn-primary'
                 },
@@ -612,7 +602,6 @@ function GetProdectsFromExcel(data, filename) {
             icon: 'warning',
             title: '',
             text: "No records in Excel file",
-            type: 'warning',
             customClass: {
                 confirmButton: 'btn btn-primary'
             },
@@ -639,7 +628,6 @@ function GetProdectsFromExcel(data, filename) {
                     icon: 'success',
                     title: '',
                     text: response.message,
-                    type: 'success',
                     customClass: {
                         confirmButton: 'btn btn-primary'
                     },
@@ -652,7 +640,6 @@ function GetProdectsFromExcel(data, filename) {
                     icon: 'warning',
                     title: '',
                     text: response.message,
-                    type: 'warning',
                     customClass: {
                         confirmButton: 'btn btn-primary'
                     },
@@ -668,7 +655,6 @@ function GetProdectsFromExcel(data, filename) {
                 icon: 'error',
                 title: 'Error!',
                 text: 'Something went wrong. Please try again later!',
-                type: 'error',
                 customClass: {
                     confirmButton: 'btn btn-primary'
                 },
