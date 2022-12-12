@@ -62,7 +62,7 @@
                    $is_frozon = 1;
                 }
 
-                $sql_update = "UPDATE providers SET real_url = '" . $real_url . "', is_activated = 1, is_valid_key = " . $api_is_valid . ", is_frozon = " . $is_frozon . ", api_template = '" . $api_check['apiTemplate'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
+                $sql_update = "UPDATE providers SET real_url = '" . $real_url . "', is_activated = 1, is_valid_key = " . $api_is_valid . ", is_frozon = " . $is_frozon . ", api_template = '" . $api_check['apiTemplate'] . "', balance = " . $api_check['balance'] . ", currency = '" . $api_check['currency'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
             } else {
                 // endpoint is wrong
                 $response = urlExists($real_url);
@@ -134,7 +134,7 @@
                     $api_check = checkAPIKeyWithTemplate($row['real_url'] . $row['endpoint'], $api_key, $row['api_template']);
                     if($api_check['status'] == 1) {
                         // valid key
-                        $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 1, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
+                        $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 1, balance = " . $api_check['balance'] . ", currency = '" . $api_check['currency'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                         if($row['is_activated'] == 0){
                             $enabled++;
                         }
@@ -152,16 +152,16 @@
                             // website is working 
                             if($url == $row['real_url']){
                                 // website is working but invalid key
-                                $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
+                                $sql = "UPDATE providers SET is_activated = 1, is_valid_key = 0, balance = " . $api_check['balance'] . ", currency = '" . $api_check['currency'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                                 $conn->query($sql);
                             } else {
                                 // check again with updated $url
                                 $api_key = decrypt_key($row['api_key']);
                                 $api_check_again = checkAPIKeyWithTemplate($url . $row['endpoint'], $api_key, $row['api_template']);
                                 if($api_check_again['status'] == 1) {
-                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
-                                } else if($api_check['status'] == 2){
-                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
+                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1, balance = " . $api_check_again['balance'] . ", currency = '" . $api_check_again['currency'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
+                                } else if($api_check_again['status'] == 2){
+                                    $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, balance = " . $api_check_again['balance'] . ", currency = '" . $api_check_again['currency'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                                 }
                                 
                                 $conn->query($sql);
@@ -185,10 +185,10 @@
                         $api_key = decrypt_key($row['api_key']);
                         $api_check = checkAPIKeyWithTemplate($url . $row['endpoint'], $api_key, $row['api_template']);
                         if($api_check['status'] == 1) {
-                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
+                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 1, balance = " . $api_check['balance'] . ", currency = '" . $api_check['currency'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                         } else if($api_check['status'] == 2){
                             // invalid key
-                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
+                            $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, balance = " . $api_check['balance'] . ", currency = '" . $api_check['currency'] . "', updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];
                         } else if($api_check['status'] == 3){
                             // frozon
                             $sql = "UPDATE providers SET real_url = '" . $url . "', is_activated = 1, is_valid_key = 0, is_frozon = 1, updated_at = '" . date('Y-m-d H:i:s') . "' WHERE id = " . $row['id'];

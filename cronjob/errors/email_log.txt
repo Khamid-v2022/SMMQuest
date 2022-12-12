@@ -4,3 +4,66 @@ Stack trace:
 #0 /var/www/html/SMMQuest/cronjob/balance_alert_email.php(3): require_once()
 #1 {main}
   thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+EMAIL STARTED: 2022-12-12 12:50:01
+<br/>2022-12-12 12:50:01	Connection: opening to ssl://smtp.gmail.com:465, timeout=300, options=array()
+2022-12-12 12:50:01	Connection: opened
+2022-12-12 12:50:01	SMTP INBOUND: "220 smtp.gmail.com ESMTP o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp"
+2022-12-12 12:50:01	SERVER -> CLIENT: 220 smtp.gmail.com ESMTP o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp
+2022-12-12 12:50:01	CLIENT -> SERVER: EHLO SMMQuest
+2022-12-12 12:50:01	SMTP INBOUND: "250-smtp.gmail.com at your service, [157.230.10.118]"
+2022-12-12 12:50:01	SMTP INBOUND: "250-SIZE 35882577"
+2022-12-12 12:50:01	SMTP INBOUND: "250-8BITMIME"
+2022-12-12 12:50:01	SMTP INBOUND: "250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH"
+2022-12-12 12:50:01	SMTP INBOUND: "250-ENHANCEDSTATUSCODES"
+2022-12-12 12:50:01	SMTP INBOUND: "250-PIPELINING"
+2022-12-12 12:50:01	SMTP INBOUND: "250-CHUNKING"
+2022-12-12 12:50:01	SMTP INBOUND: "250 SMTPUTF8"
+2022-12-12 12:50:01	SERVER -> CLIENT: 250-smtp.gmail.com at your service, [157.230.10.118]
+                   	                  250-SIZE 35882577
+                   	                  250-8BITMIME
+                   	                  250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+                   	                  250-ENHANCEDSTATUSCODES
+                   	                  250-PIPELINING
+                   	                  250-CHUNKING
+                   	                  250 SMTPUTF8
+2022-12-12 12:50:01	Auth method requested: UNSPECIFIED
+2022-12-12 12:50:01	Auth methods available on the server: LOGIN,PLAIN,XOAUTH2,PLAIN-CLIENTTOKEN,OAUTHBEARER,XOAUTH
+2022-12-12 12:50:01	Requested auth method not available:
+2022-12-12 12:50:01	Auth method selected: LOGIN
+2022-12-12 12:50:01	CLIENT -> SERVER: AUTH LOGIN
+2022-12-12 12:50:01	SMTP INBOUND: "334 VXNlcm5hbWU6"
+2022-12-12 12:50:01	SERVER -> CLIENT: 334 VXNlcm5hbWU6
+2022-12-12 12:50:01	CLIENT -> SERVER: bm8tcmVwbHlAc21tcXVlc3QuY29t
+2022-12-12 12:50:01	SMTP INBOUND: "334 UGFzc3dvcmQ6"
+2022-12-12 12:50:01	SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+2022-12-12 12:50:01	CLIENT -> SERVER: b3N4dHZwYmluZmxrZWxzeg==
+2022-12-12 12:50:01	SMTP INBOUND: "235 2.7.0 Accepted"
+2022-12-12 12:50:01	SERVER -> CLIENT: 235 2.7.0 Accepted
+2022-12-12 12:50:01	CLIENT -> SERVER: MAIL FROM:<no-reply@smmquest.com>
+2022-12-12 12:50:01	SMTP INBOUND: "250 2.1.0 OK o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp"
+2022-12-12 12:50:01	SERVER -> CLIENT: 250 2.1.0 OK o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp
+2022-12-12 12:50:01	CLIENT -> SERVER: RCPT TO:<khamid.webdev@gmail.com>
+2022-12-12 12:50:01	SMTP INBOUND: "250 2.1.5 OK o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp"
+2022-12-12 12:50:01	SERVER -> CLIENT: 250 2.1.5 OK o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp
+2022-12-12 12:50:01	CLIENT -> SERVER: DATA
+2022-12-12 12:50:02	SMTP INBOUND: "354  Go ahead o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp"
+2022-12-12 12:50:02	SERVER -> CLIENT: 354  Go ahead o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp
+2022-12-12 12:50:02	CLIENT -> SERVER: Date: Mon, 12 Dec 2022 12:50:01 +0000
+2022-12-12 12:50:02	CLIENT -> SERVER: To: khamid.webdev@gmail.com
+2022-12-12 12:50:02	CLIENT -> SERVER: From: Balance Alert <no-reply@smmquest.com>
+2022-12-12 12:50:02	CLIENT -> SERVER: Subject: SMMQuest.com - Balance Alert
+2022-12-12 12:50:02	CLIENT -> SERVER: Message-ID: <rnj7kIGdUOilbIyxVVsCF371jd9TuJhOrC9H9D4eZIY@SMMQuest>
+2022-12-12 12:50:02	CLIENT -> SERVER: X-Mailer: PHPMailer 6.7.1 (https://github.com/PHPMailer/PHPMailer)
+2022-12-12 12:50:02	CLIENT -> SERVER: MIME-Version: 1.0
+2022-12-12 12:50:02	CLIENT -> SERVER: Content-Type: text/html; charset=iso-8859-1
+2022-12-12 12:50:02	CLIENT -> SERVER:
+2022-12-12 12:50:02	CLIENT -> SERVER: <p>Add funds to your providers websites, so orders are not being Failed on your panel.</p><ul><li><a href='https://followiz.com'>followiz.com</a> (500USD) - Current Balance: 440.116098USD</li></ul><p>You are receiving this email because you have configured an "Email Balance Alert" at SMMQuest.com.</p>
+2022-12-12 12:50:02	CLIENT -> SERVER:
+2022-12-12 12:50:02	CLIENT -> SERVER: .
+2022-12-12 12:50:03	SMTP INBOUND: "250 2.0.0 OK  1670849403 o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp"
+2022-12-12 12:50:03	SERVER -> CLIENT: 250 2.0.0 OK  1670849403 o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp
+2022-12-12 12:50:03	CLIENT -> SERVER: QUIT
+2022-12-12 12:50:03	SMTP INBOUND: "221 2.0.0 closing connection o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp"
+2022-12-12 12:50:03	SERVER -> CLIENT: 221 2.0.0 closing connection o17-20020ac841d1000000b003a6a4744432sm5729747qtm.87 - gsmtp
+2022-12-12 12:50:03	Connection: closed
+EMAIL ENDED: 2022-12-12 12:50:03

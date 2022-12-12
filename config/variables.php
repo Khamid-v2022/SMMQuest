@@ -29,5 +29,6 @@
       "(GMT-05:00) Indiana (East)" => -5,
       "(GMT-04:00) Atlantic Time (Canada)" => -4,
       "(GMT-04:00) Caracas, La Paz" => -4,
-    ]
+    ],
+    "currencies" => ["USD", "EUR", "INR", "TRY", "RUB", "BRL", "NGN", "KRW", "THB", "SAR", "CNY", "VND", "KWD", "EGP", "PKR", "PHP"],
   ];

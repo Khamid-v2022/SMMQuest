@@ -7,12 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\UserProvider;
 use App\Models\Service;
+use App\Models\Currency;
 
 class SearchServicesController extends MyController
 {
+    private $currencies = NULL;
+
     public function index()
     {
         $pageConfigs = ['myLayout' => 'horizontal'];
+
+        $this->currencies = Currency::where("id", 1)->first();
 
         // $providers = UserProvider::with(['provider'])
         //   ->where('user_id', Auth::user()->id)->get();
@@ -60,6 +65,28 @@ class SearchServicesController extends MyController
             $request->min_rate,
             $request->max_rate
         );
+
+        if(count($result) > 0){
+            if(!$this->currencies){
+                // currency table based USD
+                $this->currencies = Currency::where("id", 1)->first();
+            }
+            
+            for($index = 0; $index < count($result); $index++){
+                if($result[$index]->user_currency && strtoupper($result[$index]->user_currency) != $request->currency){
+                    $currency = $this->currencies[strtoupper($result[$index]->user_currency)];
+                } else {
+                    if($result[$index]->main_currency && strtoupper($result[$index]->main_currency) != $request->currency){
+                        $currency = $this->currencies[strtoupper($result[$index]->main_currency)];
+                    }
+                }
+
+                if(isset($currency) && $currency &&  $currency != 0) {
+                    $result[$index]->rate = ($result[$index]->rate / $currency) * $this->currencies[$request->currency];
+                }
+                    
+            }
+        }
 
         return response()->json(['code'=>200, 'services'=>$result], 200);
     }

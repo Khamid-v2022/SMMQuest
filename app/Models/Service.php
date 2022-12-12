@@ -103,12 +103,12 @@ class Service extends Model
 
     public static function search_services_with_query($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate){
         
-        $sql = "SELECT `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `status`, `s`.`created_at`, `s`.`updated_at` ";
+        $sql = "SELECT `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `main_currency`, `user_currency`, `status`, `s`.`created_at`, `s`.`updated_at` ";
         $sql .= " FROM ( ";
-            $sql .= " SELECT `p`.`id`, `is_favorite`, `domain` FROM ( ";
-                $sql .= " SELECT `provider_id`, `is_favorite` FROM `user_provider` WHERE `is_enabled` = 1 AND `user_id` = " . $user_id;
+            $sql .= " SELECT `p`.`id`, `is_favorite`, `domain`, `p`.`currency` AS `main_currency`, `up`.`balance_currency` AS `user_currency` FROM ( ";
+                $sql .= " SELECT `provider_id`, `is_favorite`, `balance_currency` FROM `user_provider` WHERE `is_enabled` = 1 AND `user_id` = " . $user_id;
             $sql .= " ) `up` ";
-            $sql .= " LEFT JOIN `providers` `p` ON  `up`.`provider_id` = `p`.`id` AND `is_activated` = 1 ";
+            $sql .= " LEFT JOIN `providers` `p` ON  `up`.`provider_id` = `p`.`id` AND `is_activated` = 1 AND `is_frozon` = 0 AND `is_hold` = 0 ";
         $sql .= " ) `pro` ";
         $sql .= " LEFT JOIN `services` `s` ON `pro`.`id` = `s`.`provider_id` AND `status` = 1 ";
         $sql .= " WHERE ";

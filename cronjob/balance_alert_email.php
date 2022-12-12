@@ -6,7 +6,7 @@
     use PHPMailer\PHPMailer\Exception;
     require_once "../vendor/autoload.php";
 
-    // sendEmail();
+    sendEmail();
     $conn->close();
 
     function sendEmail() {

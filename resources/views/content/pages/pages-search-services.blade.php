@@ -119,6 +119,15 @@ $configData = Helper::appClasses();
                                 <label class="form-label">Maximum Price:</label>
                                 <input type="number" id="max_rate" class="form-control dt-input" placeholder="Maximum Price" step="any">
                             </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label">Currency:</label>
+                                <select id="currency" class="selectpicker w-100">
+                                    @foreach(config('variables.currencies') as $currency)
+                                        <option value="{{ $currency }}">{{ $currency }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                           
                         </div>
                         <div class="row pt-3">
                             <small class="text-light fw-semibold d-block">Show Columns</small>
@@ -163,7 +172,6 @@ $configData = Helper::appClasses();
                                     <input class="form-check-input show-column-item" data-sel-class="service-dripfeed" data-column-index="8" id="check_dripfeed" type="checkbox" checked />
                                     <label class="form-check-label" for="check_dripfeed">Dripfeed</label>
                                 </div>
-                                
                             </div>
                             <div class="col-sm">
                                 <div class="form-check form-check-primary mt-2">

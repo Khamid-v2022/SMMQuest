@@ -340,7 +340,8 @@ $(function () {
             min,
             max,
             min_rate: $("#min_rate").val(),
-            max_rate: $("#max_rate").val()
+            max_rate: $("#max_rate").val(),
+            currency: $("#currency").val()
         }
 
         const _url = "/search-services";
