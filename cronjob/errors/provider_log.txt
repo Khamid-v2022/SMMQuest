@@ -16,3 +16,14 @@ STARTED: 2022-12-12 01:06:17
 PHP Warning:  Undefined array key "balance" in /var/www/html/SMMQuest/cronjob/include/functions.php on line 57
 PHP Warning:  Undefined array key "currency" in /var/www/html/SMMQuest/cronjob/include/functions.php on line 58
 ENDED: 2022-12-12 01:26:20
+New STARTED: 2022-12-13 01:00:01
+PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', currency = '', updated_at = '2022-12-13 01:00:09' WHERE id = 12' at line 1 in /var/www/html/SMMQuest/cronjob/check_provider.php:79
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/check_provider.php(79): mysqli->query()
+#1 /var/www/html/SMMQuest/cronjob/check_provider.php(7): checkNewProviders()
+#2 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/check_provider.php on line 79
+New STARTED: 2022-12-14 01:00:01
+New ENDED: 2022-12-14 01:06:22
+STARTED: 2022-12-14 01:06:22
+ENDED: 2022-12-14 01:26:50

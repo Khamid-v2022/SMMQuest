@@ -2,9 +2,7 @@
     require_once "include/db_configure.php";
     require_once "include/functions.php";
     
-    // providers
-    require_once "providers/PerfectPanel.php";
-    require_once "providers/SmmPanel.php";
+
 
     checkHoldProvider();
     $conn->close();

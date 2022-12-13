@@ -1,9 +1,4 @@
-PHP Warning:  require_once(../providers/PerfectPanel.php): Failed to open stream: No such file or directory in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
-PHP Fatal error:  Uncaught Error: Failed opening required '../providers/PerfectPanel.php' (include_path='.:/usr/share/php') in /var/www/html/SMMQuest/cronjob/include/functions.php:7
-Stack trace:
-#0 /var/www/html/SMMQuest/cronjob/balance_check.php(3): require_once()
-#1 {main}
-  thrown in /var/www/html/SMMQuest/cronjob/include/functions.php on line 7
+
 STARTED: 2022-12-09 18:00:01
 BALACE ENDED: 2022-12-09 18:00:02
 STARTED: 2022-12-10 00:00:02
@@ -28,3 +23,15 @@ STARTED: 2022-12-12 06:00:01
 BALACE ENDED: 2022-12-12 06:00:01
 STARTED: 2022-12-12 12:00:01
 BALACE ENDED: 2022-12-12 12:00:02
+STARTED: 2022-12-12 18:00:01
+BALACE ENDED: 2022-12-12 18:00:02
+STARTED: 2022-12-13 00:00:01
+BALACE ENDED: 2022-12-13 00:00:37
+STARTED: 2022-12-13 06:00:01
+BALACE ENDED: 2022-12-13 06:00:38
+STARTED: 2022-12-13 12:00:01
+BALACE ENDED: 2022-12-13 12:00:37
+STARTED: 2022-12-13 18:00:01
+BALACE ENDED: 2022-12-13 18:00:35
+STARTED: 2022-12-14 00:00:01
+BALACE ENDED: 2022-12-14 00:00:41

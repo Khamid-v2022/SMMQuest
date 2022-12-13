@@ -62,15 +62,15 @@
                             // frozon status
                             return array (
                                 'status'=> 3,
-                                'balance' => NULL,
-                                'currency' => NULL
+                                'balance' => "NULL",
+                                'currency' => "NULL"
                             );
                         } else {    
                             // invalid Key
                             return array (
                                 'status'=> 2,
-                                'balance' => NULL,
-                                'currency' => NULL
+                                'balance' => "NULL",
+                                'currency' => "NULL"
                             );
                         }
                     }
@@ -86,15 +86,15 @@
                         // return true;
                         return array (
                             'status'=> 1,
-                            'balance' => NULL,
-                            'currency' => NULL
+                            'balance' => "NULL",
+                            'currency' => "NULL"
                         );
                     } else {
                         // invalid key
                         return array (
                             'status'=> 2,
-                            'balance' => NULL,
-                            'currency' => NULL
+                            'balance' => "NULL",
+                            'currency' => "NULL"
                         );
                     }
                 } 
@@ -121,8 +121,8 @@
                 return array (
                     'status'=> 1, 
                     'apiTemplate'=> 'PerfectPanel', 
-                    'balance' => isset($balance['balance']) ? $balance['balance'] : NULL,
-                    'currency' => isset($balance['currency']) ? $balance['currency'] : NULL
+                    'balance' => isset($balance['balance']) ? $balance['balance'] : "NULL",
+                    'currency' => isset($balance['currency']) ? $balance['currency'] : "NULL"
                 );
             } else {
                 if($balance['error'] == "Incorrect request"){
@@ -130,16 +130,16 @@
                     return array (
                         'status'=> 3, 
                         'apiTemplate'=> 'PerfectPanel', 
-                        'balance' => NULL,
-                        'currency' => NULL
+                        'balance' => "NULL",
+                        'currency' => "NULL"
                     );
                 } else {
                     // wrong API key
                     return array (
                         'status'=> 2, 
                         'apiTemplate'=> 'PerfectPanel', 
-                        'balance' => NULL,
-                        'currency' => NULL
+                        'balance' => "NULL",
+                        'currency' => "NULL"
                     );
                 }
                 
@@ -156,15 +156,15 @@
                 return array (
                     'status'=> 1, 
                     'apiTemplate'=> 'SmmPanel', 
-                    'balance' => NULL,
-                    'currency' => NULL
+                    'balance' => "NULL",
+                    'currency' => "NULL"
                 );
             } else {
                 return array (
                     'status'=> 2, 
                     'apiTemplate'=> 'SmmPanel', 
-                    'balance' => NULL,
-                    'currency' => NULL
+                    'balance' => "NULL",
+                    'currency' => "NULL"
                 );
             }
         } 
