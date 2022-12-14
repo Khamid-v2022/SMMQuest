@@ -61,4 +61,6 @@ class UserProvider extends Model
             GROUP BY `provider_id`
         ) `s` ON `pro`.`provider_id` = `s`.`provider_id`");
     }
+
+
 }

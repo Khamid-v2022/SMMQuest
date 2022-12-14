@@ -73,15 +73,18 @@ class SearchServicesController extends MyController
             }
             
             for($index = 0; $index < count($result); $index++){
-                if($result[$index]->user_currency && strtoupper($result[$index]->user_currency) != $request->currency){
-                    $currency = $this->currencies[strtoupper($result[$index]->user_currency)];
-                } else {
-                    if($result[$index]->main_currency && strtoupper($result[$index]->main_currency) != $request->currency){
+                $currency = NULL;
+                if ($result[$index]->user_currency){
+                    if(strtoupper($result[$index]->user_currency) != $request->currency){
+                        $currency = $this->currencies[strtoupper($result[$index]->user_currency)];
+                    }
+                } else if($result[$index]->main_currency){
+                    if(strtoupper($result[$index]->main_currency) != $request->currency){
                         $currency = $this->currencies[strtoupper($result[$index]->main_currency)];
                     }
                 }
 
-                if(isset($currency) && $currency &&  $currency != 0) {
+                if($currency && $currency != 0) {
                     $result[$index]->rate = ($result[$index]->rate / $currency) * $this->currencies[$request->currency];
                 }
                     

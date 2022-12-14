@@ -1,5 +1,6 @@
 var dt_basic;
 var all_show_table;
+var service_type_html = '<option value="-1">All</option>';
 
 var previous_selected_providers = ["0"];
 $(function () {
@@ -49,12 +50,18 @@ $(function () {
             html += '</select>';
             $(this).html(html);
         }
-        else if(i == 5) {
+        else if(i == 4) {
+            let html = '<select class="form-select" id="search_type">';
+            html += '<option value="-1">All</option>';  
+            html += '</select>';
+            $(this).html(html);
+        } 
+        else if(i == 6) {
             let html = '<select class="form-select" id="search_min">';
             html += '<option value="-1">All</option>';  
             html += '</select>';
             $(this).html(html);
-        } else if(i == 6) {
+        } else if(i == 7) {
             let html = '<select class="form-select" id="search_max">';
             html += '<option value="-1">All</option>';  
             html += '</select>';
@@ -103,6 +110,18 @@ $(function () {
             $("#data_table").unblock();
         });
 
+        $('#search_type', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
         $('#search_min', this).on('change', function () {
             blockDataTable();
             if(this.value == -1){
@@ -132,13 +151,13 @@ $(function () {
     dt_basic = $('.datatables-basic').DataTable({
         columns: [
             { data: 'domain'},
+            { data: 'category' },
             { data: 'service' },
             { data: 'name' },
-            { data: 'category' },
+            { data: 'type'},
             { data: 'rate'},
             { data: 'min'},
             { data: 'max'},
-            { data: 'type'},
             { data: 'dripfeed'},
             { data: 'refill'},
             { data: 'cancel'},
@@ -156,20 +175,24 @@ $(function () {
                 }
             },
             {
-                className: 'service-id',
+                className: 'service-category',
                 targets: 1
             },
             {
-                className: 'service-name',
+                className: 'service-id',
                 targets: 2
             },
             {
-                className: 'service-category',
+                className: 'service-name',
                 targets: 3
             },
             {
-                className: 'service-rate text-end',
+                className: 'service-type',
                 targets: 4,
+            },
+            {
+                className: 'service-rate text-end',
+                targets: 5,
                 render: function(data){
                     return data ? data.toLocaleString('en-US', {maximumFractionDigits:5}) : '';
                    
@@ -177,22 +200,18 @@ $(function () {
             },
             {
                 className: 'service-min text-end',
-                targets: 5,
+                targets: 6,
                 render: function (data, type, full, meta) {
                     return data ? data.toLocaleString('en-US') : '';
                 }
             },
             {
                 className: 'service-max text-end',
-                targets: 6,
+                targets: 7,
                 render: function (data, type, full, meta) {
                     
                     return data ? data.toLocaleString('en-US') : '';
                 }
-            },
-            {
-                className: 'service-type',
-                targets: 7,
             },
             {
                 className: 'service-dripfeed text-center',
@@ -232,15 +251,15 @@ $(function () {
                 targets: 11
             },
         ],
-        order: [[4, 'asc']],
+        order: [[5, 'asc']],
         orderCellsTop: true,
         paging: false,
         lengthChange: false,
         dom: '<"table-responsive"t><"row"<"col-sm-12 col-md-6"i>>',
     });
     // hide category, type column as default
-    dt_basic.column(3).visible(false);
-    dt_basic.column(7).visible(false);
+    dt_basic.column(1).visible(false);
+    dt_basic.column(4).visible(false);
     dt_basic.column(11).visible(false);
   
     // Filter form control to default size
@@ -274,6 +293,7 @@ $(function () {
         var column = dt_basic.column($(this).attr('data-column-index'));
         // Toggle the visibility
         column.visible(!column.visible());
+        $("#search_type").html(service_type_html);
         $("#data_table").unblock();
     })
 
@@ -429,19 +449,20 @@ function drawTableWithAPI(services){
     let min_array = [];
     let max_array = [];
     let providers = [];
+    let types = [];
 
     let records = [];
 
     services.forEach((service) => {
         records.push({
             domain: service.domain,
+            category: service.category,
             service: service.service,
             name: service.name,
-            category: service.category,
+            type: service.type,
             rate: service.rate,
             min: service.min,
             max: service.max,
-            type: service.type,
             dripfeed: service.dripfeed,
             refill: service.refill,
             cancel: service.cancel,
@@ -450,6 +471,8 @@ function drawTableWithAPI(services){
 
         if(!providers.includes(service.domain))
             providers.push(service.domain);
+        if(!types.includes(service.type))
+            types.push(service.type);
         if(!min_array.includes(service.min))
             min_array.push(service.min);
         if(!max_array.includes(service.max))
@@ -466,6 +489,7 @@ function drawTableWithAPI(services){
     let min_sel_html = '<option value="-1">All</option>';
     let max_sel_html = '<option value="-1">All</option>';
     let providers_html = '<option value="-1">All</option>';
+    service_type_html = '<option value="-1">All</option>';
     
     min_array.forEach((item) => {
         min_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
@@ -479,9 +503,20 @@ function drawTableWithAPI(services){
         providers_html += '<option value="' + item + '">' + item + '</option>';
     })
 
+    if(types.length > 0 && types.includes("Default")){
+        const index = types.indexOf("Default");
+        types.splice(index, 1);
+        types = ["Default"].concat(types);
+    }
+
+    types.forEach((item) => {
+        service_type_html += '<option value="' + item + '">' + item + '</option>';
+    })
+
     $("#search_min").html(min_sel_html);
     $("#search_max").html(max_sel_html);
     $("#search_provider").html(providers_html);
+    $("#search_type").html(service_type_html);
 
     resetSearchFilterOfDataTable();
 

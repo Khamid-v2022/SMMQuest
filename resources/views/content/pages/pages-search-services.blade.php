@@ -137,36 +137,37 @@ $configData = Helper::appClasses();
                                     <label class="form-check-label" for="check_provider">Provider</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-id" data-column-index="1" id="check_id" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_id">ID</label>
-                                </div>
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-name" data-column-index="2" id="check_name" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_name">Name</label>
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-category" data-column-index="3" id="check_category" type="checkbox" />
+                                    <input class="form-check-input show-column-item" data-sel-class="service-category" data-column-index="1" id="check_category" type="checkbox" />
                                     <label class="form-check-label" for="check_category">Category</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-rate" data-column-index="4" id="check_rate" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_rate">Price</label>
-                                </div>
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-min" data-column-index="5" id="check_min" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_min">Min</label>
+                                    <input class="form-check-input show-column-item" data-sel-class="service-id" data-column-index="2" id="check_id" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_id">ID</label>
                                 </div>
                             </div>
                             <div class="col-sm">
                                 <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-max" data-column-index="6" id="check_max" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_max">Max</label>
+                                    <input class="form-check-input show-column-item" data-sel-class="service-name" data-column-index="3" id="check_name" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_name">Name</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-type" data-column-index="7" id="check_type" type="checkbox" />
-                                    <label class="form-check-label" for="check_type">Type</label>
+                                    <input class="form-check-input show-column-item" data-sel-class="service-type" data-column-index="4" id="check_type" type="checkbox" />
+                                    <label class="form-check-label" for="check_type">Service Type</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-rate" data-column-index="5" id="check_rate" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_rate">Price</label>
+                                </div>
+                               
+                            </div>
+                            <div class="col-sm">
+                            <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-min" data-column-index="6" id="check_min" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_min">Min</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-max" data-column-index="7" id="check_max" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_max">Max</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-dripfeed" data-column-index="8" id="check_dripfeed" type="checkbox" checked />
@@ -203,17 +204,17 @@ $configData = Helper::appClasses();
 
 <div class="card mb-4">
     <div class="card-datatable table-responsive">
-        <table class="dt-column-search datatables-basic table border-top" id="data_table">
+        <table class="dt-column-search datatables-basic table" id="data_table" style="font-size: .9rem;">
             <thead>
                 <tr>
                     <th class='service-domain'> Provider </th>
+                    <th class='service-category'>Category</th>
                     <th class='service-id'>ID</th>
                     <th class='service-name'>Name</th>
-                    <th class='service-category'>Category</th>
+                    <th class='service-type'>Service Type</th>
                     <th class='service-rate'>Price</th>
                     <th class='service-min'>Min</th>
                     <th class='service-max'>Max</th>
-                    <th class='service-type'>Type</th>
                     <th class='service-dripfeed'>Dripfeed</th>
                     <th class='service-refill'>Refill Button</th>
                     <th class='service-cancel'>Cancel Button</th>

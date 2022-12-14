@@ -60,7 +60,7 @@
                 $api_check = checkAPIKeyWithTemplate($row['real_url'] . $row['endpoint'], $api_key, $row['api_template'] );
                 
                 if($api_check['status']) {
-                    $update_sql = "UPDATE user_provider SET user_balance = " . $api_check['balance'] . ", balance_currency = '" . $api_check['currency'] . "' WHERE id = " . $row['id'];
+                    $update_sql = "UPDATE user_provider SET user_balance = " . $api_check['balance'] . ", balance_currency = '" . ($api_check['currency'] ? $api_check['currency'] : "") . "' WHERE id = " . $row['id'];
                     $conn->query($update_sql);
                 }
             }

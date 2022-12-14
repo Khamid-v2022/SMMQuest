@@ -50,8 +50,17 @@ $configData = Helper::appClasses();
 @endsection
 
 <style>
+    .datatables-basic {
+        font-size: .9rem;
+    }
     .fa-spinner {
         display: none
+    }
+    .btn-icon {
+        display: table-cell!important;
+    }
+    .provider-status {
+        min-width: 194px;
     }
 </style>
 
@@ -84,7 +93,7 @@ $configData = Helper::appClasses();
         </div>
     </div>
     <div class="card-datatable table-responsive">
-        <table class="datatables-basic table border-top">
+        <table class="dt-column-search datatables-basic table border-top">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -102,23 +111,28 @@ $configData = Helper::appClasses();
                     @php $index++; @endphp
                     <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} data-endpoint={{ $provider->endpoint }}>
                         <td>{{ $index }}</td>
-                        <td>{{ $provider->domain }}</td>
+                        <td>
+                            {{ $provider->domain }}
+                            @if($provider->is_activated == 1 && $provider->is_frozon == 0 && $provider->is_hold == 0)
+                                <span class="badge bg-label-info">{{$provider->ctn?$provider->ctn:0}} Services</span>
+                            @endif
+                        </td>
                         <td>{{ $provider->api_template }}</td>
                         <td>
-                           
                             @if($provider->is_hold == 1)
-                                <span class="badge bg-label-danger" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
-                            @else  
-                                @if($provider->is_activated == 1)
-                                    <span class="badge bg-label-success">Enabled</span>
-                                @else
-                                    <span class="badge bg-label-danger">Disabled</span>
-                                @endif
-                                
+                                <span class="badge bg-label-info" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
+                            @else 
                                 @if($provider->is_frozon == 1)
-                                    <span class="badge bg-info">Frozon</span>
-                                @elseif($provider->is_valid_key == 0)
-                                    <span class="badge bg-label-warning">Invalid API Key</span>
+                                    <span class="badge bg-danger">Panel Unavailable</span>
+                                @else
+                                    @if($provider->is_activated == 1)
+                                        <span class="badge bg-label-success">Enabled</span>
+                                        @if($provider->is_valid_key == 0)
+                                            <span class="badge bg-label-warning">Invalid API Key</span>
+                                        @endif
+                                    @else
+                                        <span class="badge bg-label-danger">Disabled</span>
+                                    @endif
                                 @endif
                             @endif
                         </td>

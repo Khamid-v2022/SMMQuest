@@ -40,3 +40,13 @@ SERVICE ENDED: 2022-12-13 17:45:15
 Service STARTED: 2022-12-14 00:00:01
 INSERTED: 1368ROWS
 SERVICE ENDED: 2022-12-14 01:47:11
+Service STARTED: 2022-12-14 08:00:01
+PHP Fatal error:  Uncaught mysqli_sql_exception: File './binlog.000127' not found (OS errno 2 - No such file or directory) in /var/www/html/SMMQuest/cronjob/cron_services.php:93
+Stack trace:
+#0 /var/www/html/SMMQuest/cronjob/cron_services.php(93): mysqli->query()
+#1 /var/www/html/SMMQuest/cronjob/cron_services.php(6): loadServices()
+#2 {main}
+  thrown in /var/www/html/SMMQuest/cronjob/cron_services.php on line 93
+Service STARTED: 2022-12-14 16:00:01
+INSERTED: 9894ROWS
+SERVICE ENDED: 2022-12-14 17:51:48

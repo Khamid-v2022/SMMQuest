@@ -22,8 +22,8 @@ class ProviderManagement extends Controller
     {
         $pageConfigs = ['myLayout' => 'horizontal'];
 
-        $providers = Provider::get();
-        $hold_providers = ProviderHold::select('domain')->groupBy('domain')->get();
+        $providers = Provider::getProviders();
+        $hold_providers = ProviderHold::select('domain')->where('is_only_key_check', '1')->groupBy('domain')->get();
 
         return view('content.adminside.provider-management', [
             'pageConfigs'=> $pageConfigs, 
@@ -195,15 +195,13 @@ class ProviderManagement extends Controller
             $domain = $this->getDomain($item->domain);
             $end_point = '/' . rtrim(ltrim($item->end_point, '/'), '/');
             
+            $decrypted_key = NULL;
+            if($item->key){
+                $decrypted_key = $this->encrypt(trim($item->key));
+            } 
             // check aready registred 
             $provider = Provider::where('domain', $domain)->first();
             if(!$provider){
-
-                $decrypted_key = NULL;
-                if($item->key){
-                    $decrypted_key = $this->encrypt(trim($item->key));
-                } 
-
                 // save to hold_provider table
                 ProviderHold::updateOrCreate(['domain' => $domain, 'request_by_admin' => 1 ], [
                     'domain' => $domain,
@@ -214,6 +212,20 @@ class ProviderManagement extends Controller
                     'is_only_key_check' => 0
                 ]);
                 $added_count++;
+            } else {
+                // if registred alredy then only add to hold table to update in case of registred key is invalid
+                if($provider->is_valid_key == 0){
+                    // update key request
+                    ProviderHold::updateOrCreate(['domain' => $domain, 'request_by_admin' => 1 ], [
+                        'domain' => $domain,
+                        'endpoint' => $end_point,
+                        'api_key' => $decrypted_key,
+                        'request_by_admin' => 1,
+                        'request_by_id' => Auth::user()->id,
+                        'is_only_key_check' => 1
+                    ]);
+                    $added_count++;
+                }
             }
         }
         if( $added_count > 0){

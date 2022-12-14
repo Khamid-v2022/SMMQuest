@@ -276,30 +276,37 @@ class ProviderController extends MyController
             }
             
             $added_count++;
+          } else {
+            // if old registred provider key is wrong and inputed key is exist then update key
+            if($is_exist->is_valid_key == 0 && $item->key){
+              UserProvider::where('id', $is_exist->id)->update(['api_key' => $this->encrypt(trim($item->key))]);
+              ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
+                'domain' => $domain,
+                'api_key' => $this->encrypt(trim($item->key)),
+                'request_by_admin' => 0,                //user request
+                'request_by_id' => Auth::user()->id,
+                'is_only_key_check' => 1,
+                'created_at' => date("Y-m-d H:i:s")
+              ]);
+            }
           }
           
         } else {
           // store hold table
+          $api_key = NULL;
+
           if($item->key){
-            ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
-              'domain' => $domain,
-              'api_key' => $this->encrypt(trim($item->key)),
-              'request_by_admin' => 0,                //user request
-              'request_by_id' => Auth::user()->id,
-              'is_only_key_check' => 0,
-              'created_at' => date("Y-m-d H:i:s")
-            ]);
+            $api_key = $this->encrypt(trim($item->key));
           }
-          else {
-            ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
-              'domain' => $domain,
-              'request_by_admin' => 0,                //user request
-              'api_key' => NULL,
-              'request_by_id' => Auth::user()->id,
-              'is_only_key_check' => 0,
-              'created_at' => date("Y-m-d H:i:s")
-            ]);
-          }
+          
+          ProviderHold::updateOrCreate(['domain' => $domain,'request_by_id' => Auth::user()->id, 'request_by_admin' => 0 ], [
+            'domain' => $domain,
+            'request_by_admin' => 0,                //user request
+            'api_key' => $api_key,
+            'request_by_id' => Auth::user()->id,
+            'is_only_key_check' => 0,
+            'created_at' => date("Y-m-d H:i:s")
+          ]);
 
           $created_count++;
           array_push($new_request_domains, $domain);

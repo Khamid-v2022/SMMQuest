@@ -31,34 +31,59 @@
                     if($row['api_key']){
                         $api_key = decrypt_key($row['api_key']);
                         $api_check = checkAPIKeyWithTemplate($sel_provider['real_url'] . $sel_provider['endpoint'], $api_key, $sel_provider['api_template']);
+
+                        $valid_key = 0;
                         if($api_check['status'] == 1) {
-                            $sql_add = "INSERT INTO user_provider( user_id, provider_id, is_favorite, api_key, is_enabled, is_valid_key, created_at) VALUES (" 
-                                . $row['request_by_id'] . ", " 
-                                . $sel_provider['id'] . ", " 
-                                . "0, '" 
-                                . $row['api_key'] . "', " 
-                                . "1, 1, '" . $item['created_at'] . "')";
+                            $valid_key = 1;
+                            
                         } else if($api_check['status'] == 2){
                             // invalid
+                            $valid_key = 0;
+                        }
+
+                        if($row['request_by_admin'] == 1){
+                            // requested by admin
+                            $sql_update = "UPDATE providers SET api_key='" . $row['api_key'] . "', balance=" . $api_check['balance'] . ", currency='" . ($api_check['currency'] ? $api_check['currency'] : "") . "', is_valid_key=" . $valid_key . ", updated_at='" . $row['created_at'] . "' WHERE id = " . $sel_provider['id'];
+                            $conn->query($sql_update);
+                        }
+                        else{
+                            // requested by user
+                            // check provider is registred to this user already
+                            $sql_exist = "SELECT * FROM user_provider WHERE user_id = " . $row['request_by_id'] . " AND provider_id = " . $sel_provider['id'];
+                            $result_exist = $conn->query($sql_exist);
+                            
+                            if($result_exist->num_rows == 0){
+                                $sql_add = "INSERT INTO user_provider( user_id, provider_id, is_favorite, api_key, user_balance, balance_currency, is_enabled, is_valid_key, created_at) VALUES (" 
+                                        . $row['request_by_id'] . ", " 
+                                        . $sel_provider['id'] . ", " 
+                                        . "0, '" 
+                                        . $row['api_key'] . "', " 
+                                        . $api_check['balance'] . ", '"
+                                        . ($api_check['currency'] ? $api_check['currency'] : "") . "', "
+                                        . "1, " . $valid_key . ", '" . $row['created_at'] . "')";
+                                $conn->query($sql_add);
+                            } else {
+                                // update
+                                $sql_update = "UPDATE user_provider SET api_key='" . $row['api_key'] . "', user_balance=" . $api_check['balance'] . ", balance_currency='" . ($api_check['currency'] ? $api_check['currency'] : "") . "', is_enabled=1, is_valid_key=" . $valid_key . ", updated_at='" . $row['created_at'] . "' WHERE user_id = " . $row['request_by_id'] . " AND provider_id = " . $sel_provider['id'];
+                                $conn->query($sql_update);
+                            }
+                        }                       
+                    } else {
+                        if($row['request_by_admin'] == 1){
+                            // requested by admin
+                            
+                        } else {
+                            // requested by user
                             $sql_add = "INSERT INTO user_provider( user_id, provider_id, is_favorite, api_key, is_enabled, is_valid_key, created_at) VALUES (" 
                                 . $row['request_by_id'] . ", " 
                                 . $sel_provider['id'] . ", " 
                                 . "0, '" 
                                 . $row['api_key'] . "', " 
-                                . "1, 0, '" . $item['created_at'] . "')";
+                                . "1, 0, '" . $row['created_at'] . "')";
+                            $conn->query($sql_add);
                         }
-                    } else {
-                        $sql_add = "INSERT INTO user_provider( user_id, provider_id, is_favorite, api_key, is_enabled, is_valid_key, created_at) VALUES (" 
-                            . $row['request_by_id'] . ", " 
-                            . $sel_provider['id'] . ", " 
-                            . "0, '" 
-                            . $row['api_key'] . "', " 
-                            . "1, 0, '" . $item['created_at'] . "')";
                     }
-
-                    $conn->query($sql_add);
                 } 
-                
             } 
             else {
                 // check domain aready exist or not
@@ -94,7 +119,7 @@
                                         . $is_valid_key . ", 1, " . $is_frozon . ", '"
                                         . $api_check['apiTemplate'] . "', "
                                         . $api_check['balance'] . ", '"
-                                        . $api_check['currency'] . "', '"
+                                        . ($api_check['currency'] ? $api_check['currency'] : "") . "', '"
                                         . date("Y-m-d H:i:s") . "', 0, '"
                                         . $row['created_at']
                                         . "')";
@@ -169,15 +194,24 @@
                             if($api_check['status'] == 1) {
                                 $is_valid_key = 1;
                             }
-                        }
-                       
-
-                        $sql_user_provider = "INSERT INTO user_provider(user_id, provider_id, is_favorite, api_key, is_enabled, is_valid_key, created_at) VALUES (" 
+                            $sql_user_provider = "INSERT INTO user_provider(user_id, provider_id, is_favorite, api_key, user_balance, balance_currency, is_enabled, is_valid_key, created_at) VALUES (" 
                                 . $row['request_by_id'] . ", "
                                 . $row_exist['id'] . ", 0, '"
-                                . $row['api_key'] . "', 1, " . $is_valid_key . ", '"
+                                . $row['api_key'] . "', "
+                                . $api_check['balance'] . ", '"
+                                . ($api_check['currency'] ? $api_check['currency'] : "")
+                                . "', 1, " . $is_valid_key . ", '"
                                 . $row['created_at']
                                 . "')";
+                        } else {
+                            $sql_user_provider = "INSERT INTO user_provider(user_id, provider_id, is_favorite, api_key, is_enabled, is_valid_key, created_at) VALUES (" 
+                                . $row['request_by_id'] . ", "
+                                . $row_exist['id'] . ", 0, '"
+                                . $row['api_key'] . "', "
+                                . ", 0, 0, '"
+                                . $row['created_at']
+                                . "')";
+                        }
                         $conn->query($sql_user_provider);
                     }
 

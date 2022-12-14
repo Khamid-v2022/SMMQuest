@@ -134,8 +134,62 @@ $(function () {
     var dt_basic;
     // DataTable with buttons
     // --------------------------------------------------------------------
+    $('.dt-column-search thead tr').clone(true).appendTo('.dt-column-search thead');
+    $('.dt-column-search thead tr:eq(1) th').each(function (i) {
+        if(i == 2){
+            let html = '<select class="form-select" id="search_template">';
+            html += '<option value="-1">All</option>';  
+            html += '<option value="PerfectPanel">PerfectPanel</option>'; 
+            html += '<option value="SmmPanel">SmmPanel</option>'; 
+            html += '</select>';
+            $(this).html(html);
+        }
+        else if(i == 3) {
+            let html = '<select class="form-select" id="search_status">';
+            html += '<option value="-1">All</option>';  
+            html += '<option value="Enabled">Enabled</option>';
+            html += '<option value="Disabled">Disabled</option>';
+            html += '<option value="Invalid API Key">Invalid API Key</option>';
+            html += '<option value="Panel Unavailable">Panel Unavailable</option>';
+            html += '<option value="Hold">Hold</option>';
+            html += '<option value="Being Added">Being Added</option>';
+            html += '</select>';
+            $(this).html(html);
+        } else {
+            $(this).html("");
+        }
+
+        $('select', this).on('change', function () {
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value).draw();
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+        // $('#search_provider', this).on('change', function () {
+        //     blockDataTable();
+        //     if(this.value == -1){
+        //         dt_basic.column(i).search("").draw();
+        //     } else {
+        //         if (dt_basic.column(i).search() !== this.value) {
+        //             dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+        //         }
+        //     }
+        //     $("#data_table").unblock();
+        // });
+
+    });
+
     dt_basic = $('.datatables-basic').DataTable({
         columnDefs: [
+            {
+                className: 'provider-status',
+                targets: 3               
+            },
             {
                // Actions
                 targets: -1,
@@ -145,6 +199,7 @@ $(function () {
             }
         ],
         // order: [[2, 'desc']],
+        orderCellsTop: true,
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         displayLength: 100,
         lengthMenu: [100, 250, 500]

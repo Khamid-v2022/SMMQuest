@@ -159,7 +159,7 @@ $(function () {
             {
               // status
               targets: 4,
-              className: 'text-end',
+              className: 'provider-status',
               searchable: false,
             },
             {

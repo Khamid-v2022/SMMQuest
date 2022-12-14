@@ -48,6 +48,9 @@ $configData = Helper::appClasses();
 @endsection
 
 <style type="text/css">
+    .datatables-basic {
+        font-size: .9rem;
+    }
     .fa-spinner {
         display: none
     }
