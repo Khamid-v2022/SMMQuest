@@ -21,27 +21,19 @@ class ProviderController extends MyController
   {
     $pageConfigs = ['myLayout' => 'horizontal'];
 
-    // $providers = UserProvider::with([
-    //     'provider', 
-    //     'provider.services' => function($q) {
-    //       $q->where('status', '1');
-    //     }
-    //   ])
-    //   ->where('user_id', Auth::user()->id)
-    //   ->get();
+    return view('content.pages.pages-user-provider', [
+      'pageConfigs'=> $pageConfigs, 
+    ]);
+  }
 
+  public function getProviderList(Request $request){
     $providers = UserProvider::getProviderListWithDetail(Auth::user()->id);
 
     $hold_providers = ProviderHold::select('domain')
       ->where('request_by_id', Auth::user()->id)
       ->where('request_by_admin', 0)
       ->groupBy('domain')->get();
-    
-    return view('content.pages.pages-user-provider', [
-      'pageConfigs'=> $pageConfigs, 
-      'providers' => $providers,
-      'hold_providers' => $hold_providers
-    ]);
+    return response()->json(['code'=>200, 'providers'=>$providers, 'hold_providers'=>$hold_providers], 200);
   }
 
   public function createNewProvider(Request $request){
@@ -161,6 +153,7 @@ class ProviderController extends MyController
 
     return response()->json(['code'=>400, 'message'=>'Since the site is inactive, the API Key cannot be verified.
     please try again later'], 200);
+
   }
 
 
@@ -289,6 +282,7 @@ class ProviderController extends MyController
                 'created_at' => date("Y-m-d H:i:s")
               ]);
             }
+            $added_count++;
           }
           
         } else {

@@ -106,7 +106,62 @@ $configData = Helper::appClasses();
                 </tr>
             </thead>
             <tbody>
-               
+                @php $index = 0; @endphp
+                @foreach($providers as $provider)
+                    @php $index++; @endphp
+                    <tr data-provider_id= {{ $provider->id }} data-domain={{ $provider->domain }} data-endpoint={{ $provider->endpoint }}>
+                        <td>{{ $index }}</td>
+                        <td>
+                            {{ $provider->domain }}
+                            @if($provider->is_activated == 1 && $provider->is_frozon == 0 && $provider->is_hold == 0)
+                                <span class="badge bg-label-secondary">{{$provider->service_count?$provider->service_count:0}} Services</span>
+                            @endif
+                        </td>
+                        <td>{{ $provider->api_template }}</td>
+                        <td>
+                            @if($provider->is_hold == 1)
+                                <span class="badge bg-label-info" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
+                            @else 
+                                @if($provider->is_frozon == 1)
+                                    <span class="badge bg-label-danger">Panel Unavailable</span>
+                                @else
+                                    @if($provider->is_activated == 1)
+                                        <span class="badge bg-label-success">Enabled</span>
+                                        @if($provider->is_valid_key == 0)
+                                            <span class="badge bg-label-warning">Invalid API Key</span>
+                                        @endif
+                                    @else
+                                        <span class="badge bg-label-danger">Disabled</span>
+                                    @endif
+                                @endif
+                            @endif
+                        </td>
+                        <td>{{ $provider->created_at }}</td>
+                        <td>{{ $provider->updated_at }}</td>
+                        <td>
+                            @if($provider->is_activated == 1 && $provider->is_frozon == 0)
+                                <a href="javascript:;" class="btn btn-sm btn-icon item-start-scrap" title="Start scrap services" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class='bx bx-play-circle'></i></a>
+                            @endif
+                            <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>
+                            <a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a> 
+                        </td>
+                    </tr>
+                @endforeach
+
+                @foreach($hold_providers as $item)
+                    @php $index++; @endphp
+                    <tr>
+                        <td>{{ $index }}</td>
+                        <td>{{ $item->domain }}</td>
+                        <td></td>
+                        <td>
+                            <span class="badge bg-label-info">Being Added</span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

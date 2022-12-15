@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     Route::post('/providers/changeAPIKey', [ProviderController::class, 'changeAPIKey']); 
     Route::post('/providers/changeBalanceAlertLimit', [ProviderController::class, 'changeBalanceAlertLimit']); 
     Route::post('/providers/import_list', [ProviderController::class, 'importList']);
+    Route::get('/providers/provider_list', [ProviderController::class, 'getProviderList']);
     
     
     // Search Services

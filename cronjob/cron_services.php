@@ -57,6 +57,11 @@
                
                 // check if API is working correctly
                 if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
+
+                    // update service count of provider table 
+                    $update_sql = "UPDATE providers SET service_count = " . count($services) . " WHERE id = " . $row['id'];
+                    $conn->query($update_sql);
+
                     foreach ($services as $item) {
                         
                         $sql_service = "SELECT * FROM services WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";

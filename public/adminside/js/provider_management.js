@@ -1,5 +1,7 @@
 'use strict';
 let formvali, copy_past_fv, file_fv;
+var dt_basic;
+
 document.addEventListener('DOMContentLoaded', function (e) {
     (function () {
         const formAddNewRecord = document.getElementById('form-add-new-record'); 
@@ -131,7 +133,7 @@ $(function () {
     })
 
 
-    var dt_basic;
+    
     // DataTable with buttons
     // --------------------------------------------------------------------
     $('.dt-column-search thead tr').clone(true).appendTo('.dt-column-search thead');
@@ -159,52 +161,153 @@ $(function () {
             $(this).html("");
         }
 
-        $('select', this).on('change', function () {
+        $('#search_template', this).on('change', function () {
+            blockDataTable();
             if(this.value == -1){
-                dt_basic.column(i).search("").draw();
+                dt_basic.column(2).search("").draw();
             } else {
-                if (dt_basic.column(i).search() !== this.value) {
-                    dt_basic.column(i).search(this.value).draw();
+                if (dt_basic.column(2).search() !== this.value) {
+                    dt_basic.column(2).search(this.value).draw();
                 }
             }
             $("#data_table").unblock();
         });
 
-        // $('#search_provider', this).on('change', function () {
-        //     blockDataTable();
-        //     if(this.value == -1){
-        //         dt_basic.column(i).search("").draw();
-        //     } else {
-        //         if (dt_basic.column(i).search() !== this.value) {
-        //             dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
-        //         }
-        //     }
-        //     $("#data_table").unblock();
-        // });
+        $('#search_status', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(3).search("").draw();
+            } else {
+                if (dt_basic.column(3).search() !== this.value) {
+                    dt_basic.column(3).search(this.value).draw();
+
+                }
+            }
+            $("#data_table").unblock();
+        });
 
     });
 
     dt_basic = $('.datatables-basic').DataTable({
+        createdRow: function( row, data, dataIndex ) {
+            $(row).attr('data-provider_id', data.id);
+            $(row).attr('data-domain', data.domain);
+            $(row).attr('data-endpoint', data.endpoint);
+            $(row).attr('data-row_id', dataIndex);
+        },
         columnDefs: [
             {
-                className: 'provider-status',
-                targets: 3               
+                // index 
+                targets: 0,
+                title: 'Index',
+                render: function (data, type, full) {
+                 return full.index;
+                }
             },
             {
-               // Actions
+                // Provider 
+                targets: 1,
+                title: 'Provider Name',
+                render: function (data, type, full) {
+                  if(full.is_being_add == 0){
+                    if(full.is_activated == 1 && full.is_frozon == 0 && full.is_hold == 0)
+                      return full.domain + '<span class="badge bg-label-secondary ms-1">' + (full.service_count?full.service_count:0) + ' Services</span>';
+                    else
+                      return full.domain;
+                  } else {
+                    return full.domain;
+                  }
+                }
+            },
+            {
+                // API template
+                targets: 2,
+                className: 'text-end',
+                render: function (data, type, full) {
+                  if(full.is_being_add == 0){
+                      return full.api_template;
+                  } else 
+                    return "";
+                }
+            },
+            {
+                // status
+                targets: 3, 
+                className: 'provider-status',
+                render: function (data, type, full){
+                  if(full.is_being_add == 0){
+                    if(full.is_hold == 1)
+                      return '<span class="badge bg-label-info" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>';
+                    else {
+                      if(full.is_frozon == 1)
+                        return '<span class="badge bg-label-danger">Panel Unavailable</span>';
+                      else {
+                        if(full.is_activated == 1){
+                          let str = '<span class="badge bg-label-success">Enabled</span>';
+                          if(full.is_valid_key == 0)
+                            str += '<span class="badge bg-label-warning ms-1">Invalid API Key</span>';
+                          return str;
+                        } else {
+                          return '<span class="badge bg-label-danger">Disabled</span>';
+                        }
+                      }
+                    }
+                  } else {
+                    return '<span class="badge bg-label-info">Being Added</span>';
+                  }
+                  
+                }
+            },
+            {
+                // created at
+                targets: 4,
+                searchable: false,
+                render: function (data, type, full) {
+                  if(full.is_being_add == 0){
+                    return full.created_at.substr(0, 10) + " " + full.created_at.substr(11, 8);
+                  } else
+                    return "";
+                }
+            },
+            {
+                // updated at
+                targets: 5,
+                searchable: false,
+                render: function (data, type, full) {
+                  if(full.is_being_add == 0){
+                    return full.updated_at.substr(0, 10) + " " + full.updated_at.substr(11, 8);
+                  } else {
+                    return ""
+                  }
+                }
+            },
+            {
+                // Actions
                 targets: -1,
                 title: 'Actions',
                 orderable: false,
                 searchable: false,
+                render: function (data, type, full) {
+                    let str = "";
+                    if(full.is_being_add == 0){
+                        str = '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Edit"><i class="bx bxs-edit"></i></a>' + 
+                        '<a href="javascript:;" class="btn btn-sm btn-icon item-delete" title="Delete"><i class="bx bx-trash"></i></a> ';
+                        if(full.is_activated == 1 && full.is_frozon == 0){
+                            str = '<a href="javascript:;" class="btn btn-sm btn-icon item-start-scrap" title="Start scrap services" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class="bx bx-play-circle"></i></a>' + str;
+                        } 
+                    }
+                  
+                    return str;
+                }
             }
         ],
-        // order: [[2, 'desc']],
         orderCellsTop: true,
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         displayLength: 100,
         lengthMenu: [100, 250, 500]
     });
   
+    loadTable();
     // Add New record
     // ? Remove/Update this code as per your requirements
     formvali.on('core.form.valid', function () {
@@ -237,7 +340,14 @@ $(function () {
                             },
                             buttonsStyling: false
                         }).then( function(){
-                            location.reload();
+                            if($("#m_action_type").val() == 'edit'){
+                                $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").find(".bg-label-warning").remove();
+                                let offCanvasElement = document.querySelector('#add-new-record');
+                                let offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
+                                offCanvasEl.hide();
+                            } else {
+                                location.reload();
+                            }
                         })
 
                         $(".fa-spinner").css("display", "none");
@@ -409,11 +519,11 @@ $(function () {
                 Swal.fire({
                     text: result.value.message,
                     customClass: {
-                        confirmButtonText: 'Close me!',
+                        confirmButtonText: 'Close',
                         confirmButton: 'btn btn-primary'
                     }
                 }).then( function(){
-                    location.reload();
+                    // location.reload();
                 });
             }
         });
@@ -721,3 +831,53 @@ function GetProdectsFromExcel(data, filename) {
         },
     });
 };
+
+
+function loadTable(){
+    let _url = "/admin/provider-management/provider_list";
+    blockDataTable();
+    dt_basic.clear().draw();
+    $.ajax({
+      url: _url,
+      type: "GET",
+      success: function (response) {
+        if (response.code == 200) {
+          let records = [];
+          let index = 0;
+          response.providers.forEach((item) => {
+            index++;
+            item.is_being_add = 0;
+            item.index = index;
+            records.push(item);
+          })
+          response.hold_providers.forEach((item) => {
+            index++;
+            item.index = index;
+            item.is_being_add = 1;
+            records.push(item);
+          })
+          dt_basic.rows.add(records);
+          dt_basic.columns.adjust().draw();
+        } 
+        $("#data_table").unblock();
+      },
+      error: function (response) {
+        $("#data_table").unblock();
+      },
+    });
+  }
+  
+function blockDataTable() {
+    $("#data_table").block({
+        message:
+          '<div class="spinner-border text-primary" role="status"></div>',
+        css: {
+          backgroundColor: 'transparent',
+          border: '0'
+        },
+        overlayCSS: {
+            backgroundColor: '#fff',
+            opacity: 0.8
+        }
+    });
+}

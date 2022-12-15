@@ -50,8 +50,15 @@ $configData = Helper::appClasses();
 @endsection
 
 <style type="text/css">
+    .datatables-basic {
+        font-size: .9rem;
+    }
     .light-style .swal2-container {
         z-index: 3000!important;
+    }
+
+    .provider-status {
+        min-width: 194px;
     }
 </style>
 
@@ -84,12 +91,13 @@ $configData = Helper::appClasses();
         </div>
     </div>
     <div class="card-datatable table-responsive">
-        <table class="datatables-basic table border-top">
+        <table class="datatables-basic table border-top" id="data_table">
             <thead>
                 <tr>
                     <th>Index</th>
                     <th>Provider Name</th>
                     <th>Favorite</th>
+                    <th>Balance</th>
                     <th>Status</th>
                     <th>Added At</th>
                     <th>Updated At</th>
@@ -103,21 +111,28 @@ $configData = Helper::appClasses();
                     <tr data-provider_id={{ $provider->id }}>
                         <td>{{ $index }}</td>
                         <td>
-                            {{ $provider->provider->domain }}
-                            <!-- <span class="badge bg-label-info">{{count($provider->provider->services)}} Services</span> -->
+                            {{ $provider->domain }}
+                            @if($provider->is_enabled == 1 && $provider->is_frozon == 0 && $provider->is_hold == 0)
+                                <span class="badge bg-label-secondary">{{$provider->service_count?$provider->service_count:0}} Services</span>
+                            @endif
                         </td>
                         <td>{{ $provider->is_favorite }}</td>
+                        <td>{{ $provider->user_balance . " " . $provider->balance_currency }}</td>
                         <td>
-                            @if($provider->provider->is_hold == 1)
-                                <span class="badge bg-label-danger" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
+                            @if($provider->is_hold == 1)
+                                <span class="badge bg-label-info" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
                             @else
-                                @if($provider->is_enabled == 1)
-                                    <span class="badge bg-label-success">Enabled</span>
+                                @if($provider->is_frozon == 1)
+                                    <span class="badge bg-label-danger">Panel Unavailable</span>
                                 @else
-                                    <span class="badge bg-label-danger">Disabled</span>
-                                @endif 
-                                @if($provider->is_valid_key == 0)
-                                    <span class="badge bg-label-warning">Invalid API Key</span>
+                                    @if($provider->is_enabled == 1)
+                                        <span class="badge bg-label-success">Enabled</span>
+                                        @if($provider->is_valid_key == 0)
+                                            <span class="badge bg-label-warning">Invalid API Key</span>
+                                        @endif 
+                                    @else
+                                        <span class="badge bg-label-danger">Disabled</span>
+                                    @endif 
                                 @endif
                             @endif
                            
@@ -125,13 +140,25 @@ $configData = Helper::appClasses();
                         <!-- user added time -->
                         <td>{{ $provider->created_at }}</td>        
                         <!-- updated time in back-end side -->
-                        <td>{{ $provider->provider->updated_at }}</td>
+                        <td>{{ $provider->last_updated }}</td>
                         <td>
-                            @if($provider->provider->is_hold == 0)
+                            @if($provider->is_hold == 0)
                                 <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
                                     <i class="bx bxs-edit"></i>
                                 </a>
+                                @if($provider->is_valid_key == 1 && $provider->is_enabled == 1 && $provider->is_frozon == 0)
+                                    @if($provider->balance_alert_limit && $provider->balance_alert_limit > 0)
+                                        <a href="javascript:;" data-alert-limit="{{ $provider->balance_alert_limit }}" class="btn btn-sm btn-icon text-warning change_balance_limit" title="Change Email Balance Alert" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" style="display: inline;">
+                                            <i class='bx bx-bell'></i>
+                                        </a>
+                                    @else
+                                        <a href="javascript:;" class="btn btn-sm btn-icon set_balance_limit" title="Set Email Balance Alert" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" style="display: inline;">
+                                            <i class='bx bx-bell-off' ></i>
+                                        </a>
+                                    @endif
+                                @endif
                             @endif
+                            
                         </td>
                     </tr>
                 @endforeach
@@ -260,7 +287,7 @@ $configData = Helper::appClasses();
 </div>
 
 
-
+<!-- API Key Modal -->
 <div class="modal fade" id="modals-change_key" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -288,4 +315,32 @@ $configData = Helper::appClasses();
     </div>
 </div>
 
+
+<!-- Set Balance Limit Modal -->
+<div class="modal fade" id="modals-change_balance_limit" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Email Balance Alert</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <input type="hidden" value="" id="m_sel_id">
+                <div class="col mb-3">
+                    <label for="m_balance_limit" class="form-label">Balance Alert Limit</label>
+                    <input type="number" id="m_balance_limit" placeholder="Balance Alert Limit Amount" class="form-control" step="any">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="m_change_alert_btn">
+                <span>Save changes</span>
+                <i class="fas fa-spinner fa-spin" style="display:none"></i>
+            </button>
+        </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -40,15 +40,15 @@ class Provider extends Model
         return $this->hasMany('App\Models\UserProvider');
     }
 
-    public static function getProviders() {
-        return DB::select("SELECT `p`.*, `s`.`ctn`
-        FROM `providers` `p`
-        LEFT JOIN 
-        (
-            SELECT `provider_id`, COUNT(`id`) AS `ctn`
-            FROM `services`
-            WHERE `status` = 1
-            GROUP BY `provider_id`
-        ) `s` ON `p`.`id` = `s`.`provider_id`");
-    }
+    // public static function getProviders() {
+    //     return DB::select("SELECT `p`.*, `s`.`ctn`
+    //     FROM `providers` `p`
+    //     LEFT JOIN 
+    //     (
+    //         SELECT `provider_id`, COUNT(`id`) AS `ctn`
+    //         FROM `services`
+    //         WHERE `status` = 1
+    //         GROUP BY `provider_id`
+    //     ) `s` ON `p`.`id` = `s`.`provider_id`");
+    // }
 }

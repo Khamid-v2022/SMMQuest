@@ -5,6 +5,7 @@
 'use strict';
 let fv;
 let copy_past_fv, file_fv;
+var dt_basic;
 
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
@@ -126,13 +127,40 @@ $(function () {
     },
   });
 
-  var dt_basic;
+
  
   // DataTable with buttons
   // --------------------------------------------------------------------
 
     dt_basic = $('.datatables-basic').DataTable({
+        createdRow: function( row, data, dataIndex ) {
+          $(row).attr('data-provider_id', data.id);
+          $(row).attr('data-row_id', dataIndex);
+        },
         columnDefs: [
+            {
+              // index 
+              targets: 0,
+              title: 'Index',
+              render: function (data, type, full) {
+               return full.index;
+              }
+            },
+            {
+              // Provider 
+              targets: 1,
+              title: 'Provider Name',
+              render: function (data, type, full) {
+                if(full.is_being_add == 0){
+                  if(full.is_enabled == 1 && full.is_frozon == 0 && full.is_hold == 0)
+                    return full.domain + '<span class="badge bg-label-secondary ms-1">' + (full.service_count?full.service_count:0) + ' Services</span>';
+                  else
+                    return full.domain;
+                } else {
+                  return full.domain;
+                }
+              }
+            },
             {
               // Favorite
               targets: 2,
@@ -140,27 +168,85 @@ $(function () {
               className: 'text-center',
               orderable: false,
               searchable: false,
-              render: function (data, type, full, meta) {
-                if(data == 1)
-                  return (
-                    '<a href="javascript:;" class="btn btn-sm btn-icon item-favorite"><i class="bx bxs-like text-warning" ></i></a>'
-                  );
-                else
-                  return (
-                    '<a href="javascript:;" class="btn btn-sm btn-icon item-favorite"><i class=" bx bxs-like" ></i></a>'
-                  );
+              render: function (data, type, full) {
+                if(full.is_being_add == 0){
+                  if(full.is_favorite == 1)
+                    return (
+                      '<a href="javascript:;" class="btn btn-sm btn-icon item-favorite"><i class="bx bxs-like text-warning" ></i></a>'
+                    );
+                  else
+                    return (
+                      '<a href="javascript:;" class="btn btn-sm btn-icon item-favorite"><i class=" bx bxs-like" ></i></a>'
+                    );
+                } else {
+                  return "";
+                }
               }
             },
             {
-              // Favorite
+              // balance
               targets: 3,
-              className: 'text-end'
+              className: 'text-end',
+              render: function (data, type, full) {
+                if(full.is_being_add == 0){
+                  if(full.user_balance)
+                    return full.user_balance + " " + (full.balance_currency?full.balance_currency:"");
+                  else
+                    return "";
+                } else 
+                  return "";
+              }
             },
             {
               // status
-              targets: 4,
+              targets: 4, 
               className: 'provider-status',
               searchable: false,
+              render: function (data, type, full){
+                if(full.is_being_add == 0){
+                  if(full.is_hold == 1)
+                    return '<span class="badge bg-label-info" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>';
+                  else {
+                    if(full.is_frozon == 1)
+                      return '<span class="badge bg-label-danger">Panel Unavailable</span>';
+                    else {
+                      if(full.is_enabled){
+                        let str = '<span class="badge bg-label-success">Enabled</span>';
+                        if(full.is_valid_key == 0)
+                          str += '<span class="badge bg-label-warning ms-1">Invalid API Key</span>';
+                        return str;
+                      } else {
+                        return '<span class="badge bg-label-danger">Disabled</span>';
+                      }
+
+                    }
+                  }
+                } else {
+                  return '<span class="badge bg-label-info">Being Added</span>';
+                }
+                
+              }
+            },
+            {
+              // added at
+              targets: 5,
+              render: function (data, type, full) {
+                if(full.is_being_add == 0){
+                  return full.created_at;
+                } else
+                  return "";
+              }
+            },
+            {
+              // updated at
+              targets: 6,
+              render: function (data, type, full) {
+                if(full.is_being_add == 0){
+                  return full.last_updated;
+                } else {
+                  return ""
+                }
+              }
             },
             {
               // Actions
@@ -168,16 +254,32 @@ $(function () {
               title: 'Actions',
               orderable: false,
               searchable: false,
+              render: function (data, type, full) {
+                let str = "";
+                if(full.is_being_add == 0){
+                  if(full.is_hold == 0){
+                    str = '<a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class="bx bxs-edit"></i></a>';
+                    if(full.is_valid_key == 1 && full.is_enabled == 1 && full.is_frozon == 0){
+                      if(full.balance_alert_limit && full.balance_alert_limit > 0){
+                        str += '<a href="javascript:;" data-alert-limit="' + full.balance_alert_limit + '" class="btn btn-sm btn-icon text-warning change_balance_limit" title="Change Email Balance Alert" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" style="display: inline;"><i class="bx bx-bell"></i></a>';
+                      } else {
+                        str += ' <a href="javascript:;" class="btn btn-sm btn-icon set_balance_limit" title="Set Email Balance Alert" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" style="display: inline;"><i class="bx bx-bell-off" ></i></a>';
+                      }
+                    }
+                  } 
+                }
+                return str;
+              }
             }
         ],
-        // order: [[2, 'desc']],
+        // order: [[4, 'asc']],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
         displayLength: 100,
-        lengthMenu: [100, 250, 500]
-
+        lengthMenu: [100, 250, 500],
+        stateSave: true
     });
 
-
+    loadTable();
     // Add New record
     // ? Remove/Update this code as per your requirements
     fv.on('core.form.valid', function () {
@@ -206,7 +308,8 @@ $(function () {
               },
               buttonsStyling: false
             }).then( function(){
-              location.reload();
+              // location.reload();
+              loadTable();
             })
           } else {
               Swal.fire({
@@ -391,7 +494,7 @@ $(function () {
                 buttonsStyling: false
               }).then( function(){
                 $("#modals-change_key").modal('toggle');
-                location.reload();
+                $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").find(".bg-label-warning").remove();
               })
 
               $("#m_change_api_btn .fa-spinner").css("display", "none");
@@ -448,8 +551,6 @@ $(function () {
       $("#modals-change_balance_limit").modal('show');
     })
 
-    
-
     $("#m_change_alert_btn").on("click", function(){
       let _url = "/providers/changeBalanceAlertLimit";
       
@@ -476,7 +577,24 @@ $(function () {
                 buttonsStyling: false
               }).then( function(){
                 $("#modals-change_balance_limit").modal('toggle');
-                location.reload();
+                if($("#m_balance_limit").val() == ""){
+                  let el =  $("#data_table tr[data-provider_id='" + $("#m_sel_id").val() + "']").find(".change_balance_limit");
+                  el.removeClass("text-warning change_balance_limit").addClass("set_balance_limit");
+                  el.attr("title", "Set Email Balance Alert");
+                  el.find("i").removeClass("bx-bell").addClass("bx-bell-off");
+                } else {
+                  let el = $("#data_table tr[data-provider_id='" + $("#m_sel_id").val() + "']").find(".change_balance_limit");
+                  if(el.length > 0){
+                    el.attr("data-alert-limit", $("#m_balance_limit").val());
+                  } else {
+                    el = $("#data_table tr[data-provider_id='" + $("#m_sel_id").val() + "']").find(".set_balance_limit");
+                    el.removeClass("set_balance_limit").addClass("text-warning change_balance_limit").attr("data-alert-limit", $("#m_balance_limit").val());
+                    el.find("i").removeClass("bx-bell-off").addClass("bx-bell");
+                    el.attr("title", "Change Email Balance Alert");
+                  }
+                }
+
+                
               })
 
               $("#m_change_alert_btn .fa-spinner").css("display", "none");
@@ -550,7 +668,8 @@ $(function () {
               },
               buttonsStyling: false
             }).then( function(){
-              location.reload();
+              // location.reload();
+              loadTable();
             })
           } else {
             Swal.fire({
@@ -715,7 +834,8 @@ function GetProdectsFromExcel(data, filename) {
           },
           buttonsStyling: false
         }).then( function(){
-          location.reload();
+          // location.reload();
+          loadTable();
         })
       } else {
           Swal.fire({
@@ -748,3 +868,52 @@ function GetProdectsFromExcel(data, filename) {
     },
   });
 };
+
+function loadTable(){
+  let _url = "/providers/provider_list";
+  blockDataTable();
+  dt_basic.clear().draw();
+  $.ajax({
+    url: _url,
+    type: "GET",
+    success: function (response) {
+      if (response.code == 200) {
+        let records = [];
+        let index = 0;
+        response.providers.forEach((item) => {
+          index++;
+          item.is_being_add = 0;
+          item.index = index;
+          records.push(item);
+        })
+        response.hold_providers.forEach((item) => {
+          index++;
+          item.index = index;
+          item.is_being_add = 1;
+          records.push(item);
+        })
+        dt_basic.rows.add(records);
+        dt_basic.columns.adjust().draw();
+      } 
+      $("#data_table").unblock();
+    },
+    error: function (response) {
+      $("#data_table").unblock();
+    },
+  });
+}
+
+function blockDataTable() {
+  $("#data_table").block({
+      message:
+        '<div class="spinner-border text-primary" role="status"></div>',
+      css: {
+        backgroundColor: 'transparent',
+        border: '0'
+      },
+      overlayCSS: {
+          backgroundColor: '#fff',
+          opacity: 0.8
+      }
+  });
+}

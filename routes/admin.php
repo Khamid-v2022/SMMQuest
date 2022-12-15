@@ -23,6 +23,7 @@ Route::namespace('admin')->prefix('admin')->group(function(){
         Route::delete('/provider-management', [ProviderManagement::class, 'deleteProvider']);
         Route::post('/provider-management/import_list', [ProviderManagement::class, 'importList']);
         Route::get('/provider-management/importOne/{id}', [ProviderManagement::class, 'importOneProviderServiceList'])->where('id', '[0-9]+');
+        Route::get('/provider-management/provider_list', [ProviderManagement::class, 'providerList']);
         
 
        

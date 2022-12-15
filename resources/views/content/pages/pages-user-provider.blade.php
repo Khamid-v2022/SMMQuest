@@ -91,7 +91,7 @@ $configData = Helper::appClasses();
         </div>
     </div>
     <div class="card-datatable table-responsive">
-        <table class="datatables-basic table border-top">
+        <table class="datatables-basic table border-top" id="data_table">
             <thead>
                 <tr>
                     <th>Index</th>
@@ -105,78 +105,7 @@ $configData = Helper::appClasses();
                 </tr>
             </thead>
             <tbody>
-                @php $index = 0; @endphp
-                @foreach($providers as $provider)
-                    @php $index++; @endphp
-                    <tr data-provider_id={{ $provider->id }}>
-                        <td>{{ $index }}</td>
-                        <td>
-                            {{ $provider->domain }}
-                            @if($provider->is_enabled == 1 && $provider->is_frozon == 0 && $provider->is_hold == 0)
-                                <span class="badge bg-label-secondary">{{$provider->ctn?$provider->ctn:0}} Services</span>
-                            @endif
-                        </td>
-                        <td>{{ $provider->is_favorite }}</td>
-                        <td>{{ $provider->user_balance . " " . $provider->balance_currency }}</td>
-                        <td>
-                            @if($provider->is_hold == 1)
-                                <span class="badge bg-label-info" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>
-                            @else
-                                @if($provider->is_frozon == 1)
-                                    <span class="badge bg-danger">Panel Unavailable</span>
-                                @else
-                                    @if($provider->is_enabled == 1)
-                                        <span class="badge bg-label-success">Enabled</span>
-                                        @if($provider->is_valid_key == 0)
-                                            <span class="badge bg-label-warning">Invalid API Key</span>
-                                        @endif 
-                                    @else
-                                        <span class="badge bg-label-danger">Disabled</span>
-                                    @endif 
-                                @endif
-                            @endif
-                           
-                        </td>
-                        <!-- user added time -->
-                        <td>{{ $provider->created_at }}</td>        
-                        <!-- updated time in back-end side -->
-                        <td>{{ $provider->last_updated }}</td>
-                        <td>
-                            @if($provider->is_hold == 0)
-                                <a href="javascript:;" class="btn btn-sm btn-icon item-edit" title="Add/Edit API key" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
-                                    <i class="bx bxs-edit"></i>
-                                </a>
-                                @if($provider->is_valid_key == 1 && $provider->is_enabled == 1 && $provider->is_frozon == 0)
-                                    @if($provider->balance_alert_limit && $provider->balance_alert_limit > 0)
-                                        <a href="javascript:;" data-alert-limit="{{ $provider->balance_alert_limit }}" class="btn btn-sm btn-icon text-warning change_balance_limit" title="Change Email Balance Alert" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" style="display: inline;">
-                                            <i class='bx bx-bell'></i>
-                                        </a>
-                                    @else
-                                        <a href="javascript:;" class="btn btn-sm btn-icon set_balance_limit" title="Set Email Balance Alert" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" style="display: inline;">
-                                            <i class='bx bx-bell-off' ></i>
-                                        </a>
-                                    @endif
-                                @endif
-                            @endif
-                            
-                        </td>
-                    </tr>
-                @endforeach
-
-                @foreach($hold_providers as $provider)
-                    @php $index++; @endphp
-                    <tr>
-                        <td>{{ $index }}</td>
-                        <td>{{ $provider->domain }}</td>
-                        <td></td>
-                        <td>
-                            <span class="badge bg-label-info">Being Added</span>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                @endforeach
+              
             </tbody>
         </table>
     </div>
