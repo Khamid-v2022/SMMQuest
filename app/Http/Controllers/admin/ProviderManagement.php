@@ -22,21 +22,15 @@ class ProviderManagement extends Controller
     {
         $pageConfigs = ['myLayout' => 'horizontal'];
 
-        // $providers = Provider::getProviders();
-        $providers = Provider::get();
-        $hold_providers = ProviderHold::select('domain')->where('is_only_key_check', '1')->groupBy('domain')->get();
-
         return view('content.adminside.provider-management', [
             'pageConfigs'=> $pageConfigs, 
-            'providers' => $providers,
-            'hold_providers' => $hold_providers
         ]);
     }
 
     public function providerList(Request $request){
         $providers = Provider::get();
         $hold_providers = ProviderHold::select('domain')->where('is_only_key_check', '1')->groupBy('domain')->get();
-        
+
         return response()->json(['code'=>200, 'providers'=>$providers, 'hold_providers'=>$hold_providers], 200);
     }
 

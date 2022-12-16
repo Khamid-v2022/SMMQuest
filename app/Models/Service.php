@@ -95,8 +95,8 @@ class Service extends Model
                     ->where('is_enabled', 1)
                     // ->where('user_provider.is_valid_key', 1)
                     ->select("domain", "is_favorite", "service", "name", "type", "rate", "min", "max", "dripfeed", "refill", "cancel", "category", "status", "services.created_at", "services.updated_at")
-                    // ->orderBy("rate")
-                    ->limit(3000)
+                    ->orderBy("rate")
+                    ->limit(5000)
                     ->get();
         return $result;
     } 
