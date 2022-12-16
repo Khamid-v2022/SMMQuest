@@ -45,6 +45,7 @@ class SearchServicesController extends MyController
 
     public function searchServices(Request $request){
         ini_set('memory_limit', '2048M');
+        set_time_limit(300);
 
         $providers = $request->providers;
         $min = $request->min;
@@ -54,7 +55,7 @@ class SearchServicesController extends MyController
         $exclude = $request->exclude;
         
 
-        $result = Service::search_services_with_query(
+        $result_array = Service::search_services_with_query(
             Auth::user()->id,
             $providers,
             $type,
@@ -63,8 +64,12 @@ class SearchServicesController extends MyController
             $min,
             $max,
             $request->min_rate,
-            $request->max_rate
+            $request->max_rate,
+            $request->page
         );
+
+        $result = $result_array['result'];
+        $remain_rows = $result_array['remain_rows'];
 
         if(count($result) > 0){
             if(!$this->currencies){
@@ -86,12 +91,14 @@ class SearchServicesController extends MyController
 
                 if($currency && $currency != 0) {
                     $result[$index]->rate = ($result[$index]->rate / $currency) * $this->currencies[$request->currency];
+
+                    $result[$index]->rate = '≈ ' . $result[$index]->rate;
                 }
                     
             }
         }
 
-        return response()->json(['code'=>200, 'services'=>$result], 200);
+        return response()->json(['code'=>200, 'services'=>$result, 'remain_rows'=>$remain_rows], 200);
     }
 
 }

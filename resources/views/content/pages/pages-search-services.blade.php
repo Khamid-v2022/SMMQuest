@@ -72,6 +72,7 @@ $configData = Helper::appClasses();
                                 <label class="form-label" for="providers">Providers:</label>
                                 <select id="providers" class="select2 form-select" multiple>
                                     <option value="0" selected>All</option>
+                                    <option value="-1">Favorite Providers Only</option>
                                     @foreach($providers as $provider)
                                         <option value="{{ $provider->id }}">{{ $provider->domain }}</option>
                                     @endforeach
@@ -183,10 +184,6 @@ $configData = Helper::appClasses();
                                     <input class="form-check-input show-column-item" data-sel-class="service-cancel" data-column-index="10" id="check_cancel" type="checkbox" checked />
                                     <label class="form-check-label" for="check_cancel">Cancel Button</label>
                                 </div>
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input" id="check_favorite" type="checkbox" />
-                                    <label class="form-check-label" for="check_favorite">Favorite Providers Only</label>
-                                </div>
                             </div>
                             <div class="col-12 text-right pt-2">
                                 <button class="btn btn-primary me-sm-3 me-1 float-end data-submit" type="submit">
@@ -203,7 +200,13 @@ $configData = Helper::appClasses();
 </div>
 
 <div class="card mb-4">
+    
+        
     <div class="card-datatable table-responsive">
+        <button class="btn btn-info load-more" data-page="1" style="position: absolute; right: 15px;top: 15px;z-index:10">
+            <span class="btn-txt"> Load More</span>
+            <i class="fas fa-spinner fa-spin" style="display:none"></i>
+        </button>
         <table class="dt-column-search datatables-basic table" id="data_table" style="font-size: .9rem;">
             <thead>
                 <tr>
@@ -218,13 +221,18 @@ $configData = Helper::appClasses();
                     <th class='service-dripfeed'>Dripfeed</th>
                     <th class='service-refill'>Refill Button</th>
                     <th class='service-cancel'>Cancel Button</th>
-                    <th class='service-favorite'>Is Favorite</th>
                 </tr>
             </thead>
             <tbody id="tbl-body_">
                 
             </tbody>
         </table>
+    </div>
+    <div class="card-body text-end">
+        <button class="btn btn-info load-more" id="load_more" data-page="1">
+            <span class="btn-txt">Load More</span>
+            <i class="fas fa-spinner fa-spin" style="display:none"></i>
+        </button>
     </div>
 </div>
 

@@ -2,8 +2,11 @@ var dt_basic;
 var all_show_table;
 var service_type_html = '<option value="-1">All</option>';
 
+var send_data = null;
+
 var previous_selected_providers = ["0"];
 $(function () {
+    $(".load-more").css("display", "none");
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -160,8 +163,7 @@ $(function () {
             { data: 'max'},
             { data: 'dripfeed'},
             { data: 'refill'},
-            { data: 'cancel'},
-            { data: 'is_favorite'}
+            { data: 'cancel'}
         ],
         columnDefs: [
             {
@@ -194,8 +196,16 @@ $(function () {
                 className: 'service-rate text-end',
                 targets: 5,
                 render: function(data){
-                    return data ? data.toLocaleString('en-US', {maximumFractionDigits:5}) : '';
-                   
+                    // if(data.includes("≈")){
+                    //     num = data.split("≈");
+                    //     if(num.length > 1){
+                    //         let _number = num[1].trim();
+                    //         return "≈ " + parseFloat(_number).toLocaleString('en-US', {maximumFractionDigits:5});
+                    //     }
+                    // } else{
+                        return data ? data.toLocaleString('en-US', {maximumFractionDigits:5}) : '';
+                    // }
+                        
                 }
             },
             {
@@ -245,22 +255,20 @@ $(function () {
                     else 
                         return '<span class="badge bg-label-warning">No</span>'
                 },
-            },
-            {
-                className: 'service-favorite',
-                targets: 11
-            },
+            }
         ],
-        order: [[5, 'asc']],
+        // order: [[5, 'asc']],
+        ordering: false,
         orderCellsTop: true,
-        paging: false,
-        lengthChange: false,
-        dom: '<"table-responsive"t><"row"<"col-sm-12 col-md-6"i>>',
+        // paging: false,
+        // lengthChange: false,
+        displayLength: 1000,
+        lengthMenu: [1000, 2500, 5000],
+        dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
     // hide category, type column as default
     dt_basic.column(1).visible(false);
     dt_basic.column(4).visible(false);
-    dt_basic.column(11).visible(false);
   
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
@@ -273,18 +281,38 @@ $(function () {
         const selected_providers = $(this).val();
         // if select other provider not "all" 
         if(selected_providers.length > 1 && previous_selected_providers.includes("0")){
-            // remove all
+            // remove "all" item
             const index = selected_providers.indexOf("0");
-            if (index > -1) { // only splice array when item is found
-                selected_providers.splice(index, 1); // 2nd parameter means remove one item only
+            if (index > -1) { 
+                selected_providers.splice(index, 1); 
                 $(this).val(selected_providers).trigger("change");
+                previous_selected_providers = selected_providers;
+                return;
             }
         }
 
         if(!previous_selected_providers.includes("0") && selected_providers.includes("0") && selected_providers.length > 1){
             $(this).val(['0']).trigger("change");
+            previous_selected_providers = selected_providers;
+            return;
         }
-        previous_selected_providers = selected_providers;
+
+        if(selected_providers.length > 1 && previous_selected_providers.includes("-1")){
+            // remove "favorite provider" item
+            const index = selected_providers.indexOf("-1");
+            if (index > -1) { 
+                selected_providers.splice(index, 1); 
+                $(this).val(selected_providers).trigger("change");
+                previous_selected_providers = selected_providers;
+                return;
+            }
+        }
+
+        if(!previous_selected_providers.includes("-1") && selected_providers.includes("-1") && selected_providers.length > 1){
+            $(this).val(['-1']).trigger("change");
+            previous_selected_providers = selected_providers;
+            return;
+        }       
     })
 
     $(".show-column-item").on("click", function(){
@@ -297,17 +325,11 @@ $(function () {
         $("#data_table").unblock();
     })
 
-    $("#check_favorite").on("click", function(){
-        blockDataTable();
-        const is_favorite = $(this).prop('checked') ? 1 : "";
-        if (dt_basic.column(11).search() !== is_favorite) {
-            dt_basic.column(11).search(is_favorite).draw();
-        }
-        $("#data_table").unblock();
-    })
-
     $("#search_form").on("submit", function(e){
         e.preventDefault();
+
+        $(".load-more").attr("data-page", 0);
+        send_data = null;
 
         const providers = $("#providers").val();
         const type = $("#type").val();
@@ -352,7 +374,7 @@ $(function () {
             exclude.push(item.value)
         })
 
-        const data = {
+        send_data = {
             providers,
             type,
             include,
@@ -363,69 +385,81 @@ $(function () {
             max_rate: $("#max_rate").val(),
             currency: $("#currency").val()
         }
-
-        const _url = "/search-services";
-
-
-        $(".data-submit").attr("disabled", true);
-        $(".data-submit .fa-spinner").css("display", "inline-block");
-        
         dt_basic.clear().draw();
-        blockDataTable();
-        $.ajax({
-            url: _url,
-            type: "POST",
-            data: data,
-            success: function (response) {
-                if (response.code == 200) {
-                    console.log(response);
-                    const services = response.services;
 
-                    // drawTableManually(services);
-                    drawTableWithAPI(services);
+        loadMore(0);
+        // const _url = "/search-services";
+
+
+        // $(".data-submit").attr("disabled", true);
+        // $(".data-submit .fa-spinner").css("display", "inline-block");
+        
+        // dt_basic.clear().draw();
+        // blockDataTable();
+        // $.ajax({
+        //     url: _url,
+        //     type: "POST",
+        //     data: send_data,
+        //     success: function (response) {
+        //         if (response.code == 200) {
+        //             console.log(response);
+        //             const services = response.services;
+
+        //             // drawTableManually(services);
+        //             drawTableWithAPI(services);
                     
-                    let collapseElement = document.getElementById("close_card");
-                    new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
-                    // Toggle collapsed class in `.card-header` element
-                    collapseElement.closest('.card-header').classList.toggle('collapsed');
-                    // Toggle class bx-chevron-down & bx-chevron-up
-                    Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
+        //             let collapseElement = document.getElementById("close_card");
+        //             new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
+        //             // Toggle collapsed class in `.card-header` element
+        //             collapseElement.closest('.card-header').classList.toggle('collapsed');
+        //             // Toggle class bx-chevron-down & bx-chevron-up
+        //             Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
 
-                    $('.datatables-basic').DataTable();
-                    $(".data-submit .fa-spinner").css("display", "none");
-                    $(".data-submit").removeAttr("disabled");
-                    $("#data_table").unblock();
-                } else {
+        //             $('.datatables-basic').DataTable();
+        //             $(".data-submit .fa-spinner").css("display", "none");
+        //             $(".data-submit").removeAttr("disabled");
+        //             $("#data_table").unblock();
+        //         } else {
                     
-                    let sel_html = '<option value="-1">All</option>';
-                    $("#search_min").html(sel_html);
-                    $("#search_max").html(sel_html);
-                    $("#search_provider").html(sel_html);
-                    resetSearchFilterOfDataTable();
-                    dt_basic.columns.adjust().draw();
+        //             let sel_html = '<option value="-1">All</option>';
+        //             $("#search_min").html(sel_html);
+        //             $("#search_max").html(sel_html);
+        //             $("#search_provider").html(sel_html);
+        //             resetSearchFilterOfDataTable();
+        //             dt_basic.columns.adjust().draw();
 
-                    $(".data-submit .fa-spinner").css("display", "none");
-                    $(".data-submit").removeAttr("disabled");
-                    $("#data_table").unblock();
-                    return;
-                }
-            },
-            error: function (response) {
-                console.log(response);
+        //             $(".data-submit .fa-spinner").css("display", "none");
+        //             $(".data-submit").removeAttr("disabled");
+        //             $("#data_table").unblock();
+        //             return;
+        //         }
+        //     },
+        //     error: function (response) {
+        //         console.log(response);
                 
-                let sel_html = '<option value="-1">All</option>';
-                $("#search_min").html(sel_html);
-                $("#search_max").html(sel_html);
-                $("#search_provider").html(sel_html);
-                resetSearchFilterOfDataTable();
-                dt_basic.columns.adjust().draw();
+        //         let sel_html = '<option value="-1">All</option>';
+        //         $("#search_min").html(sel_html);
+        //         $("#search_max").html(sel_html);
+        //         $("#search_provider").html(sel_html);
+        //         resetSearchFilterOfDataTable();
+        //         dt_basic.columns.adjust().draw();
                 
-                $(".data-submit .fa-spinner").css("display", "none");
-                $(".data-submit").removeAttr("disabled");
-                return;
-            },
-        });
+        //         $(".data-submit .fa-spinner").css("display", "none");
+        //         $(".data-submit").removeAttr("disabled");
+        //         return;
+        //     },
+        // });
           
+    })
+
+    $(".load-more").on("click", function(){
+        const page = $(this).attr("data-page");
+        loadMore(page);
+    })
+
+    $("#search_form input, #search_form select").on('change', function(){
+        // hide load more button
+        $(".load-more").css("display", "none");
     })
     
 });
@@ -527,4 +561,96 @@ function drawTableWithAPI(services){
 function resetSearchFilterOfDataTable(){
     $(".dt-column-search th select").val(-1).trigger('change');
     $(".dt-column-search th input").val("").trigger('change');
+}
+
+function loadMore(page){
+    // console.log(page);
+    if(!send_data)
+        return;
+
+    const _url = "/search-services";
+
+
+    $(".data-submit").attr("disabled", true);
+    $(".data-submit .fa-spinner").css("display", "inline-block");
+    $(".load-more").attr("disabled", true);
+    $(".load-more .fa-spinner").css("display", "inline-block");
+    
+    blockDataTable();
+
+    send_data.page = page;
+    
+    $.ajax({
+        url: _url,
+        type: "POST",
+        data: send_data,
+        success: function (response) {
+            if (response.code == 200) {
+                console.log(response);
+                const services = response.services;
+
+                // drawTableManually(services);
+                drawTableWithAPI(services);
+                
+                let collapseElement = document.getElementById("close_card");
+                new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
+                // Toggle collapsed class in `.card-header` element
+                collapseElement.closest('.card-header').classList.toggle('collapsed');
+                // Toggle class bx-chevron-down & bx-chevron-up
+                Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
+
+                $('.datatables-basic').DataTable();
+                $(".data-submit .fa-spinner").css("display", "none");
+                $(".data-submit").removeAttr("disabled");
+
+                $(".load-more").removeAttr("disabled");
+                $(".load-more .fa-spinner").css("display", "none");
+
+                $(".load-more").css("display", "inline");
+                $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
+
+                $(".load-more .btn-txt").html("There are " + response.remain_rows + " more results. Load More..");
+                if(services.length < 5000){
+                    // hide load more button
+                    $(".load-more").css("display", "none");
+                }
+
+                $("#data_table").unblock();
+            } else {
+                
+                let sel_html = '<option value="-1">All</option>';
+                $("#search_min").html(sel_html);
+                $("#search_max").html(sel_html);
+                $("#search_provider").html(sel_html);
+                resetSearchFilterOfDataTable();
+                dt_basic.columns.adjust().draw();
+
+                $(".data-submit .fa-spinner").css("display", "none");
+                $(".data-submit").removeAttr("disabled");
+
+                $(".load-more").removeAttr("disabled");
+                $(".load-more .fa-spinner").css("display", "none");
+
+                $("#data_table").unblock();
+                return;
+            }
+        },
+        error: function (response) {
+            console.log(response);
+            
+            let sel_html = '<option value="-1">All</option>';
+            $("#search_min").html(sel_html);
+            $("#search_max").html(sel_html);
+            $("#search_provider").html(sel_html);
+            resetSearchFilterOfDataTable();
+            dt_basic.columns.adjust().draw();
+            
+            $(".data-submit .fa-spinner").css("display", "none");
+            $(".data-submit").removeAttr("disabled");
+
+            $(".load-more").removeAttr("disabled");
+            $(".load-more .fa-spinner").css("display", "none");
+            return;
+        },
+    });
 }

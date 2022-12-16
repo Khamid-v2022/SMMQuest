@@ -1,6 +1,5 @@
 <?php 
     require_once "include/db_configure.php";
-    // require_once "include/variable_config.php";
     require_once "include/functions.php";
 
     loadServices();
@@ -46,6 +45,11 @@
             $result = $conn->query($sql);
         }
 
+        // get currency table
+        $sql_currency = "SELECT * FROM base_currency WHERE id = 1";
+        $result_currency = $conn->query($sql_currency);
+        $currency_conversion_rate = $result_currency->fetch_assoc();
+
         while($row = $result->fetch_assoc()){
             $api_key = decrypt_key($row['api_key']);
 
@@ -72,16 +76,25 @@
                         $category = isset($item['category']) ? str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])) : 'NULL';
                         
                         // have a over flow bug
-                        if($rate > 99999999999)
+                        if($rate != 'NULL' && $rate > 99999999999){
                             $rate = 99999999999;
+                            $rate_usd = $rate;
+                        } else {
+                            $rate_usd = $rate;
+                            // covert rate(price) to usd
+                            if($rate != 'NULL' && $row['currency'] && $row['currency'] != '1' && strtoupper($row['currency']) != 'USD' && $currency_conversion_rate[strtoupper($row['currency'])] != 0){
+                                $rate_usd = $rate / $currency_conversion_rate[strtoupper($row['currency'])];
+                            }
+                        }
+
                         if($result_service->num_rows == 0){
 
-                            $sql_insert = "INSERT INTO services(provider_id, service, name, type, rate, min, max, dripfeed, refill, cancel, category, status, created_at) VALUES (" 
+                            $sql_insert = "INSERT INTO services(provider_id, service, name, type, rate, rate_usd, min, max, dripfeed, refill, cancel, category, status, created_at) VALUES (" 
                                 . $row['id'] . ", '" 
                                 . $item['service'] . "', '" 
                                 . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', '" 
                                 . (isset($item['type']) ? $item['type'] : "NULL") . "', " 
-                                . $rate . ", " 
+                                . $rate . ", " . $rate_usd . ", " 
                                 . (isset($item['min']) ? ((int)$item['min']) : "NULL") . ", " 
                                 . (isset($item['max']) ? ((int)$item['max']) : "NULL")  . ", " 
                                 . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", " 
@@ -93,7 +106,7 @@
                             $conn->query($sql_insert);
                             $inserted_count++;
                         } else {
-                            $sql_update = "UPDATE services SET name = '" . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', type = '" . (isset($item['type']) ? $item['type'] : "NULL") . "', rate = '" . $rate . "', min = " . (isset($item['min']) ? ((int)$item['min']) : "NULL") . ", max = " . (isset($item['max']) ? ((int)$item['max']) : "NULL") . ", dripfeed = " . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", refill = " . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", cancel = " . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", category = '" . $category . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";
+                            $sql_update = "UPDATE services SET name = '" . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', type = '" . (isset($item['type']) ? $item['type'] : "NULL") . "', rate = " . $rate . ", rate_usd = " . $rate_usd . ", min = " . (isset($item['min']) ? ((int)$item['min']) : "NULL") . ", max = " . (isset($item['max']) ? ((int)$item['max']) : "NULL") . ", dripfeed = " . (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0) . ", refill = " . (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0) . ", cancel = " . (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0) . ", category = '" . $category . "', status = 1, updated_at = '" . date("Y-m-d H:i:s") . "' WHERE provider_id = " . $row['id'] . " AND service = '" . $item['service'] . "'";
                           
                             $conn->query($sql_update);
                         }
