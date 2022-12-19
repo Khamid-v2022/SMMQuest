@@ -196,15 +196,15 @@ $(function () {
                 className: 'service-rate text-end',
                 targets: 5,
                 render: function(data){
-                    // if(data.includes("≈")){
-                    //     num = data.split("≈");
-                    //     if(num.length > 1){
-                    //         let _number = num[1].trim();
-                    //         return "≈ " + parseFloat(_number).toLocaleString('en-US', {maximumFractionDigits:5});
-                    //     }
-                    // } else{
+                    if(data.includes("≈")){
+                        num = data.split("≈");
+                        if(num.length >= 1){
+                            let _number = num[1].trim();
+                            return "≈ " + parseFloat(_number).toLocaleString('en-US', {maximumFractionDigits:5});
+                        }
+                    } else{
                         return data ? data.toLocaleString('en-US', {maximumFractionDigits:5}) : '';
-                    // }
+                    }
                         
                 }
             },
