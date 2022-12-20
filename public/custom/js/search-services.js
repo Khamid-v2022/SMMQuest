@@ -196,8 +196,8 @@ $(function () {
                 className: 'service-rate text-end',
                 targets: 5,
                 render: function(data){
-                    if(data.includes("≈")){
-                        num = data.split("≈");
+                    if(data.toString().includes("≈")){
+                        num = data.toString().split("≈");
                         if(num.length >= 1){
                             let _number = num[1].trim();
                             return "≈ " + parseFloat(_number).toLocaleString('en-US', {maximumFractionDigits:5});
@@ -329,6 +329,7 @@ $(function () {
         e.preventDefault();
 
         $(".load-more").attr("data-page", 0);
+        $(".load-more").css("display", "none");
         send_data = null;
 
         const providers = $("#providers").val();
