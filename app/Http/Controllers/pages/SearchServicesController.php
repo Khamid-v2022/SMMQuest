@@ -99,6 +99,7 @@ class SearchServicesController extends MyController
         }
 
         return response()->json(['code'=>200, 'services'=>$result, 'remain_rows'=>$remain_rows], 200);
+        // return response()->json(['code'=>200, 'services'=>$result_array], 200);
     }
 
 }

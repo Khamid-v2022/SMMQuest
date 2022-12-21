@@ -196,7 +196,7 @@ $(function () {
                 className: 'service-rate text-end',
                 targets: 5,
                 render: function(data){
-                    if(data.toString().includes("≈")){
+                    if(data && data.toString().includes("≈")){
                         num = data.toString().split("≈");
                         if(num.length >= 1){
                             let _number = num[1].trim();
@@ -565,7 +565,7 @@ function resetSearchFilterOfDataTable(){
 }
 
 function loadMore(page){
-    // console.log(page);
+
     if(!send_data)
         return;
 
@@ -637,7 +637,6 @@ function loadMore(page){
             }
         },
         error: function (response) {
-            console.log(response);
             
             let sel_html = '<option value="-1">All</option>';
             $("#search_min").html(sel_html);
