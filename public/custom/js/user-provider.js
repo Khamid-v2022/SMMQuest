@@ -204,7 +204,7 @@ $(function () {
               searchable: false,
               render: function (data, type, full){
                 if(full.is_being_add == 0){
-                  if(full.is_hold == 1)
+                  if(full.is_hold == 1 || full.main_key_valid == 0)
                     return '<span class="badge bg-label-info" title="Waiting on Admin Activation" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">Hold</span>';
                   else {
                     if(full.is_frozon == 1)
