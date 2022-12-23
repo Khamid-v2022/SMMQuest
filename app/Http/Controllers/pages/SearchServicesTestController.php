@@ -9,7 +9,7 @@ use App\Models\UserProvider;
 use App\Models\Service;
 use App\Models\Currency;
 
-class SearchServicesController extends MyController
+class SearchServicesTestController extends MyController
 {
     private $currencies = NULL;
 
@@ -19,8 +19,6 @@ class SearchServicesController extends MyController
 
         $this->currencies = Currency::where("id", 1)->first();
 
-        // $providers = UserProvider::with(['provider'])
-        //   ->where('user_id', Auth::user()->id)->get();
         $providers = UserProvider::getProviderList(Auth::user()->id);
         $types = Service::service_types_with_query(Auth::user()->id);
         $types_val=[];
@@ -35,7 +33,7 @@ class SearchServicesController extends MyController
             array_unshift($types_val, "Default");
         }
 
-        return view('content.pages.pages-search-services', [
+        return view('content.pages.pages-search-services-test', [
             'pageConfigs'=> $pageConfigs, 
             'container' => 'container-fluid',
             'providers' => $providers,
@@ -55,7 +53,7 @@ class SearchServicesController extends MyController
         $exclude = $request->exclude;
         
 
-        $result = Service::search_services_with_query(
+        $result_array = Service::search_services_with_query(
             Auth::user()->id,
             $providers,
             $type,
@@ -67,10 +65,10 @@ class SearchServicesController extends MyController
             $request->max_rate,
         );
 
-        if(count($result) > 150000){
-            return response()->json(['code'=>401, 'message'=>"There are too many results.
-            Please refine your search a bit more"], 200);
-        }
+        $result = $result_array['result'];
+        $remain_rows = $result_array['remain_rows'];
+
+        $tbody_html = '';
 
         if(count($result) > 0){
             if(!$this->currencies){
@@ -95,11 +93,31 @@ class SearchServicesController extends MyController
 
                     $result[$index]->rate = '≈ ' . $result[$index]->rate;
                 }
-                    
+                
+                $item = $result[$index];
+                if($index > 100){
+                    $tbody_html .= "<tr style='display:none'>";
+                    // break;
+                }
+                else 
+                    $tbody_html .= "<tr>";
+                $tbody_html .= "<td>" . $item->domain . "</td>";
+                $tbody_html .= "<td>" . $item->category . "</td>";
+                $tbody_html .= "<td>" . $item->service . "</td>";
+                $tbody_html .= "<td>" . $item->name . "</td>";
+                $tbody_html .= "<td>" . $item->type . "</td>";
+                $tbody_html .= "<td>" . $item->rate . "</td>";
+                $tbody_html .= "<td>" . $item->min . "</td>";
+                $tbody_html .= "<td>" . $item->max . "</td>";
+                $tbody_html .= "<td>" . $item->dripfeed . "</td>";
+                $tbody_html .= "<td>" . $item->refill . "</td>";
+                $tbody_html .= "<td>" . $item->cancel . "</td>";
+                // $tbody_html .= "<td>" . $item->is_favorite . "</td>";
+                $tbody_html .= "</tr>";
             }
         }
 
-        return response()->json(['code'=>200, 'services'=>$result], 200);
+        return response()->json(['code'=>200, "tbody" => $tbody_html], 200);
     }
 
 }

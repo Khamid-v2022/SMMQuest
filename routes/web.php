@@ -8,6 +8,7 @@ use App\Http\Controllers\pages\AccountSettingsAccount;
 use App\Http\Controllers\pages\AccountSettingsSecurity;
 use App\Http\Controllers\pages\ProviderController;
 use App\Http\Controllers\pages\SearchServicesController;
+use App\Http\Controllers\pages\SearchServicesTestController;
 
 // use App\Http\Controllers\admin\LoginPage;
 // use App\Http\Controllers\admin\DashboardPage;
@@ -50,6 +51,11 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     // Search Services
     Route::get('/search-services', [SearchServicesController::class, 'index'])->name('pages-search-services');
     Route::post('/search-services', [SearchServicesController::class, 'searchServices']);
+
+    // serarch services for test
+    Route::get('/search-services-test', [SearchServicesTestController::class, 'index'])->name('pages-search-services-test');
+    Route::post('/search-services-test', [SearchServicesTestController::class, 'searchServices']);
+
 });
 
 // error pages

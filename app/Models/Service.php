@@ -101,21 +101,20 @@ class Service extends Model
         return $result;
     } 
 
-    public static function search_services_with_query($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate, $page){
+    public static function search_services_with_query($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate){
         
-        $sql = "SELECT `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `main_currency`, `user_currency`, `status`, `s`.`created_at`, `s`.`updated_at`, `s`.`rate_usd` ";     
+        $sql = "SELECT `s`.`provider` AS `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `default_currency` AS `main_currency`, `up`.`balance_currency` AS `user_currency`, `status`, `s`.`created_at`, `s`.`updated_at`, `s`.`rate_usd` ";     
         $sql .= " FROM ( ";
-            $sql .= " SELECT `p`.`id`, `is_favorite`, `domain`, `p`.`currency` AS `main_currency`, `up`.`balance_currency` AS `user_currency` FROM ( ";
                 $sql .= " SELECT `provider_id`, `is_favorite`, `balance_currency` FROM `user_provider` WHERE `is_enabled` = 1 AND `user_id` = " . $user_id;
             $sql .= " ) `up` ";
-            $sql .= " LEFT JOIN `providers` `p` ON  `up`.`provider_id` = `p`.`id` AND `is_activated` = 1 AND `is_frozon` = 0 AND `is_hold` = 0 ";
-        $sql .= " ) `pro` ";
-        $sql .= " LEFT JOIN `services` `s` ON `pro`.`id` = `s`.`provider_id` AND `status` = 1 ";
-        $sql .= " WHERE rate_usd IS NOT NULL ";
+        $sql .= " LEFT JOIN `services` `s` ON `up`.`provider_id` = `s`.`provider_id` AND `status` = 1 ";
+       
+        $sql .= " WHERE `rate_usd` IS NOT NULL ";
         if(trim($type))
             $sql .= " AND `type` = '{$type}' ";
-        // else
-        //     $sql .= " AND `type` LIKE '%' ";
+        else
+            $sql .= " AND `type` LIKE '%' ";
+
         
         //check provider (if do not selected all or favorite item)
         if($provider_ids){
@@ -154,20 +153,72 @@ class Service extends Model
 
         $sql .= " ORDER BY `rate_usd`";
 
-
-        // $sql .= " LIMIT " . (5000 * $page) . ", 5000 ";
-
         $result =  DB::select($sql);
-        $num_rows = count($result);
-
-        $res_result = array_slice($result, 5000 * $page, 5000); 
-
-        $remain_rows = $num_rows - 5000 * ($page + 1);
-        return array('result' => $res_result, 'remain_rows' => $remain_rows);
-        // return $sql;
+       
+        return $result;
     }
 
-    // public static function search_services_with_query_backup($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate, $page){
+    // public static function search_services_with_query_type1($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate){
+        
+    //     $sql = "SELECT `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `main_currency`, `user_currency`, `status`, `s`.`created_at`, `s`.`updated_at`, `s`.`rate_usd` ";     
+    //     $sql .= " FROM ( ";
+    //         $sql .= " SELECT `p`.`id`, `is_favorite`, `domain`, `p`.`currency` AS `main_currency`, `up`.`balance_currency` AS `user_currency` FROM ( ";
+    //             $sql .= " SELECT `provider_id`, `is_favorite`, `balance_currency` FROM `user_provider` WHERE `is_enabled` = 1 AND `user_id` = " . $user_id;
+    //         $sql .= " ) `up` ";
+    //         $sql .= " LEFT JOIN `providers` `p` ON  `up`.`provider_id` = `p`.`id` AND `is_activated` = 1 AND `is_frozon` = 0 AND `is_hold` = 0 ";
+    //     $sql .= " ) `pro` ";
+    //     $sql .= " LEFT JOIN `services` `s` ON `pro`.`id` = `s`.`provider_id` AND `status` = 1 ";
+       
+    //     $sql .= " WHERE `rate_usd` IS NOT NULL ";
+    //     if(trim($type))
+    //         $sql .= " AND `type` = '{$type}' ";
+    //     else
+    //         $sql .= " AND `type` LIKE '%' ";
+
+        
+    //     //check provider (if do not selected all or favorite item)
+    //     if($provider_ids){
+    //         if(!(count($provider_ids) == 1 && ($provider_ids[0] == '0' || $provider_ids[0] == '-1'))){            
+    //             $provider_ids_str = " (";
+    //             foreach($provider_ids as $provider_id){
+    //                 $provider_ids_str .= $provider_id . ", ";
+    //             }
+    //             $provider_ids_str = rtrim($provider_ids_str, ", ") . ") ";
+    //             $sql .= " AND `s`.`provider_id` IN {$provider_ids_str} ";
+    //         } else if(count($provider_ids) == 1 && $provider_ids[0] == '-1')            //favorite
+    //             $sql .= " AND `is_favorite` = 1 ";
+    //     }
+
+    //     if($include && count($include) != 0){
+    //         foreach($include as $word){
+    //             $sql .= " AND `name` LIKE '%{$word}%' ";
+    //         }               
+    //     }
+
+    //     if($exclude && count($exclude) != 0){
+    //         foreach($exclude as $word){
+    //             $sql .= " AND `name` NOT LIKE '%{$word}%' ";
+    //         }               
+    //     }
+
+    //     if($min)
+    //         $sql .= " AND `min` >= {$min} ";
+    //     if($max)
+    //         $sql .= " AND `max` <= {$max} ";
+    //     if($min_rate)
+    //         $sql .= " AND `rate` >= {$min_rate} ";
+    //     if($max_rate)
+    //         $sql .= " AND `rate` <= {$max_rate} ";
+
+
+    //     $sql .= " ORDER BY `rate_usd`";
+
+    //     $result =  DB::select($sql);
+       
+    //     return $result;
+    // }
+
+    // public static function search_services_with_query_type2_backup($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate, $page = NULL){
         
     //     $sql = "SELECT `ss`.`provider_id`, `user_id`, `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `rate_usd`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `currency` AS `main_currency`, `balance_currency` AS `user_currency`, `status`, `ss`.`created_at`, `ss`.`updated_at` ";     
     //     $sql .= " FROM ( ";
@@ -198,7 +249,7 @@ class Service extends Model
     //                 $provider_ids_str .= $provider_id . ", ";
     //             }
     //             $provider_ids_str = rtrim($provider_ids_str, ", ") . ") ";
-    //             $sql .= " AND `provider_id` IN {$provider_ids_str} ";
+    //             $sql .= " AND `up`.`provider_id` IN {$provider_ids_str} ";
     //         } else if(count($provider_ids) == 1 && $provider_ids[0] == '-1')            //favorite
     //             $sql .= " AND `is_favorite` = 1 ";
     //     }
@@ -224,16 +275,15 @@ class Service extends Model
     //     if($max_rate)
     //         $sql .= " AND `rate` <= {$max_rate} ";
 
-
-    //     // $sql .= " LIMIT " . (5000 * $page) . ", 5000 ";
-
     //     $result =  DB::select($sql);
     //     $num_rows = count($result);
-
-    //     $res_result = array_slice($result, 5000 * $page, 5000); 
-
-    //     $remain_rows = $num_rows - 5000 * ($page + 1);
-    //     return array('result' => $res_result, 'remain_rows' => $remain_rows);
-    //     // return $sql;
+    //     $remain_rows = 0;
+        
+    //     if($page){
+    //         $result = array_slice($result, 5000 * $page, 5000); 
+    //         $remain_rows = $num_rows - 5000 * ($page + 1);
+    //     }
+               
+    //     return array('result' => $result, 'remain_rows' => $remain_rows);
     // }
 }

@@ -4,6 +4,12 @@ var service_type_html = '<option value="-1">All</option>';
 
 var send_data = null;
 
+var result_services = [];
+let min_array_opt = [];
+let max_array_opt = [];
+let providers_opt = [];
+let types_opt = [];
+
 var previous_selected_providers = ["0"];
 $(function () {
     $(".load-more").css("display", "none");
@@ -386,76 +392,110 @@ $(function () {
             max_rate: $("#max_rate").val(),
             currency: $("#currency").val()
         }
+
         dt_basic.clear().draw();
 
-        loadMore(0);
-        // const _url = "/search-services";
+        // loadMore_with_ajax(0);
 
+        const _url = "/search-services";
 
-        // $(".data-submit").attr("disabled", true);
-        // $(".data-submit .fa-spinner").css("display", "inline-block");
+        $(".data-submit").attr("disabled", true);
+        $(".data-submit .fa-spinner").css("display", "inline-block");
         
-        // dt_basic.clear().draw();
-        // blockDataTable();
-        // $.ajax({
-        //     url: _url,
-        //     type: "POST",
-        //     data: send_data,
-        //     success: function (response) {
-        //         if (response.code == 200) {
-        //             console.log(response);
-        //             const services = response.services;
-
-        //             // drawTableManually(services);
-        //             drawTableWithAPI(services);
+        blockDataTable();
+        $.ajax({
+            url: _url,
+            type: "POST",
+            data: send_data,
+            success: function (response) {
+                if (response.code == 200) {
+                    console.log(response);
                     
-        //             let collapseElement = document.getElementById("close_card");
-        //             new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
-        //             // Toggle collapsed class in `.card-header` element
-        //             collapseElement.closest('.card-header').classList.toggle('collapsed');
-        //             // Toggle class bx-chevron-down & bx-chevron-up
-        //             Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
-
-        //             $('.datatables-basic').DataTable();
-        //             $(".data-submit .fa-spinner").css("display", "none");
-        //             $(".data-submit").removeAttr("disabled");
-        //             $("#data_table").unblock();
-        //         } else {
+                    result_services = response.services;
                     
-        //             let sel_html = '<option value="-1">All</option>';
-        //             $("#search_min").html(sel_html);
-        //             $("#search_max").html(sel_html);
-        //             $("#search_provider").html(sel_html);
-        //             resetSearchFilterOfDataTable();
-        //             dt_basic.columns.adjust().draw();
+                    min_array_opt = [];
+                    max_array_opt = [];
+                    providers_opt = [];
+                    types_opt = [];
 
-        //             $(".data-submit .fa-spinner").css("display", "none");
-        //             $(".data-submit").removeAttr("disabled");
-        //             $("#data_table").unblock();
-        //             return;
-        //         }
-        //     },
-        //     error: function (response) {
-        //         console.log(response);
+                    drawTableWithAPI(0);
+                    
+                    let collapseElement = document.getElementById("close_card");
+                    new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
+                    // Toggle collapsed class in `.card-header` element
+                    collapseElement.closest('.card-header').classList.toggle('collapsed');
+                    // Toggle class bx-chevron-down & bx-chevron-up
+                    Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
+
+                    $(".data-submit .fa-spinner").css("display", "none");
+                    $(".data-submit").removeAttr("disabled");
+                    $("#data_table").unblock();
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '',
+                        text: response.message,
+                        customClass: {
+                          confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    })
+                    
+                    let sel_html = '<option value="-1">All</option>';
+                    $("#search_min").html(sel_html);
+                    $("#search_max").html(sel_html);
+                    $("#search_provider").html(sel_html);
+                    resetSearchFilterOfDataTable();
+                    dt_basic.columns.adjust().draw();
+
+                    $(".data-submit .fa-spinner").css("display", "none");
+                    $(".data-submit").removeAttr("disabled");
+                    $("#data_table").unblock();
+                    return;
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                Swal.fire({
+                    icon: 'warning',
+                    title: '',
+                    text: "There are too many results. Please refine your search a bit more",
+                    customClass: {
+                      confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                })
+
+                let sel_html = '<option value="-1">All</option>';
+                $("#search_min").html(sel_html);
+                $("#search_max").html(sel_html);
+                $("#search_provider").html(sel_html);
+                resetSearchFilterOfDataTable();
+                dt_basic.columns.adjust().draw();
                 
-        //         let sel_html = '<option value="-1">All</option>';
-        //         $("#search_min").html(sel_html);
-        //         $("#search_max").html(sel_html);
-        //         $("#search_provider").html(sel_html);
-        //         resetSearchFilterOfDataTable();
-        //         dt_basic.columns.adjust().draw();
-                
-        //         $(".data-submit .fa-spinner").css("display", "none");
-        //         $(".data-submit").removeAttr("disabled");
-        //         return;
-        //     },
-        // });
+                $(".data-submit .fa-spinner").css("display", "none");
+                $(".data-submit").removeAttr("disabled");
+                $("#data_table").unblock();
+                return;
+            },
+        });
           
     })
 
     $(".load-more").on("click", function(){
         const page = $(this).attr("data-page");
-        loadMore(page);
+        // loadMore_with_ajax(page);
+        $(".load-more").attr("disabled", true);
+        $(".load-more .fa-spinner").css("display", "inline-block");
+        blockDataTable();
+
+        setTimeout(function(){
+            drawTableWithAPI(page)
+        }, 200);
+
+        // $(".load-more").removeAttr("disabled");
+        // $(".load-more .fa-spinner").css("display", "none");
+        // $("#data_table").unblock();
     })
 
     $("#search_form input, #search_form select").on('change', function(){
@@ -480,15 +520,17 @@ function blockDataTable() {
     });
 }
 
-function drawTableWithAPI(services){
-    let min_array = [];
-    let max_array = [];
-    let providers = [];
-    let types = [];
-
+function drawTableWithAPI(page){
     let records = [];
 
-    services.forEach((service) => {
+    if(result_services.length == 0 || result_services.length <= page * 5000) {
+        return;
+    }
+
+    // let show_services = result_services.splice(page * 5000, 5000);
+    let show_services = result_services.slice(page * 5000, (parseInt(page) + 1) * 5000);
+
+    show_services.forEach((service) => {
         records.push({
             domain: service.domain,
             category: service.category,
@@ -504,47 +546,45 @@ function drawTableWithAPI(services){
             is_favorite: service.is_favorite
         });
 
-        if(!providers.includes(service.domain))
-            providers.push(service.domain);
-        if(!types.includes(service.type))
-            types.push(service.type);
-        if(!min_array.includes(service.min))
-            min_array.push(service.min);
-        if(!max_array.includes(service.max))
-            max_array.push(service.max);
+        if(!providers_opt.includes(service.domain))
+            providers_opt.push(service.domain);
+        if(!types_opt.includes(service.type))
+            types_opt.push(service.type);
+        if(!min_array_opt.includes(service.min))
+            min_array_opt.push(service.min);
+        if(!max_array_opt.includes(service.max))
+            max_array_opt.push(service.max);
     })
-    dt_basic.rows.add(records);
-    
-    min_array.sort((a, b) => a - b);
-    max_array.sort((a, b) => a - b);
 
-    
-    // dt_basic.draw();
+    dt_basic.rows.add(records);
+
+    min_array_opt.sort((a, b) => a - b);
+    max_array_opt.sort((a, b) => a - b);
 
     let min_sel_html = '<option value="-1">All</option>';
     let max_sel_html = '<option value="-1">All</option>';
     let providers_html = '<option value="-1">All</option>';
     service_type_html = '<option value="-1">All</option>';
     
-    min_array.forEach((item) => {
+    min_array_opt.forEach((item) => {
         min_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
     })
 
-    max_array.forEach((item) => {
+    max_array_opt.forEach((item) => {
         max_sel_html += '<option value="' + item.toLocaleString('en-US') + '">' + item.toLocaleString('en-US') + '</option>';
     })
 
-    providers.forEach((item) => {
+    providers_opt.forEach((item) => {
         providers_html += '<option value="' + item + '">' + item + '</option>';
     })
 
-    if(types.length > 0 && types.includes("Default")){
-        const index = types.indexOf("Default");
-        types.splice(index, 1);
-        types = ["Default"].concat(types);
+    if(types_opt.length > 0 && types_opt.includes("Default")){
+        const index = types_opt.indexOf("Default");
+        types_opt.splice(index, 1);
+        types_opt = ["Default"].concat(types_opt);
     }
 
-    types.forEach((item) => {
+    types_opt.forEach((item) => {
         service_type_html += '<option value="' + item + '">' + item + '</option>';
     })
 
@@ -557,6 +597,20 @@ function drawTableWithAPI(services){
 
 
     dt_basic.columns.adjust().draw();
+
+    $(".load-more").css("display", "inline");
+    $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
+
+    let remain_count = result_services.length - (parseInt(page) + 1) * 5000 > 0 ? (result_services.length - (parseInt(page) + 1) * 5000) : 0;
+    $(".load-more .btn-txt").html("There are " + remain_count + " more results. Load More..");
+    if(remain_count <= 0){
+        // hide load more button
+        $(".load-more").css("display", "none");
+    }
+
+    $(".load-more").removeAttr("disabled");
+    $(".load-more .fa-spinner").css("display", "none");
+    $("#data_table").unblock();
 }
 
 function resetSearchFilterOfDataTable(){
@@ -564,93 +618,92 @@ function resetSearchFilterOfDataTable(){
     $(".dt-column-search th input").val("").trigger('change');
 }
 
-function loadMore(page){
+// function loadMore_with_ajax(page){
 
-    if(!send_data)
-        return;
+//     if(!send_data)
+//         return;
 
-    const _url = "/search-services";
+//     const _url = "/search-services";
 
 
-    $(".data-submit").attr("disabled", true);
-    $(".data-submit .fa-spinner").css("display", "inline-block");
-    $(".load-more").attr("disabled", true);
-    $(".load-more .fa-spinner").css("display", "inline-block");
+//     $(".data-submit").attr("disabled", true);
+//     $(".data-submit .fa-spinner").css("display", "inline-block");
+//     $(".load-more").attr("disabled", true);
+//     $(".load-more .fa-spinner").css("display", "inline-block");
     
-    blockDataTable();
+//     blockDataTable();
 
-    send_data.page = page;
+//     send_data.page = page;
     
-    $.ajax({
-        url: _url,
-        type: "POST",
-        data: send_data,
-        success: function (response) {
-            if (response.code == 200) {
-                console.log(response);
-                const services = response.services;
+//     $.ajax({
+//         url: _url,
+//         type: "POST",
+//         data: send_data,
+//         success: function (response) {
+//             if (response.code == 200) {
+//                 console.log(response);
+//                 const services = response.services;
 
-                // drawTableManually(services);
-                drawTableWithAPI(services);
+//                 drawTableWithAPI();????????????
                 
-                let collapseElement = document.getElementById("close_card");
-                new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
-                // Toggle collapsed class in `.card-header` element
-                collapseElement.closest('.card-header').classList.toggle('collapsed');
-                // Toggle class bx-chevron-down & bx-chevron-up
-                Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
+//                 let collapseElement = document.getElementById("close_card");
+//                 new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
+//                 // Toggle collapsed class in `.card-header` element
+//                 collapseElement.closest('.card-header').classList.toggle('collapsed');
+//                 // Toggle class bx-chevron-down & bx-chevron-up
+//                 Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
 
-                $('.datatables-basic').DataTable();
-                $(".data-submit .fa-spinner").css("display", "none");
-                $(".data-submit").removeAttr("disabled");
+//                 // $('.datatables-basic').DataTable();
+//                 $(".data-submit .fa-spinner").css("display", "none");
+//                 $(".data-submit").removeAttr("disabled");
 
-                $(".load-more").removeAttr("disabled");
-                $(".load-more .fa-spinner").css("display", "none");
+//                 $(".load-more").removeAttr("disabled");
+//                 $(".load-more .fa-spinner").css("display", "none");
 
-                $(".load-more").css("display", "inline");
-                $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
+//                 $(".load-more").css("display", "inline");
+//                 $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
 
-                $(".load-more .btn-txt").html("There are " + response.remain_rows + " more results. Load More..");
-                if(services.length < 5000){
-                    // hide load more button
-                    $(".load-more").css("display", "none");
-                }
+//                 $(".load-more .btn-txt").html("There are " + response.remain_rows + " more results. Load More..");
+//                 if(services.length < 5000){
+//                     // hide load more button
+//                     $(".load-more").css("display", "none");
+//                 }
 
-                $("#data_table").unblock();
-            } else {
+//                 $("#data_table").unblock();
+//             } else {
                 
-                let sel_html = '<option value="-1">All</option>';
-                $("#search_min").html(sel_html);
-                $("#search_max").html(sel_html);
-                $("#search_provider").html(sel_html);
-                resetSearchFilterOfDataTable();
-                dt_basic.columns.adjust().draw();
+//                 let sel_html = '<option value="-1">All</option>';
+//                 $("#search_min").html(sel_html);
+//                 $("#search_max").html(sel_html);
+//                 $("#search_provider").html(sel_html);
+//                 resetSearchFilterOfDataTable();
+//                 dt_basic.columns.adjust().draw();
 
-                $(".data-submit .fa-spinner").css("display", "none");
-                $(".data-submit").removeAttr("disabled");
+//                 $(".data-submit .fa-spinner").css("display", "none");
+//                 $(".data-submit").removeAttr("disabled");
 
-                $(".load-more").removeAttr("disabled");
-                $(".load-more .fa-spinner").css("display", "none");
+//                 $(".load-more").removeAttr("disabled");
+//                 $(".load-more .fa-spinner").css("display", "none");
 
-                $("#data_table").unblock();
-                return;
-            }
-        },
-        error: function (response) {
+//                 $("#data_table").unblock();
+//                 return;
+//             }
+//         },
+//         error: function (response) {
             
-            let sel_html = '<option value="-1">All</option>';
-            $("#search_min").html(sel_html);
-            $("#search_max").html(sel_html);
-            $("#search_provider").html(sel_html);
-            resetSearchFilterOfDataTable();
-            dt_basic.columns.adjust().draw();
+//             let sel_html = '<option value="-1">All</option>';
+//             $("#search_min").html(sel_html);
+//             $("#search_max").html(sel_html);
+//             $("#search_provider").html(sel_html);
+//             resetSearchFilterOfDataTable();
+//             dt_basic.columns.adjust().draw();
             
-            $(".data-submit .fa-spinner").css("display", "none");
-            $(".data-submit").removeAttr("disabled");
+//             $(".data-submit .fa-spinner").css("display", "none");
+//             $(".data-submit").removeAttr("disabled");
 
-            $(".load-more").removeAttr("disabled");
-            $(".load-more .fa-spinner").css("display", "none");
-            return;
-        },
-    });
-}
+//             $(".load-more").removeAttr("disabled");
+//             $(".load-more .fa-spinner").css("display", "none");
+//             return;
+//         },
+//     });
+// }
