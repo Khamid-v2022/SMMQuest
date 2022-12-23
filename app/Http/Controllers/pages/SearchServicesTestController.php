@@ -53,7 +53,7 @@ class SearchServicesTestController extends MyController
         $exclude = $request->exclude;
         
 
-        $result_array = Service::search_services_with_query(
+        $result = Service::search_services_with_query(
             Auth::user()->id,
             $providers,
             $type,
@@ -65,8 +65,7 @@ class SearchServicesTestController extends MyController
             $request->max_rate,
         );
 
-        $result = $result_array['result'];
-        $remain_rows = $result_array['remain_rows'];
+
 
         $tbody_html = '';
 

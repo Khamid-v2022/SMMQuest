@@ -56,8 +56,12 @@ class LoginBasic extends Controller
       $history->browser = Agent::browser();
       $history->platform = Agent::platform();
       $location = Location::get($request->ip());
-      if($location)
-        $history->location = $location->countryName;
+      if($location){
+        if( $location->countryName == "Estonia")
+          $history->location = "Latvia";
+        else
+          $history->location = $location->countryName;
+      }
       $history->loggedin_at = date("Y-m-d H:i:s");
       $history->save();
       

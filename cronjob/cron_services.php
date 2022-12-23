@@ -3,6 +3,7 @@
     require_once "include/functions.php";
 
     loadServices();
+
     $conn->close();
 
     function loadServices() {
@@ -89,8 +90,10 @@
 
                         if($result_service->num_rows == 0){
 
-                            $sql_insert = "INSERT INTO services(provider_id, service, name, type, rate, rate_usd, min, max, dripfeed, refill, cancel, category, status, created_at) VALUES (" 
+                            $sql_insert = "INSERT INTO services(provider_id, provider, default_currency, service, name, type, rate, rate_usd, min, max, dripfeed, refill, cancel, category, status, created_at) VALUES (" 
                                 . $row['id'] . ", '" 
+                                . $row['domain'] . "', '" 
+                                . $row['currency'] . "', '" 
                                 . $item['service'] . "', '" 
                                 . str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])) . "', '" 
                                 . (isset($item['type']) ? $item['type'] : "NULL") . "', " 
@@ -129,6 +132,19 @@
 
         echo "INSERTED: " . $inserted_count . "ROWS" . PHP_EOL;
         echo "SERVICE ENDED: " . date("Y-m-d H:i:s") . PHP_EOL;
+    }
+
+    function initSetup(){
+        global $conn;
+        echo "start";
+        $sql_total = "SELECT * FROM providers";
+        $result = $conn->query($sql_total);
+
+        while($row = $result->fetch_assoc()){
+            $sql_update = "UPDATE services SET provider = '" . $row['domain'] . "', default_currency = '" . $row['currency'] . "' WHERE provider_id = " . $row['id'];
+            $conn->query($sql_update);
+        }
+        echo "end";
     }
 
 ?>
