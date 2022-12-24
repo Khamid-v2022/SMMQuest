@@ -94,11 +94,11 @@ class SearchServicesTestController extends MyController
                 }
                 
                 $item = $result[$index];
-                if($index > 100){
-                    $tbody_html .= "<tr style='display:none'>";
-                    // break;
-                }
-                else 
+                // if($index > 100){
+                //     $tbody_html .= "<tr style='display:none'>";
+                //     // break;
+                // }
+                // else 
                     $tbody_html .= "<tr>";
                 $tbody_html .= "<td>" . $item->domain . "</td>";
                 $tbody_html .= "<td>" . $item->category . "</td>";

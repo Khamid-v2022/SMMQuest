@@ -266,10 +266,10 @@ $(function () {
         // order: [[5, 'asc']],
         ordering: false,
         orderCellsTop: true,
-        // paging: false,
+        paging: false,
         // lengthChange: false,
-        displayLength: 1000,
-        lengthMenu: [1000, 2500, 5000],
+        // displayLength: 1000,
+        // lengthMenu: [1000, 2500, 5000],
         dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
     // hide category, type column as default
