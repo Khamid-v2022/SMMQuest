@@ -110,10 +110,15 @@ $(function () {
         $('#search_provider', this).on('change', function () {
             blockDataTable();
             if(this.value == -1){
-                dt_basic.column(i).search("").draw();
+                dt_basic.column(11).search("").draw();
+                dt_basic.column(0).search("").draw();
+            } else if(this.value == 0) {
+                // favorite provider only
+                dt_basic.column(11).search(1).draw();
             } else {
-                if (dt_basic.column(i).search() !== this.value) {
-                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                dt_basic.column(11).search("").draw();
+                if (dt_basic.column(0).search() !== this.value) {
+                    dt_basic.column(0).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
                 }
             }
             $("#data_table").unblock();
@@ -169,7 +174,8 @@ $(function () {
             { data: 'max'},
             { data: 'dripfeed'},
             { data: 'refill'},
-            { data: 'cancel'}
+            { data: 'cancel'},
+            { data: 'is_favorite'}
         ],
         columnDefs: [
             {
@@ -202,15 +208,15 @@ $(function () {
                 className: 'service-rate text-end',
                 targets: 5,
                 render: function(data){
-                    if(data && data.toString().includes("≈")){
-                        num = data.toString().split("≈");
-                        if(num.length >= 1){
-                            let _number = num[1].trim();
-                            return "≈ " + parseFloat(_number).toLocaleString('en-US', {maximumFractionDigits:5});
-                        }
-                    } else{
+                    // if(data && data.toString().includes("≈")){
+                    //     num = data.toString().split("≈");
+                    //     if(num.length >= 1){
+                    //         let _number = num[1].trim();
+                    //         return "≈ " + parseFloat(_number).toLocaleString('en-US', {maximumFractionDigits:5});
+                    //     }
+                    // } else{
                         return data ? data.toLocaleString('en-US', {maximumFractionDigits:5}) : '';
-                    }
+                    // }
                         
                 }
             },
@@ -263,18 +269,19 @@ $(function () {
                 },
             }
         ],
-        // order: [[5, 'asc']],
-        ordering: false,
+        order: [[5, 'asc']],
         orderCellsTop: true,
-        paging: false,
+        // ordering: false,
+        // paging: false,
         // lengthChange: false,
-        // displayLength: 1000,
-        // lengthMenu: [1000, 2500, 5000],
+        displayLength: 1000,
+        lengthMenu: [1000, 2500, 5000],
         dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
     // hide category, type column as default
     dt_basic.column(1).visible(false);
     dt_basic.column(4).visible(false);
+    dt_basic.column(11).visible(false);
   
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
@@ -563,7 +570,7 @@ function drawTableWithAPI(page){
 
     let min_sel_html = '<option value="-1">All</option>';
     let max_sel_html = '<option value="-1">All</option>';
-    let providers_html = '<option value="-1">All</option>';
+    let providers_html = '<option value="-1">All</option><option value="0">Favorite Providers Only</option>';
     service_type_html = '<option value="-1">All</option>';
     
     min_array_opt.forEach((item) => {

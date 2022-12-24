@@ -93,7 +93,7 @@ class SearchServicesController extends MyController
                 if($currency && $currency != 0) {
                     $result[$index]->rate = ($result[$index]->rate / $currency) * $this->currencies[$request->currency];
 
-                    $result[$index]->rate = '≈ ' . $result[$index]->rate;
+                    // $result[$index]->rate = '≈ ' . $result[$index]->rate;
                 }
                     
             }

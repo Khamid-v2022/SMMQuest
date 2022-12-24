@@ -218,72 +218,66 @@ class Service extends Model
     //     return $result;
     // }
 
-    // public static function search_services_with_query_type2_backup($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate, $page = NULL){
+    public static function search_services_with_query_type2_backup($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate){
         
-    //     $sql = "SELECT `ss`.`provider_id`, `user_id`, `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `rate_usd`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `currency` AS `main_currency`, `balance_currency` AS `user_currency`, `status`, `ss`.`created_at`, `ss`.`updated_at` ";     
-    //     $sql .= " FROM ( ";
-    //         $sql .= " SELECT `provider_id`, `service`, `name`, `type`, `rate`, `rate_usd`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `created_at`, `updated_at`, `status` ";
-    //         $sql .= " FROM `services` `s` ";
-    //         $sql .= " WHERE EXISTS ( ";
-    //             $sql .= " SELECT 1 ";
-    //             $sql .= " FROM `user_provider` `up` ";
-    //             $sql .= " WHERE `s`.`provider_id` = `up`.`provider_id` AND `user_id` = {$user_id} AND `is_enabled` = 1 )";
-    //         $sql .= " AND STATUS = 1 ";
-    //         $sql .= " ORDER BY `rate_usd` ";
-    //     $sql .= " ) `ss` ";
-    //     $sql .= " INNER JOIN `user_provider` `up` ON `ss`.`provider_id` = `up`.`provider_id` ";
-    //     $sql .= " INNER JOIN `providers` `p` ON `up`.`provider_id` = `p`.id AND `p`.`is_activated` = 1 AND `p`.`is_frozon` = 0 AND `p`.`is_hold` = 0 ";
+        $sql = "SELECT `ss`.`provider_id`, `user_id`, `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `rate_usd`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `main_currency`, `balance_currency` AS `user_currency`, `status`, `ss`.`created_at`, `ss`.`updated_at` ";     
+        $sql .= " FROM ( ";
+            $sql .= " SELECT `provider_id`, `provider` AS `domain`, `default_currency` AS `main_currency`, `service`, `name`, `type`, `rate`, `rate_usd`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `created_at`, `updated_at`, `status` ";
+            $sql .= " FROM `services` `s` ";
+            $sql .= " WHERE EXISTS ( ";
+                $sql .= " SELECT 1 ";
+                $sql .= " FROM `user_provider` `up` ";
+                $sql .= " WHERE `s`.`provider_id` = `up`.`provider_id` AND `user_id` = {$user_id} AND `is_enabled` = 1 )";
+            $sql .= " AND STATUS = 1 ";
+            $sql .= " ORDER BY `rate_usd` ";
+        $sql .= " ) `ss` ";
+        $sql .= " INNER JOIN `user_provider` `up` ON `ss`.`provider_id` = `up`.`provider_id` ";
+        // $sql .= " INNER JOIN `providers` `p` ON `up`.`provider_id` = `p`.id AND `p`.`is_activated` = 1 AND `p`.`is_frozon` = 0 AND `p`.`is_hold` = 0 ";
         
         
-    //     $sql .= " WHERE ";
-    //     if(trim($type))
-    //         $sql .= " `type` = '{$type}' ";
-    //     else
-    //         $sql .= " `type` LIKE '%' ";
+        $sql .= " WHERE ";
+        if(trim($type))
+            $sql .= " `type` = '{$type}' ";
+        else
+            $sql .= " `type` LIKE '%' ";
         
-    //     //check provider (if do not selected all or favorite item)
-    //     if($provider_ids){
-    //         if(!(count($provider_ids) == 1 && ($provider_ids[0] == '0' || $provider_ids[0] == '-1'))){            
-    //             $provider_ids_str = " (";
-    //             foreach($provider_ids as $provider_id){
-    //                 $provider_ids_str .= $provider_id . ", ";
-    //             }
-    //             $provider_ids_str = rtrim($provider_ids_str, ", ") . ") ";
-    //             $sql .= " AND `up`.`provider_id` IN {$provider_ids_str} ";
-    //         } else if(count($provider_ids) == 1 && $provider_ids[0] == '-1')            //favorite
-    //             $sql .= " AND `is_favorite` = 1 ";
-    //     }
+        //check provider (if do not selected all or favorite item)
+        if($provider_ids){
+            if(!(count($provider_ids) == 1 && ($provider_ids[0] == '0' || $provider_ids[0] == '-1'))){            
+                $provider_ids_str = " (";
+                foreach($provider_ids as $provider_id){
+                    $provider_ids_str .= $provider_id . ", ";
+                }
+                $provider_ids_str = rtrim($provider_ids_str, ", ") . ") ";
+                $sql .= " AND `up`.`provider_id` IN {$provider_ids_str} ";
+            } else if(count($provider_ids) == 1 && $provider_ids[0] == '-1')            //favorite
+                $sql .= " AND `is_favorite` = 1 ";
+        }
 
-    //     if($include && count($include) != 0){
-    //         foreach($include as $word){
-    //             $sql .= " AND `name` LIKE '%{$word}%' ";
-    //         }               
-    //     }
+        if($include && count($include) != 0){
+            foreach($include as $word){
+                $sql .= " AND `name` LIKE '%{$word}%' ";
+            }               
+        }
 
-    //     if($exclude && count($exclude) != 0){
-    //         foreach($exclude as $word){
-    //             $sql .= " AND `name` NOT LIKE '%{$word}%' ";
-    //         }               
-    //     }
+        if($exclude && count($exclude) != 0){
+            foreach($exclude as $word){
+                $sql .= " AND `name` NOT LIKE '%{$word}%' ";
+            }               
+        }
 
-    //     if($min)
-    //         $sql .= " AND `min` >= {$min} ";
-    //     if($max)
-    //         $sql .= " AND `max` <= {$max} ";
-    //     if($min_rate)
-    //         $sql .= " AND `rate` >= {$min_rate} ";
-    //     if($max_rate)
-    //         $sql .= " AND `rate` <= {$max_rate} ";
+        if($min)
+            $sql .= " AND `min` >= {$min} ";
+        if($max)
+            $sql .= " AND `max` <= {$max} ";
+        if($min_rate)
+            $sql .= " AND `rate` >= {$min_rate} ";
+        if($max_rate)
+            $sql .= " AND `rate` <= {$max_rate} ";
 
-    //     $result =  DB::select($sql);
-    //     $num_rows = count($result);
-    //     $remain_rows = 0;
-        
-    //     if($page){
-    //         $result = array_slice($result, 5000 * $page, 5000); 
-    //         $remain_rows = $num_rows - 5000 * ($page + 1);
-    //     }
+        $result =  DB::select($sql);
+
                
-    //     return array('result' => $result, 'remain_rows' => $remain_rows);
-    // }
+        return $result;
+    }
 }

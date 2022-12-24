@@ -204,13 +204,16 @@ $configData = Helper::appClasses();
         
     <div class="card-datatable table-responsive">
         
-    <!-- <button class="btn btn-info load-more" data-page="1" style="position: absolute; right: 15px;top: 15px;z-index:10"> -->
-        <div class="text-end">
+        <button class="btn btn-info load-more" data-page="1" style="position: absolute; right: 15px;top: 15px;z-index:10">
+            <span class="btn-txt"> Load More</span>
+            <i class="fas fa-spinner fa-spin" style="display:none"></i>
+        </button>
+        <!-- <div class="text-end">
             <button class="btn btn-info load-more" data-page="1" style="">
                 <span class="btn-txt"> Load More</span>
                 <i class="fas fa-spinner fa-spin" style="display:none"></i>
             </button>
-        </div>
+        </div> -->
         <table class="dt-column-search datatables-basic table" id="data_table" style="font-size: .9rem;">
             <thead>
                 <tr>
@@ -225,9 +228,10 @@ $configData = Helper::appClasses();
                     <th class='service-dripfeed'>Dripfeed</th>
                     <th class='service-refill'>Refill Button</th>
                     <th class='service-cancel'>Cancel Button</th>
+                    <th class=''>Is Favorite</th>
                 </tr>
             </thead>
-            <tbody id="tbl-body_">
+            <tbody id="tbl-body">
                 
             </tbody>
         </table>
