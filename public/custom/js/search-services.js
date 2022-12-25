@@ -276,6 +276,8 @@ $(function () {
         // lengthChange: false,
         displayLength: 1000,
         lengthMenu: [1000, 2500, 5000],
+        scrollY: '700px',
+        scrollX: false,
         dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
     // hide category, type column as default
@@ -602,7 +604,6 @@ function drawTableWithAPI(page){
 
     resetSearchFilterOfDataTable();
 
-
     dt_basic.columns.adjust().draw();
 
     $(".load-more").css("display", "inline");
@@ -618,6 +619,8 @@ function drawTableWithAPI(page){
     $(".load-more").removeAttr("disabled");
     $(".load-more .fa-spinner").css("display", "none");
     $("#data_table").unblock();
+
+    
 }
 
 function resetSearchFilterOfDataTable(){

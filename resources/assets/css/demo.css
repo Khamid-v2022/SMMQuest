@@ -2,6 +2,31 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
+/* Custom Scroll */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+::-webkit-scrollbar:horizontal{
+  height: 5px;
+}
+
 
 .menu .app-brand.demo {
   height: 64px;

@@ -214,7 +214,7 @@ $configData = Helper::appClasses();
                 <i class="fas fa-spinner fa-spin" style="display:none"></i>
             </button>
         </div> -->
-        <table class="dt-column-search datatables-basic table" id="data_table" style="font-size: .9rem;">
+        <table class="dt-column-search datatables-basic table border-top" id="data_table" style="font-size: .9rem;">
             <thead>
                 <tr>
                     <th class='service-domain'> Provider </th>

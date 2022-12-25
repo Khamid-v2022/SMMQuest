@@ -107,13 +107,12 @@ class Service extends Model
         $sql .= " FROM ( ";
                 $sql .= " SELECT `provider_id`, `is_favorite`, `balance_currency` FROM `user_provider` WHERE `is_enabled` = 1 AND `user_id` = " . $user_id;
             $sql .= " ) `up` ";
-        $sql .= " LEFT JOIN `services` `s` ON `up`.`provider_id` = `s`.`provider_id` AND `status` = 1 ";
+        $sql .= " LEFT JOIN `services` `s` ON `up`.`provider_id` = `s`.`provider_id` AND `status` = 1 AND `rate_usd` IS NOT NULL ";
        
-        $sql .= " WHERE `rate_usd` IS NOT NULL ";
         if(trim($type))
-            $sql .= " AND `type` = '{$type}' ";
+            $sql .= " WHERE `type` = '{$type}' ";
         else
-            $sql .= " AND `type` LIKE '%' ";
+            $sql .= " WHERE `type` LIKE '%' ";
 
         
         //check provider (if do not selected all or favorite item)
