@@ -65,7 +65,10 @@ class SearchServicesTestController extends MyController
             $request->max_rate,
         );
 
-
+        if(count($result) > 150000){
+            return response()->json(['code'=>401, 'message'=>"There are too many results.
+            Please refine your search a bit more"], 200);
+        }
 
         $tbody_html = '';
         $min_sel_html = $max_sel_html = $service_type_html = '<option value="-1">All</option>';

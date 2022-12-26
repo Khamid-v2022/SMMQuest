@@ -69,7 +69,7 @@ class SearchServicesController extends MyController
 
         if(count($result) > 150000){
             return response()->json(['code'=>401, 'message'=>"There are too many results.
-            Please refine your search a bit more"], 200);
+            Please refine your search a bit more", 'result_count' => count($result)], 200);
         }
 
         if(count($result) > 0){

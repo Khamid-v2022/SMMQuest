@@ -338,18 +338,27 @@ function loadUsingAjax(){
                 $("#data_table").unblock();
             } else {
                 
+                Swal.fire({
+                    icon: 'warning',
+                    title: '',
+                    text: response.message,
+                    customClass: {
+                      confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                })
+
                 let sel_html = '<option value="-1">All</option>';
                 $("#search_min").html(sel_html);
                 $("#search_max").html(sel_html);
                 $("#search_provider").html(sel_html);
                 $("#search_type").html(sel_html);
+
                 resetSearchFilterOfDataTable();
-                
                 drawTable("");
                 
                 $(".data-submit .fa-spinner").css("display", "none");
                 $(".data-submit").removeAttr("disabled");
-
                 $("#data_table").unblock();
                 return;
             }
@@ -361,12 +370,13 @@ function loadUsingAjax(){
             $("#search_max").html(sel_html);
             $("#search_provider").html(sel_html);
             $("#search_type").html(sel_html);
+
             resetSearchFilterOfDataTable();
-            
             drawTable("");
 
             $(".data-submit .fa-spinner").css("display", "none");
             $(".data-submit").removeAttr("disabled");
+            $("#data_table").unblock();
             return;
         },
     });

@@ -454,6 +454,7 @@ $(function () {
                     $("#search_min").html(sel_html);
                     $("#search_max").html(sel_html);
                     $("#search_provider").html(sel_html);
+
                     resetSearchFilterOfDataTable();
                     dt_basic.columns.adjust().draw();
 
@@ -464,7 +465,7 @@ $(function () {
                 }
             },
             error: function (response) {
-                console.log(response);
+                console.log(response.responseText);
                 Swal.fire({
                     icon: 'warning',
                     title: '',
@@ -479,6 +480,7 @@ $(function () {
                 $("#search_min").html(sel_html);
                 $("#search_max").html(sel_html);
                 $("#search_provider").html(sel_html);
+                
                 resetSearchFilterOfDataTable();
                 dt_basic.columns.adjust().draw();
                 
