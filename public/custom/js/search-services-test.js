@@ -6,7 +6,6 @@ var send_data = null;
 
 var previous_selected_providers = ["0"];
 $(function () {
-    $(".load-more").css("display", "none");
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -44,6 +43,117 @@ $(function () {
 
     // DataTable with buttons
     // --------------------------------------------------------------------
+    $('.datatables-basic thead tr').clone(true).appendTo('.datatables-basic thead');
+    $('.datatables-basic thead tr:eq(1) th').each(function (i) {
+        var title = $(this).text();
+        if(i == 0){
+            let html = '<select class="form-select" id="search_provider">';
+            html += '<option value="-1">All</option>';  
+            html += '</select>';
+            $(this).html(html);
+        }
+        else if(i == 4) {
+            let html = '<select class="form-select" id="search_type">';
+            html += '<option value="-1">All</option>';  
+            html += '</select>';
+            $(this).html(html);
+        } 
+        else if(i == 6) {
+            let html = '<select class="form-select" id="search_min">';
+            html += '<option value="-1">All</option>';  
+            html += '</select>';
+            $(this).html(html);
+        } else if(i == 7) {
+            let html = '<select class="form-select" id="search_max">';
+            html += '<option value="-1">All</option>';  
+            html += '</select>';
+            $(this).html(html);
+        } else if(i == 8 || i == 9 || i == 10 ){
+            let html = '<select class="form-select search-status">';
+            html += '<option value="-1">All</option>';
+            html += '<option value="Yes">Yes</option>';
+            html += '<option value="No">No</option>';   
+            html += '</select>';
+            $(this).html(html);
+        } else {
+            $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+        }
+
+        // $('input', this).on('keyup change', function () {
+        $('input', this).on('change', function () {
+            blockDataTable();
+            if (dt_basic.column(i).search() !== this.value) {
+                dt_basic.column(i).search(this.value).draw();
+            }
+            $("#data_table").unblock();
+        });
+
+        $('select.search-status', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value).draw();
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+        $('#search_provider', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(11).search("").draw();
+                dt_basic.column(0).search("").draw();
+            } else if(this.value == 0) {
+                // favorite provider only
+                dt_basic.column(11).search(1).draw();
+            } else {
+                dt_basic.column(11).search("").draw();
+                if (dt_basic.column(0).search() !== this.value) {
+                    dt_basic.column(0).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+        $('#search_type', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+        $('#search_min', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+        $('#search_max', this).on('change', function () {
+            blockDataTable();
+            if(this.value == -1){
+                dt_basic.column(i).search("").draw();
+            } else {
+                if (dt_basic.column(i).search() !== this.value) {
+                    dt_basic.column(i).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
+                }
+            }
+            $("#data_table").unblock();
+        });
+
+    });
     drawTable("");
    
   
@@ -104,9 +214,6 @@ $(function () {
 
     $("#search_form").on("submit", function(e){
         e.preventDefault();
-
-        $(".load-more").attr("data-page", 0);
-        $(".load-more").css("display", "none");
         send_data = null;
 
         const providers = $("#providers").val();
@@ -167,10 +274,6 @@ $(function () {
         loadUsingAjax();
     })
 
-    $("#search_form input, #search_form select").on('change', function(){
-        // hide load more button
-        $(".load-more").css("display", "none");
-    })
 });
 
 function blockDataTable() {
@@ -189,8 +292,8 @@ function blockDataTable() {
 }
 
 function resetSearchFilterOfDataTable(){
-    $(".dt-column-search th select").val(-1).trigger('change');
-    $(".dt-column-search th input").val("").trigger('change');
+    $(".datatables-basic th select").val(-1).trigger('change');
+    $(".datatables-basic th input").val("").trigger('change');
 }
 
 function loadUsingAjax(){
@@ -200,11 +303,8 @@ function loadUsingAjax(){
 
     const _url = "/search-services-test";
 
-
     $(".data-submit").attr("disabled", true);
     $(".data-submit .fa-spinner").css("display", "inline-block");
-    $(".load-more").attr("disabled", true);
-    $(".load-more .fa-spinner").css("display", "inline-block");
     
     blockDataTable();
 
@@ -214,10 +314,16 @@ function loadUsingAjax(){
         data: send_data,
         success: function (response) {
             if (response.code == 200) {
-                console.log(response.tbody)
+                console.log(response);
                 
-                // document.getElementById("tbl-body").innerHTML = response.tbody;
+                $("#search_min").html(response.min_opt_html);
+                $("#search_max").html(response.max_opt_html);
+                $("#search_provider").html(response.provider_opt_html);
+                $("#search_type").html(response.type_opt_html);
+                resetSearchFilterOfDataTable();
+                
                 drawTable(response.tbody);
+
                 
                 let collapseElement = document.getElementById("close_card");
                 new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
@@ -226,7 +332,6 @@ function loadUsingAjax(){
                 // Toggle class bx-chevron-down & bx-chevron-up
                 Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
 
-                // $('.datatables-basic').DataTable();
                 $(".data-submit .fa-spinner").css("display", "none");
                 $(".data-submit").removeAttr("disabled");
                 
@@ -237,6 +342,7 @@ function loadUsingAjax(){
                 $("#search_min").html(sel_html);
                 $("#search_max").html(sel_html);
                 $("#search_provider").html(sel_html);
+                $("#search_type").html(sel_html);
                 resetSearchFilterOfDataTable();
                 
                 drawTable("");
@@ -254,15 +360,13 @@ function loadUsingAjax(){
             $("#search_min").html(sel_html);
             $("#search_max").html(sel_html);
             $("#search_provider").html(sel_html);
+            $("#search_type").html(sel_html);
             resetSearchFilterOfDataTable();
             
             drawTable("");
 
             $(".data-submit .fa-spinner").css("display", "none");
             $(".data-submit").removeAttr("disabled");
-
-            $(".load-more").removeAttr("disabled");
-            $(".load-more .fa-spinner").css("display", "none");
             return;
         },
     });
@@ -274,113 +378,22 @@ function drawTable(html){
 
     $("#tbl-body").html(html);
     dt_basic = $('.datatables-basic').DataTable({
-        // columns: [
-        //     { data: 'domain'},
-        //     { data: 'category' },
-        //     { data: 'service' },
-        //     { data: 'name' },
-        //     { data: 'type'},
-        //     { data: 'rate'},
-        //     { data: 'min'},
-        //     { data: 'max'},
-        //     { data: 'dripfeed'},
-        //     { data: 'refill'},
-        //     { data: 'cancel'}
-        // ],
-        // columnDefs: [
-        //     {
-        //         className: 'service-domain',
-        //         targets: 0,
-        //         render: function (data, type, full, meta) {
-        //             let domain = data;
-        //             if(full.is_favorite == 1)
-        //                 domain += '<i class="bx bxs-like text-warning ms-1" style="display:inline"></i>';
-        //             return domain;
-        //         }
-        //     },
-        //     {
-        //         className: 'service-category',
-        //         targets: 1
-        //     },
-        //     {
-        //         className: 'service-id',
-        //         targets: 2
-        //     },
-        //     {
-        //         className: 'service-name',
-        //         targets: 3
-        //     },
-        //     {
-        //         className: 'service-type',
-        //         targets: 4,
-        //     },
-        //     {
-        //         className: 'service-rate text-end',
-        //         targets: 5,
-        //         render: function(data){
-        //             if(data && data.toString().includes("≈")){
-        //                 num = data.toString().split("≈");
-        //                 if(num.length >= 1){
-        //                     let _number = num[1].trim();
-        //                     return "≈ " + parseFloat(_number).toLocaleString('en-US', {maximumFractionDigits:5});
-        //                 }
-        //             } else{
-        //                 return data ? data.toLocaleString('en-US', {maximumFractionDigits:5}) : '';
-        //             }
-                        
-        //         }
-        //     },
-        //     {
-        //         className: 'service-min text-end',
-        //         targets: 6,
-        //         render: function (data, type, full, meta) {
-        //             return data ? data.toLocaleString('en-US') : '';
-        //         }
-        //     },
-        //     {
-        //         className: 'service-max text-end',
-        //         targets: 7,
-        //         render: function (data, type, full, meta) {
-                    
-        //             return data ? data.toLocaleString('en-US') : '';
-        //         }
-        //     },
-        //     {
-        //         className: 'service-dripfeed text-center',
-        //         searchable: true,
-        //         targets: 8,
-        //         render: function (data, type, full, meta) {
-        //             if(data == 1)
-        //                 return '<span class="badge bg-label-success">Yes</span>';
-        //             else 
-        //                 return '<span class="badge bg-label-warning">No</span>';
-        //         },
-        //     },
-        //     {
-        //         className: 'service-refill text-center',
-        //         searchable: true,
-        //         targets: 9,
-        //         render: function (data, type, full, meta) {
-        //             if(data == 1)
-        //                 return '<span class="badge bg-label-success">Yes</span>';
-        //             else 
-        //                 return '<span class="badge bg-label-warning">No</span>'
-        //         },
-        //     },
-        //     {
-        //         className: 'service-cancel text-center',
-        //         searchable: true,
-        //         targets: 10,
-        //         render: function (data, type, full, meta) {
-        //             if(data == 1)
-        //                 return '<span class="badge bg-label-success">Yes</span>';
-        //             else 
-        //                 return '<span class="badge bg-label-warning">No</span>'
-        //         },
-        //     }
-        // ],
-        // order: [[5, 'asc']],
-        ordering: false,
+        columnDefs: [
+            {
+                className: 'text-end',
+                targets: 5,
+            },
+            {
+                className: 'text-end',
+                targets: 6,
+            },
+            {
+                className: 'text-end',
+                targets: 7,
+            },
+        ],
+        order: [[5, 'asc']],
+        // ordering: false,
         orderCellsTop: true,
         // paging: false,
         // lengthChange: false,
@@ -391,4 +404,5 @@ function drawTable(html){
     // hide category, type column as default
     dt_basic.column(1).visible(false);
     dt_basic.column(4).visible(false);
+    dt_basic.column(11).visible(false);
 }

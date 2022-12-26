@@ -50,8 +50,8 @@ $(function () {
 
     // DataTable with buttons
     // --------------------------------------------------------------------
-    $('.dt-column-search thead tr').clone(true).appendTo('.dt-column-search thead');
-    $('.dt-column-search thead tr:eq(1) th').each(function (i) {
+    $('.datatables-basic thead tr').clone(true).appendTo('.datatables-basic thead');
+    $('.datatables-basic thead tr:eq(1) th').each(function (i) {
         var title = $(this).text();
         if(i == 0){
             let html = '<select class="form-select" id="search_provider">';
@@ -276,8 +276,8 @@ $(function () {
         // lengthChange: false,
         displayLength: 1000,
         lengthMenu: [1000, 2500, 5000],
-        scrollY: '700px',
-        scrollX: false,
+        // scrollY: '700px',
+        // scrollX: false,
         dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
     // hide category, type column as default
@@ -624,8 +624,8 @@ function drawTableWithAPI(page){
 }
 
 function resetSearchFilterOfDataTable(){
-    $(".dt-column-search th select").val(-1).trigger('change');
-    $(".dt-column-search th input").val("").trigger('change');
+    $(".datatables-basic th select").val(-1).trigger('change');
+    $(".datatables-basic th input").val("").trigger('change');
 }
 
 // function loadMore_with_ajax(page){
