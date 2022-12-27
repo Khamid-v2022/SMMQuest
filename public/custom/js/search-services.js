@@ -10,6 +10,8 @@ let max_array_opt = [];
 let providers_opt = [];
 let types_opt = [];
 
+const number_per_load = 5000;
+
 var previous_selected_providers = ["0"];
 $(function () {
     $(".load-more").css("display", "none");
@@ -276,7 +278,7 @@ $(function () {
         // lengthChange: false,
         displayLength: 1000,
         lengthMenu: [1000, 2500, 5000],
-        // scrollY: '700px',
+        scrollY: '700px',
         // scrollX: false,
         dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
@@ -498,15 +500,11 @@ $(function () {
         // loadMore_with_ajax(page);
         $(".load-more").attr("disabled", true);
         $(".load-more .fa-spinner").css("display", "inline-block");
-        blockDataTable();
+        // blockDataTable();
 
         setTimeout(function(){
             drawTableWithAPI(page)
         }, 200);
-
-        // $(".load-more").removeAttr("disabled");
-        // $(".load-more .fa-spinner").css("display", "none");
-        // $("#data_table").unblock();
     })
 
     $("#search_form input, #search_form select").on('change', function(){
@@ -534,12 +532,15 @@ function blockDataTable() {
 function drawTableWithAPI(page){
     let records = [];
 
-    if(result_services.length == 0 || result_services.length <= page * 5000) {
+    // first load is 10K. so need to add 5k 
+    if(result_services.length == 0 || result_services.length <= (5000 + page * number_per_load)) {
         return;
     }
 
-    // let show_services = result_services.splice(page * 5000, 5000);
-    let show_services = result_services.slice(page * 5000, (parseInt(page) + 1) * 5000);
+    // first load is 10K. so need to add 5k 
+    let from = page * number_per_load + (page > 0 ? 5000 : 0);
+    let to = (parseInt(page) + 1) * number_per_load + 5000;
+    let show_services = result_services.slice(from, to);
 
     show_services.forEach((service) => {
         records.push({
@@ -611,7 +612,9 @@ function drawTableWithAPI(page){
     $(".load-more").css("display", "inline");
     $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
 
-    let remain_count = result_services.length - (parseInt(page) + 1) * 5000 > 0 ? (result_services.length - (parseInt(page) + 1) * 5000) : 0;
+    // first load is 10K. so need to add 5k 
+    let remain_count = (result_services.length - ((parseInt(page) + 1) * number_per_load + 5000) > 0) ? (result_services.length - ((parseInt(page) + 1) * number_per_load + 5000)) : 0;
+    
     $(".load-more .btn-txt").html("There are " + remain_count + " more results. Load More..");
     if(remain_count <= 0){
         // hide load more button
@@ -620,9 +623,7 @@ function drawTableWithAPI(page){
 
     $(".load-more").removeAttr("disabled");
     $(".load-more .fa-spinner").css("display", "none");
-    $("#data_table").unblock();
-
-    
+    // $("#data_table").unblock();
 }
 
 function resetSearchFilterOfDataTable(){
@@ -676,7 +677,7 @@ function resetSearchFilterOfDataTable(){
 //                 $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
 
 //                 $(".load-more .btn-txt").html("There are " + response.remain_rows + " more results. Load More..");
-//                 if(services.length < 5000){
+//                 if(services.length < number_per_load){
 //                     // hide load more button
 //                     $(".load-more").css("display", "none");
 //                 }
