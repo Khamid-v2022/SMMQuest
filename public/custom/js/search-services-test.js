@@ -364,7 +364,15 @@ function loadUsingAjax(){
             }
         },
         error: function (response) {
-            
+            Swal.fire({
+                icon: 'warning',
+                title: '',
+                text: "There are too many results. Please refine your search a bit more",
+                customClass: {
+                  confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            })
             let sel_html = '<option value="-1">All</option>';
             $("#search_min").html(sel_html);
             $("#search_max").html(sel_html);
