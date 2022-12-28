@@ -278,7 +278,7 @@ $(function () {
         // lengthChange: false,
         displayLength: 1000,
         lengthMenu: [1000, 2500, 5000],
-        scrollY: '700px',
+        // scrollY: '700px',
         // scrollX: false,
         dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
     });
@@ -367,22 +367,22 @@ $(function () {
 
         let include = [], exclude = [];
 
-        if(include_val.length < 2 || (include_val.length == 2 && (include_val[0].value.length < 2 || include_val[1].value.length < 2))){
-            Swal.fire({
-                icon: 'warning',
-                title: '',
-                text: "At least two word must be entered in the Words Included field.",
-                customClass: {
-                  confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false
-            }).then(function(){
-                setTimeout(function(){
-                    $("#include").focus();
-                }, 50);
-            })
-            return;
-        }
+        // if(include_val.length < 2 || (include_val.length == 2 && (include_val[0].value.length < 2 || include_val[1].value.length < 2))){
+        //     Swal.fire({
+        //         icon: 'warning',
+        //         title: '',
+        //         text: "At least two word must be entered in the Words Included field.",
+        //         customClass: {
+        //           confirmButton: 'btn btn-primary'
+        //         },
+        //         buttonsStyling: false
+        //     }).then(function(){
+        //         setTimeout(function(){
+        //             $("#include").focus();
+        //         }, 50);
+        //     })
+        //     return;
+        // }
 
         include_val.forEach((item) => {
             include.push(item.value)
@@ -533,7 +533,7 @@ function drawTableWithAPI(page){
     let records = [];
 
     // first load is 10K. so need to add 5k 
-    if(result_services.length == 0 || result_services.length <= (5000 + page * number_per_load)) {
+    if(result_services.length == 0 || result_services.length <= ((page > 0 ? 5000 : 0) + page * number_per_load)) {
         return;
     }
 

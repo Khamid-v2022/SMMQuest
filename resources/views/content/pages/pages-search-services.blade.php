@@ -93,9 +93,9 @@ $configData = Helper::appClasses();
                                     <span class="badge rounded-pill bg-label-primary" title='Press Enter or "," to add words' data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="right">?</span>
                                 </label>
                                 <input id="include" class="form-control"/>
-                                <div class="form-text">
+                                <!-- <div class="form-text">
                                     *At least two word must be entered
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="exclude">

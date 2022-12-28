@@ -109,10 +109,10 @@ class Service extends Model
             $sql .= " ) `up` ";
         $sql .= " LEFT JOIN `services` `s` ON `up`.`provider_id` = `s`.`provider_id` AND `status` = 1 AND `rate_usd` IS NOT NULL ";
        
+        $sql .= " WHERE 1 ";
+        
         if(trim($type))
-            $sql .= " WHERE `type` = '{$type}' ";
-        else
-            $sql .= " WHERE `type` LIKE '%' ";
+            $sql .= " AND `type` = '{$type}' ";
 
         
         //check provider (if do not selected all or favorite item)
