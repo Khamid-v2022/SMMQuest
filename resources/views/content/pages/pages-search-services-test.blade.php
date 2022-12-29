@@ -26,14 +26,8 @@ $configData = Helper::appClasses();
 <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
-<!-- <script src="{{asset('assets/vendor/libs/datatables-responsive/datatables.responsive.js')}}"></script>
-<script src="{{asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js')}}"></script>
-<script src="{{asset('assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js')}}"></script> -->
 <script src="{{asset('assets/vendor/libs/datatables-buttons/datatables-buttons.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js')}}"></script>
-<!-- Row Group JS -->
-<!-- <script src="{{asset('assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js')}}"></script>
-<script src="{{asset('assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.js')}}"></script> -->
 @endsection
 
 @section('page-script')
