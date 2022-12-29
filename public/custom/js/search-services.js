@@ -183,6 +183,7 @@ $(function () {
             {
                 className: 'service-domain',
                 targets: 0,
+                width: 150,
                 render: function (data, type, full, meta) {
                     let domain = data;
                     if(full.is_favorite == 1)
@@ -196,7 +197,8 @@ $(function () {
             },
             {
                 className: 'service-id',
-                targets: 2
+                targets: 2,
+                width: 50,
             },
             {
                 className: 'service-name',
@@ -209,6 +211,7 @@ $(function () {
             {
                 className: 'service-rate text-end',
                 targets: 5,
+                width: 100,
                 render: function(data){
                     // if(data && data.toString().includes("≈")){
                     //     num = data.toString().split("≈");
@@ -225,6 +228,7 @@ $(function () {
             {
                 className: 'service-min text-end',
                 targets: 6,
+                width: 80,
                 render: function (data, type, full, meta) {
                     return data ? data.toLocaleString('en-US') : '';
                 }
@@ -232,6 +236,7 @@ $(function () {
             {
                 className: 'service-max text-end',
                 targets: 7,
+                width: 80,
                 render: function (data, type, full, meta) {
                     
                     return data ? data.toLocaleString('en-US') : '';
@@ -241,6 +246,7 @@ $(function () {
                 className: 'service-dripfeed text-center',
                 searchable: true,
                 targets: 8,
+                width: 50,
                 render: function (data, type, full, meta) {
                     if(data == 1)
                         return '<span class="badge bg-label-success">Yes</span>';
@@ -252,6 +258,7 @@ $(function () {
                 className: 'service-refill text-center',
                 searchable: true,
                 targets: 9,
+                width: 50,
                 render: function (data, type, full, meta) {
                     if(data == 1)
                         return '<span class="badge bg-label-success">Yes</span>';
@@ -263,6 +270,7 @@ $(function () {
                 className: 'service-cancel text-center',
                 searchable: true,
                 targets: 10,
+                width: 50,
                 render: function (data, type, full, meta) {
                     if(data == 1)
                         return '<span class="badge bg-label-success">Yes</span>';
@@ -458,7 +466,8 @@ $(function () {
                     $("#search_provider").html(sel_html);
 
                     resetSearchFilterOfDataTable();
-                    dt_basic.columns.adjust().draw();
+                    // dt_basic.columns.adjust().draw();
+                    dt_basic.draw();
 
                     $(".data-submit .fa-spinner").css("display", "none");
                     $(".data-submit").removeAttr("disabled");
@@ -484,7 +493,8 @@ $(function () {
                 $("#search_provider").html(sel_html);
                 
                 resetSearchFilterOfDataTable();
-                dt_basic.columns.adjust().draw();
+                // dt_basic.columns.adjust().draw();
+                dt_basic.draw();
                 
                 $(".data-submit .fa-spinner").css("display", "none");
                 $(".data-submit").removeAttr("disabled");
@@ -607,7 +617,8 @@ function drawTableWithAPI(page){
 
     resetSearchFilterOfDataTable();
 
-    dt_basic.columns.adjust().draw();
+    // dt_basic.columns.adjust().draw();
+    dt_basic.draw();
 
     $(".load-more").css("display", "inline");
     $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
@@ -630,93 +641,3 @@ function resetSearchFilterOfDataTable(){
     $(".datatables-basic th select").val(-1).trigger('change');
     $(".datatables-basic th input").val("").trigger('change');
 }
-
-// function loadMore_with_ajax(page){
-
-//     if(!send_data)
-//         return;
-
-//     const _url = "/search-services";
-
-
-//     $(".data-submit").attr("disabled", true);
-//     $(".data-submit .fa-spinner").css("display", "inline-block");
-//     $(".load-more").attr("disabled", true);
-//     $(".load-more .fa-spinner").css("display", "inline-block");
-    
-//     blockDataTable();
-
-//     send_data.page = page;
-    
-//     $.ajax({
-//         url: _url,
-//         type: "POST",
-//         data: send_data,
-//         success: function (response) {
-//             if (response.code == 200) {
-//                 console.log(response);
-//                 const services = response.services;
-
-//                 drawTableWithAPI();????????????
-                
-//                 let collapseElement = document.getElementById("close_card");
-//                 new bootstrap.Collapse(collapseElement.closest('.card').querySelector('.collapse'));
-//                 // Toggle collapsed class in `.card-header` element
-//                 collapseElement.closest('.card-header').classList.toggle('collapsed');
-//                 // Toggle class bx-chevron-down & bx-chevron-up
-//                 Helpers._toggleClass(collapseElement.firstElementChild, 'bx-chevron-down', 'bx-chevron-up');
-
-//                 // $('.datatables-basic').DataTable();
-//                 $(".data-submit .fa-spinner").css("display", "none");
-//                 $(".data-submit").removeAttr("disabled");
-
-//                 $(".load-more").removeAttr("disabled");
-//                 $(".load-more .fa-spinner").css("display", "none");
-
-//                 $(".load-more").css("display", "inline");
-//                 $(".load-more").attr("data-page", (parseInt($(".load-more").attr("data-page")) + 1));
-
-//                 $(".load-more .btn-txt").html("There are " + response.remain_rows + " more results. Load More..");
-//                 if(services.length < number_per_load){
-//                     // hide load more button
-//                     $(".load-more").css("display", "none");
-//                 }
-
-//                 $("#data_table").unblock();
-//             } else {
-                
-//                 let sel_html = '<option value="-1">All</option>';
-//                 $("#search_min").html(sel_html);
-//                 $("#search_max").html(sel_html);
-//                 $("#search_provider").html(sel_html);
-//                 resetSearchFilterOfDataTable();
-//                 dt_basic.columns.adjust().draw();
-
-//                 $(".data-submit .fa-spinner").css("display", "none");
-//                 $(".data-submit").removeAttr("disabled");
-
-//                 $(".load-more").removeAttr("disabled");
-//                 $(".load-more .fa-spinner").css("display", "none");
-
-//                 $("#data_table").unblock();
-//                 return;
-//             }
-//         },
-//         error: function (response) {
-            
-//             let sel_html = '<option value="-1">All</option>';
-//             $("#search_min").html(sel_html);
-//             $("#search_max").html(sel_html);
-//             $("#search_provider").html(sel_html);
-//             resetSearchFilterOfDataTable();
-//             dt_basic.columns.adjust().draw();
-            
-//             $(".data-submit .fa-spinner").css("display", "none");
-//             $(".data-submit").removeAttr("disabled");
-
-//             $(".load-more").removeAttr("disabled");
-//             $(".load-more .fa-spinner").css("display", "none");
-//             return;
-//         },
-//     });
-// }
