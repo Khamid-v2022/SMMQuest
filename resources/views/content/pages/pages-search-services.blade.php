@@ -61,7 +61,7 @@ $configData = Helper::appClasses();
             <div class="collapse show">
                 <div class="card-body">
                     <form id="search_form">
-                        <div class="row g-3">
+                        <div class="row pt-3">
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="providers">Providers:</label>
                                 <select id="providers" class="select2 form-select" multiple>
@@ -81,6 +81,8 @@ $configData = Helper::appClasses();
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                        <div class="row pt-3">
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="include">
                                     Words Included
@@ -98,6 +100,8 @@ $configData = Helper::appClasses();
                                 </label>
                                 <input id="exclude" class="form-control"/>
                             </div>
+                        </div>
+                        <div class="row pt-3">
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label">Minimum Quantity:</label>
                                 <input type="number" id="min" class="form-control dt-input" placeholder="Minimum Quantity">
@@ -106,6 +110,8 @@ $configData = Helper::appClasses();
                                 <label class="form-label">Maximum Quantity:</label>
                                 <input type="number" id="max" class="form-control dt-input" placeholder="Maximum Quantity">
                             </div>
+                        </div>
+                        <div class="row pt-3">
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label">Minimum Price:</label>
                                 <input type="number" id="min_rate" class="form-control dt-input" placeholder="Minimum Price" step="any">
