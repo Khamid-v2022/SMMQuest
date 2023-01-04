@@ -41,6 +41,7 @@ $configData = Helper::appClasses();
     .datatables-basic {
         font-size: .9rem;
     }
+
     .light-style .swal2-container {
         z-index: 3000!important;
     }
@@ -214,11 +215,13 @@ $configData = Helper::appClasses();
         </div>
         <div class="modal-body">
             <div class="row">
-                <input type="hidden" value="" id="m_selected_id">
-                <div class="col mb-3">
-                    <label for="m_api_key" class="form-label">API key</label>
-                    <input type="text" id="m_api_key" placeholder="API Key" class="form-control">
-                </div>
+                <form>
+                    <input type="hidden" value="" id="m_selected_id">
+                    <div class="col mb-3">
+                        <label for="m_api_key" class="form-label">API key</label>
+                        <input type="text" id="m_api_key" placeholder="API Key" class="form-control">
+                    </div>
+                </form>
             </div>
         </div>
         <div class="modal-footer">

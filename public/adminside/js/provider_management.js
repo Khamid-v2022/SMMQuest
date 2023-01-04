@@ -2,6 +2,8 @@
 let formvali, copy_past_fv, file_fv;
 var dt_basic;
 
+let offCanvasElement, offCanvasEl;
+
 document.addEventListener('DOMContentLoaded', function (e) {
     (function () {
         const formAddNewRecord = document.getElementById('form-add-new-record'); 
@@ -131,7 +133,8 @@ $(function () {
     $('#import_file_modal').on('hidden.bs.offcanvas', function () {
         $(this).find('form').trigger('reset');
     })
-
+    offCanvasElement = document.querySelector('#add-new-record');
+    offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
 
     
     // DataTable with buttons
@@ -342,8 +345,7 @@ $(function () {
                         }).then( function(){
                             if($("#m_action_type").val() == 'edit'){
                                 $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").find(".bg-label-warning").remove();
-                                let offCanvasElement = document.querySelector('#add-new-record');
-                                let offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
+                                
                                 offCanvasEl.hide();
                             } else {
                                 location.reload();
@@ -353,6 +355,7 @@ $(function () {
                         $(".fa-spinner").css("display", "none");
                         $(".data-submit").removeAttr("disabled");
                     } else if(response.code == 201){
+                        // added/updated but API key is not correct
                         Swal.fire({
                             icon: 'warning',
                             title: '',
@@ -361,7 +364,14 @@ $(function () {
                                 confirmButton: 'btn btn-primary'
                             },
                             buttonsStyling: false
-                        })
+                        }).then( function(){
+                            let old_html = $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").html();
+                            if(!old_html.includes("Invalid API Key") ){
+                                let update_html = old_html + '<span class="badge bg-label-warning ms-1">Invalid API Key</span>';
+                                $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").html(update_html);
+                            }
+                        });
+
                         $(".fa-spinner").css("display", "none");
                         $(".data-submit").removeAttr("disabled");
                     } else {
@@ -474,9 +484,6 @@ $(function () {
         $("#m_action_type").val("edit");
         $("#exampleModalLabel").html("Update Provider");
         $("#submit_btn_title").html("Update");
-        
-        let offCanvasElement = document.querySelector('#add-new-record');
-        let offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
         offCanvasEl.show();
     });
 

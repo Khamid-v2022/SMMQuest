@@ -106,7 +106,7 @@ class ProviderManagement extends Controller
             if($is_valid_key)
                 return response()->json(['code'=>200, 'message'=>'Success'], 200);
             else
-                return response()->json(['code'=>401, 'message'=>'Added/Updated! But API key is not correct!'], 200);
+                return response()->json(['code'=>201, 'message'=>'Added/Updated! But API key is not correct!'], 200);
         } else {
             return response()->json(['code'=>400, 'message'=>'This domain name is not exist'], 200);
         }
@@ -263,6 +263,11 @@ class ProviderManagement extends Controller
        
         // check API template from DB
         if($provider['api_template']){
+            if(!$provider['real_url']){
+                $provider->real_url = $url;
+                $provider->save();
+            }
+            
             $result_status = $this->scraping_services($url . $end_point, $api_key, $provider['api_template'], $provider_id);
             if($result_status)
                 return response()->json(['code'=>200, 'message'=>'Successfully added ' . $result_status . ' records'], 200);

@@ -7,6 +7,8 @@ let fv;
 let copy_past_fv, file_fv;
 var dt_basic;
 
+let offCanvasElement, offCanvasEl;
+
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
     const formAddNewRecord = document.getElementById('form-add-new-record');
@@ -121,12 +123,18 @@ $(function () {
     $(this).find('form').trigger('reset');
   })
 
+  $('#modals-change_key').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+  })
+  
+
   $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     },
   });
-
+  offCanvasElement = document.querySelector('#add-new-record');
+  offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
 
  
   // DataTable with buttons
@@ -252,6 +260,7 @@ $(function () {
               // Actions
               targets: -1,
               title: 'Actions',
+              className: 'provider-actions',
               orderable: false,
               searchable: false,
               render: function (data, type, full) {
@@ -308,8 +317,13 @@ $(function () {
               },
               buttonsStyling: false
             }).then( function(){
+              // close popups
+              offCanvasEl.hide();
               // location.reload();
               loadTable();
+              $(".data-submit .fa-spinner").css("display", "none");
+              $(".data-submit").removeAttr("disabled");
+              
             })
           } else {
               Swal.fire({
@@ -495,6 +509,12 @@ $(function () {
               }).then( function(){
                 $("#modals-change_key").modal('toggle');
                 $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").find(".bg-label-warning").remove();
+                // add icon to set Balance alert
+                let action_html = $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-actions").html();
+                if(!action_html.includes("bx bx-bell")){
+                  let html = action_html + ' <a href="javascript:;" class="btn btn-sm btn-icon set_balance_limit" title="Set Email Balance Alert" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" style="display: inline;"><i class="bx bx-bell-off" ></i></a>';
+                  $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-actions").html(html);
+                }
               })
 
               $("#m_change_api_btn .fa-spinner").css("display", "none");
@@ -509,6 +529,15 @@ $(function () {
                     confirmButton: 'btn btn-primary'
                   },
                   buttonsStyling: false
+              }).then( function(){
+                let old_html = $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").html();
+                if(!old_html.includes("Invalid API Key") ){
+                  let update_html = old_html + '<span class="badge bg-label-warning ms-1">Invalid API Key</span>';
+                  $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-status").html(update_html);
+                }
+                // remove icon to set Balance alert
+                $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-actions").find("i.bx-bell").remove();
+                $("#data_table tr[data-provider_id='" + $("#m_selected_id").val() + "']").find(".provider-actions").find("i.bx-bell-off").remove();
               })
               $("#m_change_api_btn .fa-spinner").css("display", "none");
               $("#m_change_api_btn").removeAttr("disabled");
@@ -531,7 +560,6 @@ $(function () {
         },
       });
     })
-
 
     // Change Balance Limit
     $('.datatables-basic tbody').on('click', '.change_balance_limit', function () {

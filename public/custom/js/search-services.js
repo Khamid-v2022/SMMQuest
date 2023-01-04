@@ -337,7 +337,13 @@ $(function () {
             $(this).val(['-1']).trigger("change");
             previous_selected_providers = selected_providers;
             return;
-        }       
+        }   
+
+        if(selected_providers.length == 0){
+            $(this).val(['0']).trigger("change");
+            previous_selected_providers = selected_providers;
+            return;
+        }    
     })
 
     $(".show-column-item").on("click", function(){
