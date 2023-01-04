@@ -55,7 +55,7 @@ class SearchServicesController extends MyController
         $exclude = $request->exclude;
         
 
-        $result = Service::search_services_with_query(
+        $res = Service::search_services_with_query(
             Auth::user()->id,
             $providers,
             $type,
@@ -66,6 +66,9 @@ class SearchServicesController extends MyController
             $request->min_rate,
             $request->max_rate,
         );
+        $result = $res['result'];
+        $query = $res['sql_query'];
+
 
         if(count($result) > 150000){
             return response()->json(['code'=>401, 'message'=>"There are too many results.
@@ -92,14 +95,15 @@ class SearchServicesController extends MyController
 
                 if($currency && $currency != 0) {
                     $result[$index]->rate = ($result[$index]->rate / $currency) * $this->currencies[$request->currency];
-
-                    // $result[$index]->rate = '≈ ' . $result[$index]->rate;
                 }
                     
             }
+            
+            $price = array_column($result, 'rate');
+            array_multisort($price, SORT_ASC, $result);
         }
 
-        return response()->json(['code'=>200, 'services'=>$result], 200);
+        return response()->json(['code'=>200, 'services'=>$result, 'query'=> $query], 200);
     }
 
 }

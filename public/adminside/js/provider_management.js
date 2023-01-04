@@ -211,6 +211,7 @@ $(function () {
                 // Provider 
                 targets: 1,
                 title: 'Provider Name',
+                className: 'provider-name',
                 render: function (data, type, full) {
                   if(full.is_being_add == 0){
                     if(full.is_activated == 1 && full.is_frozon == 0 && full.is_hold == 0)
@@ -490,6 +491,7 @@ $(function () {
     // scrap services
     $('.datatables-basic tbody').on('click', '.item-start-scrap', function () {
         const parent_this = this;
+        const id = $(parent_this).parents('tr').attr("data-provider_id");
 
         Swal.fire({
             text: 'Would you like to import the services of this provider?',
@@ -502,8 +504,9 @@ $(function () {
               cancelButton: 'btn btn-label-danger'
             },
             preConfirm: login => {
-                const id = $(parent_this).parents('tr').attr("data-provider_id");
-                      let _url = "/admin/provider-management/importOne/" + id;
+                
+                let _url = "/admin/provider-management/importOne/" + id;
+                
                 return  $.ajax({
                             url: _url,
                             type: "GET",
@@ -523,6 +526,8 @@ $(function () {
             allowOutsideClick: () => !Swal.isLoading()
         }).then(result => {
             if (result.isConfirmed) {
+                // console.log(result);
+                
                 Swal.fire({
                     text: result.value.message,
                     customClass: {
@@ -532,6 +537,12 @@ $(function () {
                 }).then( function(){
                     // location.reload();
                 });
+
+                if(result.value.code == 200){
+                    const added_count = result.value.added_count;
+                    console.log(added_count);
+                    $("#data_table tr[data-provider_id='" + id + "']").find(".provider-name").find(".bg-label-secondary").html(added_count + " SERVICES");
+                }
             }
         });
     });

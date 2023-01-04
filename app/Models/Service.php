@@ -18,16 +18,20 @@ class Service extends Model
 
     protected $fillable = [
         'provider_id',
+        'provider',
+        'default_currency',
         'service',
         'name',
         'type',
         'rate',
+        'rate_usd',
         'min',
         'max',
         'dripfeed',
         'refill',
         'cancel',
-        'category'
+        'category',
+        'status'
     ];
     
     public function provider()
@@ -107,8 +111,8 @@ class Service extends Model
         $sql .= " FROM ( ";
                 $sql .= " SELECT `provider_id`, `is_favorite`, `balance_currency` FROM `user_provider` WHERE `is_enabled` = 1 AND `user_id` = " . $user_id;
             $sql .= " ) `up` ";
-        $sql .= " LEFT JOIN `services` `s` ON `up`.`provider_id` = `s`.`provider_id` AND `status` = 1 AND `rate_usd` IS NOT NULL ";
-       
+        // $sql .= " LEFT JOIN `services` `s` ON `up`.`provider_id` = `s`.`provider_id` AND `status` = 1 AND `rate_usd` IS NOT NULL ";
+        $sql .= " LEFT JOIN `services` `s` ON `up`.`provider_id` = `s`.`provider_id` AND `status` = 1 ";
         $sql .= " WHERE 1 ";
         
         if(trim($type))
@@ -149,12 +153,11 @@ class Service extends Model
         if($max_rate)
             $sql .= " AND `rate` <= {$max_rate} ";
 
-
-        $sql .= " ORDER BY `rate_usd`";
+        // $sql .= " ORDER BY `rate_usd`";
 
         $result =  DB::select($sql);
        
-        return $result;
+        return array('result'=>$result, 'sql_query'=>$sql);
     }
 
     // public static function search_services_with_query_type1($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate){

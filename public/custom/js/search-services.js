@@ -279,9 +279,9 @@ $(function () {
                 },
             }
         ],
-        order: [[5, 'asc']],
-        orderCellsTop: true,
-        // ordering: false,
+        // order: [[5, 'asc']],
+        // orderCellsTop: true,
+        ordering: false,
         // paging: false,
         // lengthChange: false,
         displayLength: 1000,

@@ -53,7 +53,7 @@ class SearchServicesTestController extends MyController
         $exclude = $request->exclude;
         
 
-        $result = Service::search_services_with_query(
+        $res = Service::search_services_with_query(
             Auth::user()->id,
             $providers,
             $type,
@@ -64,7 +64,7 @@ class SearchServicesTestController extends MyController
             $request->min_rate,
             $request->max_rate,
         );
-
+        $result = $res['result'];
         if(count($result) > 150000){
             return response()->json(['code'=>401, 'message'=>"There are too many results.
             Please refine your search a bit more"], 200);
@@ -177,7 +177,8 @@ class SearchServicesTestController extends MyController
                     "provider_opt_html" => $providers_html, 
                     "type_opt_html" => $service_type_html, 
                     "min_opt_html"=> $min_sel_html,
-                    "max_opt_html"=> $max_sel_html
+                    "max_opt_html"=> $max_sel_html,
+                    
                 ], 200);
     }
 

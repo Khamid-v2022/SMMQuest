@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Provider;
 use App\Models\ProviderHold;
 use App\Models\Service;
+use App\Models\Currency;
 
 use Illuminate\Support\Facades\Http;
 
@@ -267,10 +268,15 @@ class ProviderManagement extends Controller
                 $provider->real_url = $url;
                 $provider->save();
             }
-            
-            $result_status = $this->scraping_services($url . $end_point, $api_key, $provider['api_template'], $provider_id);
-            if($result_status)
-                return response()->json(['code'=>200, 'message'=>'Successfully added ' . $result_status . ' records'], 200);
+
+            $result_status = $this->scraping_services($url . $end_point, $api_key, $provider);
+            if($result_status){
+                $provider->service_count = $result_status;
+                $provider->save();
+                return response()->json(['code'=>200, 'message'=>'Successfully added ' . $result_status . ' records', 'added_count' => $result_status], 200);
+            }
+            else 
+                return response()->json(['code'=>400, 'message'=>'Invalid API Key/EndPoint or Need to add API Template.'], 200); 
         } 
 
         // check API template
@@ -280,23 +286,25 @@ class ProviderManagement extends Controller
             return response()->json(['code'=>400, 'message'=>'Make sure APIKey/Endpoint or Add API template'], 200);
         } 
 
-        $provider->api_template = 0;
+        $provider->api_template = $api_check['apiTemplate'];
         $provider->real_url = $url;
         $provider->save();
         
         // start scraping
-        $result_status = $this->scraping_services($url . $end_point, $api_key, $api_check['apiTemplate'], $provider_id);
-        if($result_status)
-            return response()->json(['code'=>200, 'message'=>'Successfully added ' . $result_status . ' records'], 200);
-        
+        $result_status = $this->scraping_services($url . $end_point, $api_key, $provider);
+        if($result_status){
+            $provider->service_count = $result_status;
+            $provider->save();
+            return response()->json(['code'=>200, 'message'=>'Successfully added ' . $result_status . ' records', 'added_count' => $result_status], 200); 
+        }
+             
         return response()->json(['code'=>400, 'message'=>'Invalid API Key/EndPoint or Need to add API Template'], 200); 
-
     }
 
-    private function scraping_services($url, $key, $template, $provider_id){
+    private function scraping_services($url, $key, $provider){
         $pro = null;
         $added_count = 0;
-        switch($template){
+        switch($provider['api_template']){
             case 'PerfectPanel':
                 $pro = new PerfectPanel($url, $key);
                 break;
@@ -310,29 +318,41 @@ class ProviderManagement extends Controller
         $response = $pro->services();  
         $services = json_decode( json_encode($response), true );
 
+        // base_carrency table load
+        $base_currencies = Currency::where("id", 1)->first();
+
         // check if API is working correctly
         if(is_array($services) && count($services) > 0 && isset($services[0]['name'])){
             foreach ($services as $item) {
-                $service  = Service::where('provider_id', $provider_id)->where('service', $item['service'])->first();
+                $service  = Service::where('provider_id', $provider['id'])->where('service', $item['service'])->first();
                          
                 $rate = ((float) $item['rate']);       
                 // have a over flow bug
                 if($rate > 99999999999)
                     $rate = 99999999999;
 
-                Service::updateOrCreate(['provider_id' => $provider_id, 'service' => $item['service']], [
-                    'provider_id' => $provider_id,
+                // convert currency to USD 
+                $rate_usd = $rate;
+                if(strtoupper($provider['currency']) != "USD" && $base_currencies[$provider['currency']] && $base_currencies[$provider['currency']] != 0 ){
+                    $rate_usd = $rate / $base_currencies[$provider['currency']];
+                }
+
+                Service::updateOrCreate(['provider_id' => $provider['id'], 'service' => $item['service']], [
+                    'provider_id' => $provider['id'],
+                    'provider' => $provider['domain'],
+                    'default_currency' => $provider['currency'],
                     'service' => $item['service'],
                     'name' => str_replace("\\", "\\\\", str_replace("'", "''", $item['name'])),
                     'type' => (isset($item['type']) ? $item['type'] : "NULL"),
                     'rate' => $rate,
+                    'rate_usd' => $rate_usd,
                     'min' =>  (isset($item['min']) ? ((int)$item['min']) : "NULL"),
                     'max' =>  (isset($item['max']) ? ((int)$item['max']) : "NULL"),
                     'dripfeed' => (isset($item['dripfeed']) ? $item['dripfeed'] ? 1 : 0 : 0),
                     'refill' => (isset($item['refill']) ? $item['refill'] ? 1 : 0 : 0),
                     'cancel' => (isset($item['cancel']) ? $item['cancel'] ? 1 : 0 : 0),
                     'category' => str_replace("\\", "\\\\", str_replace("'", "''", $item['category'])),
-                    'status' => 1,
+                    'status' => "1",
                     'created_at' => date("Y-m-d H:i:s")
                 ]);
                 $added_count++;
@@ -340,7 +360,7 @@ class ProviderManagement extends Controller
         } else {
             return false;
         }
-      
+        
         return $added_count;
     }
 }
