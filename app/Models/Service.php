@@ -107,7 +107,7 @@ class Service extends Model
 
     public static function search_services_with_query($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate, $added_after, $added_before){
         
-        $sql = "SELECT `s`.`provider` AS `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `default_currency` AS `main_currency`, `up`.`balance_currency` AS `user_currency`, `status`, `s`.`created_at`, `s`.`updated_at`, `s`.`rate_usd` ";     
+        $sql = "SELECT `s`.`id`, `s`.`provider` AS `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `default_currency` AS `main_currency`, `up`.`balance_currency` AS `user_currency`, `status`, `s`.`created_at`, `s`.`updated_at`, `s`.`rate_usd` ";     
         $sql .= " FROM ( ";
                 $sql .= " SELECT `provider_id`, `is_favorite`, `balance_currency` FROM `user_provider` WHERE `is_enabled` = 1 AND `user_id` = " . $user_id;
             $sql .= " ) `up` ";

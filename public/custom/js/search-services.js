@@ -31,6 +31,16 @@ $(function () {
         monthSelectorType: 'static'
     });
 
+    // sticky 
+    const stickyEl = $('.sticky-element');
+    stickyEl.sticky({
+        zIndex: 9
+    });
+
+    $('#add_service_modal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+    })
+
     const collapseElementList = [].slice.call(document.querySelectorAll('.card-collapsible'));
     collapseElementList.map(function (collapseElement) {
         collapseElement.addEventListener('click', event => {
@@ -89,7 +99,10 @@ $(function () {
             html += '<option value="No">No</option>';   
             html += '</select>';
             $(this).html(html);
-        } else {
+        } else if(i == 12 || i == 13){
+            $(this).html("");
+        }
+        else {
             $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
         }
 
@@ -184,6 +197,7 @@ $(function () {
             { data: 'cancel'},
             { data: 'created_at'},
             { data: 'is_favorite'},
+            { data: 'service_id'},
         ],
         columnDefs: [
             {
@@ -286,9 +300,23 @@ $(function () {
             },
             {
                 className: 'service-created_at text-center',
-                searchable: true,
                 targets: 11,
                 width: 70
+            },
+            // targets: 12 --- favorite
+            {
+                className: 'select-service text-center',
+                targets: 13,
+                searchable: false,
+                orderable: false,
+                width: 30,
+                render: function (data, type, full, meta) {
+                    return '<input type="checkbox" class="dt-checkboxes form-check-input" data-service_id="' + data + '">';
+                },
+                // checkboxes: {
+                //   selectRow: true,
+                //   selectAllRender: '<input type="checkbox" class="form-check-input">'
+                // }
             }
         ],
         order: [[5, 'asc']],
@@ -301,6 +329,10 @@ $(function () {
         // scrollY: '700px',
         // scrollX: false,
         dom: '<"row"<"col-sm-12 col-md-6"l>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+        select: {
+            // Select style
+            style: 'multi'
+        }
     });
     // hide category, type column as default
     dt_basic.column(1).visible(false);
@@ -542,7 +574,238 @@ $(function () {
         // hide load more button
         $(".load-more").css("display", "none");
     })
+
+
+    $('.datatables-basic tbody').on('click', '.form-check-input', function () {
+        let arr = [];
+        $('.datatables-basic').find('.form-check-input:checked').each(function() {
+            arr.push($(this).attr('data-service_id'));
+        });
+        $("#selected_count").html(arr.length);
+        if(arr.length == 0){
+            $(".sticky-wrapper").css("display", "none");
+        } else {
+            $(".sticky-wrapper").css("display", "block");
+            window.scrollBy(0, 1);
+        }
+    })
+
+    $("#add_list").on('click', function(){
+        let arr = [];
+        $('.datatables-basic').find('.form-check-input:checked').each(function() {
+            arr.push($(this).attr('data-service_id'));
+        });
+
+        if(arr.length == 0){
+            Swal.fire({
+                icon: 'warning',
+                title: '',
+                text: "At least one service must be selected to add services to the list.",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+            return;
+        }
+
+        let html = "";
+        // load existing list
+        const _url = "/search-services/load_existing_list";
+        $.ajax({
+            url: _url,
+            type: "GET",
+            success: function (response) {
+                if (response.code == 200) {
+                    response.existing_list.forEach((item) => {
+                        html += '<div class="form-check custom-option custom-option-basic">';
+                            html += '<label class="form-check-label custom-option-content" for="list_name_' + item.id + '">';
+                                html += '<input name="existing_list" class="form-check-input" type="radio" value="' + item.id + '" id="list_name_' + item.id + '"/>';
+                                html += '<span class="custom-option-header">';
+                                    html += '<span class="">' + item.list_name + '</span>';
+                                html += '</span>';
+                            html += '</label>';
+                        html += '</div>';
+                    });
+
+                    $("#existing_list_wraper").html(html);
+                    addListernetToList();
+                } else {
+                    $("#existing_list_wraper").html("");
+                }
+            },
+            error: function (response) {
+
+            }
+        });
+
+        $("#add_service_modal").modal('show');
+    })
+
+    // clear selected list option
+    $("#clear_selected_list").on('click', function(){
+        clearSelectedList();
+    })
     
+    $("#new_list_name").on('keyup', function(){
+        clearSelectedList();
+    })
+
+    // create/assign services to list
+    $("#m_save_btn").on("click", function(){
+
+        let selected_service_ids = [];
+        $('.datatables-basic').find('.form-check-input:checked').each(function() {
+            selected_service_ids.push($(this).attr('data-service_id'));
+        });
+
+        if(selected_service_ids.length == 0){
+            Swal.fire({
+                icon: 'warning',
+                title: '',
+                text: "Please select services from the table",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+            return;
+        }
+
+        // check new or existing list
+        let new_list_name = $("#new_list_name").val();
+        let selected_list_id = $('input[name="existing_list"]:checked').val();
+        if(!new_list_name && !selected_list_id){
+            Swal.fire({
+                icon: 'warning',
+                title: '',
+                text: "Please enter the list name or select existing list",
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+            return;   
+        }
+
+        $("#m_save_btn").attr("disabled", true);
+        $("#m_save_btn .fa-spinner").css("display", "inline-block");
+
+        if(new_list_name){
+            const _url = "/search-services/create_new_list";
+            const data = {
+                list_name: new_list_name,
+                selected_service_ids: selected_service_ids
+            };
+
+            $.ajax({
+                url: _url,
+                type: "POST",
+                data: data,
+                success: function (response) {
+                    if (response.code == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '',
+                            text: "Added services to the new list",
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        }).then(function(){
+                            $("#add_service_modal").modal('toggle');
+                            // clear selected services 
+                            clearSelectedServicesFromTable();
+                        });
+                    } else if(response.code == 400){
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '',
+                            text: "List name already exists. Please enter a different name.",
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        })
+                    }
+                    $("#m_save_btn .fa-spinner").css("display", "none");
+                    $("#m_save_btn").removeAttr("disabled");
+                },
+                error: function (response) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '',
+                        text: "Something went wrong. Please try again later.",
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    })
+                    $("#m_save_btn .fa-spinner").css("display", "none");
+                    $("#m_save_btn").removeAttr("disabled");
+                }
+            });
+            return;
+        }
+
+        if(selected_list_id){
+            const _url = "/search-services/add_services_existing_list";
+            const data = {
+                selected_list_id: selected_list_id,
+                selected_service_ids: selected_service_ids
+            };
+
+            $.ajax({
+                url: _url,
+                type: "POST",
+                data: data,
+                success: function (response) {
+                    if (response.code == 200) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '',
+                            text: response.message,
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        }).then(function(){
+                            $("#add_service_modal").modal('toggle');
+                            clearSelectedServicesFromTable();
+                        });
+                    } else if(response.code == 400){
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '',
+                            text: response.message,
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false
+                        })
+                    }
+                    $("#m_save_btn .fa-spinner").css("display", "none");
+                    $("#m_save_btn").removeAttr("disabled");
+                },
+                error: function (response) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '',
+                        text: "Something went wrong. Please try again later.",
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    })
+                    $("#m_save_btn .fa-spinner").css("display", "none");
+                    $("#m_save_btn").removeAttr("disabled");
+                }
+            });
+            return;
+        }
+
+    })
+
 });
 
 function blockDataTable() {
@@ -587,7 +850,8 @@ function drawTableWithAPI(page){
             refill: service.refill,
             cancel: service.cancel,
             created_at: service.created_at,
-            is_favorite: service.is_favorite
+            is_favorite: service.is_favorite,
+            service_id: service.id
         });
 
         if(!providers_opt.includes(service.domain))
@@ -662,4 +926,21 @@ function drawTableWithAPI(page){
 function resetSearchFilterOfDataTable(){
     $(".datatables-basic th select").val(-1).trigger('change');
     $(".datatables-basic th input").val("").trigger('change');
+}
+
+function clearSelectedList() {
+    $("input[name='existing_list']").prop('checked', false);
+}
+
+function addListernetToList(){
+    $("input[name='existing_list']").on('click', function(){
+        $("#new_list_name").val("");
+    })
+}
+
+function clearSelectedServicesFromTable(){
+    $('.datatables-basic').find('.form-check-input:checked').each(function() {
+        $(this).prop('checked', false);
+    });
+    $(".sticky-wrapper").css("display", "none");
 }

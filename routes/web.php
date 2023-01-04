@@ -51,11 +51,15 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     // Search Services
     Route::get('/search-services', [SearchServicesController::class, 'index'])->name('pages-search-services');
     Route::post('/search-services', [SearchServicesController::class, 'searchServices']);
+    Route::get('/search-services/load_existing_list', [SearchServicesController::class, 'loadExistingList']);
+    Route::post('/search-services/create_new_list', [SearchServicesController::class, 'createNewList']);
+    Route::post('/search-services/add_services_existing_list', [SearchServicesController::class, 'addServicesExistingList']);
 
+    
     // serarch services for test
     Route::get('/search-services-test', [SearchServicesTestController::class, 'index'])->name('pages-search-services-test');
     Route::post('/search-services-test', [SearchServicesTestController::class, 'searchServices']);
-
+    
 });
 
 // error pages

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\UserProvider;
 use App\Models\Service;
 use App\Models\Currency;
+use App\Models\UserList;
+use App\Models\ListService;
 
 class SearchServicesController extends MyController
 {
@@ -18,11 +20,13 @@ class SearchServicesController extends MyController
         $pageConfigs = ['myLayout' => 'horizontal'];
 
         $this->currencies = Currency::where("id", 1)->first();
-
+       
+        
         // $providers = UserProvider::with(['provider'])
         //   ->where('user_id', Auth::user()->id)->get();
         $providers = UserProvider::getProviderList(Auth::user()->id);
         $types = Service::service_types_with_query(Auth::user()->id);
+        
         $types_val=[];
         
         foreach( $types as $type ){
@@ -108,6 +112,59 @@ class SearchServicesController extends MyController
         }
 
         return response()->json(['code'=>200, 'services'=>$result, 'query'=> $query], 200);
+    }
+
+    public function loadExistingList(){
+        $existing_list = UserList::where('user_id', Auth::user()->id)->where('is_started', '0')->get();
+        return response()->json(['code'=>200, 'existing_list'=>$existing_list], 200);
+    }
+
+    public function createNewList(Request $request){
+        $service_ids = $request->selected_service_ids;
+        $list_name = $request->list_name;
+  
+        // check list name is exist alredy
+        $exist = UserList::where("list_name", $list_name)->get();
+        if(count($exist) > 0){
+            return response()->json(['code'=>400, 'message'=>'List name already exists. Please enter a different name.'], 200);
+        }
+
+        // create new list
+        $list = UserList::create([
+            'user_id' => Auth::user()->id,
+            'list_name' => $list_name
+        ]);
+
+        $data = [];
+
+        foreach($service_ids as $id){
+            array_push($data, ['list_id' => $list->id, 'service_id' => $id]);
+        }
+        ListService::insert($data);
+        return response()->json(['code'=>200, 'message'=>'success'], 200);
+    }
+
+    public function addServicesExistingList(Request $request){
+        $service_ids = $request->selected_service_ids;
+        $data = [];
+
+        // foreach($service_ids as $id){
+        //     array_push($data, ['list_id' => $request->selected_list_id, 'service_id' => $id]);
+        // }
+        // ListService::insert($data);
+        $added_count = 0;
+        foreach($service_ids as $id){
+            $exist = ListService::where('list_id', $request->selected_list_id)->where('service_id', $id)->get();
+            if(count($exist) == 0){
+                $added_count++;
+                ListService::insert(['list_id' => $request->selected_list_id, 'service_id' => $id]);
+            }
+        }
+
+        if($added_count > 0)
+            return response()->json(['code'=>200, 'message'=>$added_count . ' services added to the existing list'], 200);
+        else
+            return response()->json(['code'=>400, 'message'=>'The services you have selected already exist in the selected list.'], 200);
     }
 
 }

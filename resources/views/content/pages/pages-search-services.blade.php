@@ -11,7 +11,7 @@ $configData = Helper::appClasses();
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/tagify/tagify.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
-<link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css')}}">
+<!-- <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css')}}"> -->
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css')}}">
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
@@ -27,12 +27,13 @@ $configData = Helper::appClasses();
 <script src="{{asset('assets/vendor/libs/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
 <!-- <script src="{{asset('assets/vendor/libs/datatables-responsive/datatables.responsive.js')}}"></script>
-<script src="{{asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js')}}"></script>
-<script src="{{asset('assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js')}}"></script> -->
+<script src="{{asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.js')}}"></script> -->
+<script src="{{asset('assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-buttons/datatables-buttons.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/moment/moment.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/jquery-sticky/jquery-sticky.js')}}"></script>
 
 <!-- Row Group JS -->
 <!-- <script src="{{asset('assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js')}}"></script>
@@ -40,10 +41,21 @@ $configData = Helper::appClasses();
 @endsection
 
 @section('page-script')
-<!-- <script src="{{asset('custom/js/decimal.js')}}"></script> -->
 <script src="{{asset('custom/js/search-services.js')}}"></script>
 @endsection
+<style>
+.sticky-wrapper {
+    bottom: 0px;
+    position: sticky;
+    display: none;
+    z-index: 9;
+}
 
+#exiting_list {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+</style>
 @section('content')
 <h4>Search Services</h4>
 
@@ -217,20 +229,11 @@ $configData = Helper::appClasses();
 </div>
 
 <div class="card mb-4">
-    
-        
     <div class="card-datatable table-responsive">
-        
         <button class="btn btn-info load-more" data-page="1" style="position: absolute; right: 15px;top: 15px;z-index:10">
             <span class="btn-txt"> Load More</span>
             <i class="fas fa-spinner fa-spin" style="display:none"></i>
         </button>
-        <!-- <div class="text-end">
-            <button class="btn btn-info load-more" data-page="1" style="">
-                <span class="btn-txt"> Load More</span>
-                <i class="fas fa-spinner fa-spin" style="display:none"></i>
-            </button>
-        </div> -->
         <table class="datatables-basic table border-top" id="data_table" style="font-size: .9rem;">
             <thead>
                 <tr>
@@ -247,6 +250,7 @@ $configData = Helper::appClasses();
                     <th class='service-cancel'>Cancel Button</th>
                     <th class='service-created_at'>Added Date</th>
                     <th class=''>Is Favorite</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="tbl-body">
@@ -259,6 +263,53 @@ $configData = Helper::appClasses();
             <span class="btn-txt">Load More</span>
             <i class="fas fa-spinner fa-spin" style="display:none"></i>
         </button>
+    </div>
+    <div class="card-footer sticky-element bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
+        <h5 class="card-title mb-sm-0 me-2">Services Selected: <span id="selected_count"></span></h5>
+        <div class="action-btns">
+            <button class="btn btn-primary" id="add_list">
+                Add to the List
+            </button>
+        </div>
+    </div> 
+</div>
+
+<!-- Add Services to the List Modal -->
+<div class="modal fade" id="add_service_modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Add Services to List</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col mb-4">
+                        <label for="new_list_name" class="form-label">New List</label>
+                        <input type="text" id="new_list_name" placeholder="New List" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <div class="d-flex justify-content-sm-between mb-2">
+                            <label for="existing_list_wraper" class="form-label">Existing List</label>
+                            <button type="button" class="btn btn-sm btn-secondary" id="clear_selected_list">Clear</button>
+                        </div>
+                        <div id="existing_list_wraper">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="m_save_btn">
+                <span>Save</span>
+                <i class="fas fa-spinner fa-spin" style="display:none"></i>
+            </button>
+        </div>
+        </div>
     </div>
 </div>
 

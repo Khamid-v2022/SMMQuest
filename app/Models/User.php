@@ -66,4 +66,8 @@ class User extends Authenticatable
     public function providers() {
         return $this->hasMany('App\Models\UserProvider');
     }
+
+    public function lists() {
+        return $this->hasMany('App\Models\UserList');
+    }
 }
