@@ -53,6 +53,8 @@ class SearchServicesController extends MyController
         $type = $request->type;
         $include = $request->include;
         $exclude = $request->exclude;
+        $added_after = $request->added_after;
+        $added_before = $request->added_before;
         
 
         $res = Service::search_services_with_query(
@@ -65,6 +67,8 @@ class SearchServicesController extends MyController
             $max,
             $request->min_rate,
             $request->max_rate,
+            $added_after,
+            $added_before
         );
         $result = $res['result'];
         $query = $res['sql_query'];

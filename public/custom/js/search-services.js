@@ -26,6 +26,11 @@ $(function () {
         dropdownParent: $(".select2").parent()
     });
 
+    // datepicker
+    $(".flatpickr-date").flatpickr({
+        monthSelectorType: 'static'
+    });
+
     const collapseElementList = [].slice.call(document.querySelectorAll('.card-collapsible'));
     collapseElementList.map(function (collapseElement) {
         collapseElement.addEventListener('click', event => {
@@ -112,13 +117,13 @@ $(function () {
         $('#search_provider', this).on('change', function () {
             blockDataTable();
             if(this.value == -1){
-                dt_basic.column(11).search("").draw();
+                dt_basic.column(12).search("").draw();
                 dt_basic.column(0).search("").draw();
             } else if(this.value == 0) {
                 // favorite provider only
-                dt_basic.column(11).search(1).draw();
+                dt_basic.column(12).search(1).draw();
             } else {
-                dt_basic.column(11).search("").draw();
+                dt_basic.column(12).search("").draw();
                 if (dt_basic.column(0).search() !== this.value) {
                     dt_basic.column(0).search(this.value ? '^' + this.value + '$' : '', true, false).draw()
                 }
@@ -177,7 +182,8 @@ $(function () {
             { data: 'dripfeed'},
             { data: 'refill'},
             { data: 'cancel'},
-            { data: 'is_favorite'}
+            { data: 'created_at'},
+            { data: 'is_favorite'},
         ],
         columnDefs: [
             {
@@ -277,11 +283,17 @@ $(function () {
                     else 
                         return '<span class="badge bg-label-warning">No</span>'
                 },
+            },
+            {
+                className: 'service-created_at text-center',
+                searchable: true,
+                targets: 11,
+                width: 70
             }
         ],
-        // order: [[5, 'asc']],
-        // orderCellsTop: true,
-        ordering: false,
+        order: [[5, 'asc']],
+        orderCellsTop: true,
+        // ordering: false,
         // paging: false,
         // lengthChange: false,
         displayLength: 1000,
@@ -294,6 +306,7 @@ $(function () {
     dt_basic.column(1).visible(false);
     dt_basic.column(4).visible(false);
     dt_basic.column(11).visible(false);
+    dt_basic.column(12).visible(false);
   
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
@@ -415,7 +428,9 @@ $(function () {
             max,
             min_rate: $("#min_rate").val(),
             max_rate: $("#max_rate").val(),
-            currency: $("#currency").val()
+            currency: $("#currency").val(),
+            added_after: $("#added_after").val(),
+            added_before: $("#added_before").val(),
         }
 
         dt_basic.clear().draw();
@@ -434,7 +449,7 @@ $(function () {
             data: send_data,
             success: function (response) {
                 if (response.code == 200) {
-                    console.log(response);
+                    // console.log(response);
                     
                     result_services = response.services;
                     
@@ -571,6 +586,7 @@ function drawTableWithAPI(page){
             dripfeed: service.dripfeed,
             refill: service.refill,
             cancel: service.cancel,
+            created_at: service.created_at,
             is_favorite: service.is_favorite
         });
 

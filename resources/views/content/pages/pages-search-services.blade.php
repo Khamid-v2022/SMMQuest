@@ -31,6 +31,8 @@ $configData = Helper::appClasses();
 <script src="{{asset('assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.js')}}"></script> -->
 <script src="{{asset('assets/vendor/libs/datatables-buttons/datatables-buttons.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/moment/moment.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
 
 <!-- Row Group JS -->
 <!-- <script src="{{asset('assets/vendor/libs/datatables-rowgroup/datatables.rowgroup.js')}}"></script>
@@ -128,8 +130,18 @@ $configData = Helper::appClasses();
                                     @endforeach
                                 </select>
                             </div>
-                           
                         </div>
+                        <div class="row pt-3">
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label" for="added_after">Added After:</label>
+                                <input type="text" id="added_after" class="form-control flatpickr-date" placeholder="Added After">
+                            </div>
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <label class="form-label" for="added_before">Added Before:</label>
+                                <input type="number" id="added_before" class="form-control flatpickr-date" placeholder="Added Before">
+                            </div>
+                        </div>
+
                         <div class="row pt-3">
                             <small class="text-light fw-semibold d-block">Show Columns</small>
                             <div class="col-sm">
@@ -138,37 +150,8 @@ $configData = Helper::appClasses();
                                     <label class="form-check-label" for="check_provider">Provider</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-category" data-column-index="1" id="check_category" type="checkbox" />
-                                    <label class="form-check-label" for="check_category">Category</label>
-                                </div>
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-id" data-column-index="2" id="check_id" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_id">ID</label>
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-name" data-column-index="3" id="check_name" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_name">Name</label>
-                                </div>
-                                <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-type" data-column-index="4" id="check_type" type="checkbox" />
                                     <label class="form-check-label" for="check_type">Service Type</label>
-                                </div>
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-rate" data-column-index="5" id="check_rate" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_rate">Price</label>
-                                </div>
-                               
-                            </div>
-                            <div class="col-sm">
-                            <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-min" data-column-index="6" id="check_min" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_min">Min</label>
-                                </div>
-                                <div class="form-check form-check-primary mt-2">
-                                    <input class="form-check-input show-column-item" data-sel-class="service-max" data-column-index="7" id="check_max" type="checkbox" checked />
-                                    <label class="form-check-label" for="check_max">Max</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-dripfeed" data-column-index="8" id="check_dripfeed" type="checkbox" checked />
@@ -177,12 +160,46 @@ $configData = Helper::appClasses();
                             </div>
                             <div class="col-sm">
                                 <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-category" data-column-index="1" id="check_category" type="checkbox" />
+                                    <label class="form-check-label" for="check_category">Category</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-rate" data-column-index="5" id="check_rate" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_rate">Price</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-refill" data-column-index="9" id="check_refill" type="checkbox" checked />
                                     <label class="form-check-label" for="check_refill">Refill Button</label>
+                                </div>
+                               
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-id" data-column-index="2" id="check_id" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_id">ID</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-min" data-column-index="6" id="check_min" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_min">Min</label>
                                 </div>
                                 <div class="form-check form-check-primary mt-2">
                                     <input class="form-check-input show-column-item" data-sel-class="service-cancel" data-column-index="10" id="check_cancel" type="checkbox" checked />
                                     <label class="form-check-label" for="check_cancel">Cancel Button</label>
+                                </div>
+                                
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-name" data-column-index="3" id="check_name" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_name">Name</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-max" data-column-index="7" id="check_max" type="checkbox" checked />
+                                    <label class="form-check-label" for="check_max">Max</label>
+                                </div>
+                                <div class="form-check form-check-primary mt-2">
+                                    <input class="form-check-input show-column-item" data-sel-class="service-created_at" data-column-index="11" id="check_created_at" type="checkbox" />
+                                    <label class="form-check-label" for="check_created_at">Added Date</label>
                                 </div>
                             </div>
                             <div class="col-12 text-right pt-2">
@@ -228,6 +245,7 @@ $configData = Helper::appClasses();
                     <th class='service-dripfeed'>Dripfeed</th>
                     <th class='service-refill'>Refill Button</th>
                     <th class='service-cancel'>Cancel Button</th>
+                    <th class='service-created_at'>Added Date</th>
                     <th class=''>Is Favorite</th>
                 </tr>
             </thead>

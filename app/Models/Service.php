@@ -105,7 +105,7 @@ class Service extends Model
         return $result;
     } 
 
-    public static function search_services_with_query($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate){
+    public static function search_services_with_query($user_id, $provider_ids, $type, $include, $exclude, $min, $max, $min_rate, $max_rate, $added_after, $added_before){
         
         $sql = "SELECT `s`.`provider` AS `domain`, `is_favorite`, `service`, `name`, `type`, `rate`, `min`, `max`, `dripfeed`, `refill`, `cancel`, `category`, `default_currency` AS `main_currency`, `up`.`balance_currency` AS `user_currency`, `status`, `s`.`created_at`, `s`.`updated_at`, `s`.`rate_usd` ";     
         $sql .= " FROM ( ";
@@ -152,6 +152,10 @@ class Service extends Model
             $sql .= " AND `rate` >= {$min_rate} ";
         if($max_rate)
             $sql .= " AND `rate` <= {$max_rate} ";
+        if($added_after)
+            $sql .= " AND `s`.`created_at` >= '{$added_after}' ";
+        if($added_before)
+            $sql .= " AND `s`.`created_at` <= '{$added_before}' ";
 
         // $sql .= " ORDER BY `rate_usd`";
 
