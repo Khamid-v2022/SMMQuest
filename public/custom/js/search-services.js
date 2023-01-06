@@ -406,6 +406,8 @@ $(function () {
 
         $(".load-more").attr("data-page", 0);
         $(".load-more").css("display", "none");
+        clearSelectedServicesFromTable();
+
         send_data = null;
 
         const providers = $("#providers").val();
@@ -572,7 +574,7 @@ $(function () {
 
     $("#search_form input, #search_form select").on('change', function(){
         // hide load more button
-        $(".load-more").css("display", "none");
+        // $(".load-more").css("display", "none");
     })
 
 

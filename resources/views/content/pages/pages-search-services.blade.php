@@ -17,6 +17,20 @@ $configData = Helper::appClasses();
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 <!-- Row Group CSS -->
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css')}}">
+
+<style type="text/css">
+    .sticky-wrapper {
+        bottom: 0px;
+        position: sticky;
+        display: none;
+        z-index: 9;
+    }
+
+    #exiting_list {
+        max-height: 200px;
+        overflow-y: scroll;
+    }
+</style>
 @endsection
 
 
@@ -43,19 +57,7 @@ $configData = Helper::appClasses();
 @section('page-script')
 <script src="{{asset('custom/js/search-services.js')}}"></script>
 @endsection
-<style>
-.sticky-wrapper {
-    bottom: 0px;
-    position: sticky;
-    display: none;
-    z-index: 9;
-}
 
-#exiting_list {
-    max-height: 200px;
-    overflow-y: scroll;
-}
-</style>
 @section('content')
 <h4>Search Services</h4>
 
