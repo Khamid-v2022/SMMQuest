@@ -16,6 +16,7 @@ class ListService extends Model
     protected $fillable = [
         'list_id',
         'service_id',
+        'api_template',
         'order_id',
         'start_count',
         'quantity',
@@ -27,4 +28,12 @@ class ListService extends Model
         'inprogress_minute',
         'completed_minute'
     ];
+
+    public function list() {
+        return $this->belongsTo('App\Models\UserList');
+    }
+
+    public function service() {
+        return $this->belongsTo('App\Models\Service');
+    }
 }

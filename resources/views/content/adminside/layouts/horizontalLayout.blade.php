@@ -136,7 +136,7 @@
                                     </li>
                                     <li class="menu-item">
                                         <a href="/admin/provider-management" class="menu-link">
-                                            <i class="menu-icon tf-icons bx bx-food-menu"></i>
+                                            <i class="menu-icon tf-icons bx bx-donate-blood"></i>
                                             <div>Providers</div>
                                         </a>
                                     </li>

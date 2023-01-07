@@ -13,14 +13,14 @@
       "slug": "pages-search-services"
     },
     {
-      "url": "/search-services-test",
-      "icon": "menu-icon tf-icons bx bx-search-alt-2",
-      "name": "Search Services Test",
-      "slug": "pages-search-services-test"
+      "url": "/my-list",
+      "icon": "menu-icon tf-icons bx bx-food-menu",
+      "name": "My Lists",
+      "slug": "pages-my-list"
     },
     {
       "url": "/providers",
-      "icon": "menu-icon tf-icons bx bx-food-menu",
+      "icon": "menu-icon tf-icons bx bx-donate-blood",
       "name": "My Providers",
       "slug": "pages-my-provider"
     }

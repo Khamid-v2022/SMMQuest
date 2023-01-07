@@ -34,9 +34,14 @@ class Service extends Model
         'status'
     ];
     
-    public function provider()
+    public function providers()
     {
-        return $this->belongsTo(Provider::class);
+        // return $this->belongsTo(Provider::class);
+        return $this->belongsTo('App\Models\Provider');
+    }
+
+    public function list(){
+        return $this->hasMany('App\Models\ListService');
     }
 
     public static function service_types($user_id){

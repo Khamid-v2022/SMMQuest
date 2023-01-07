@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\UserProvider;
 use App\Models\Service;
+use App\Models\Provider;
 use App\Models\Currency;
 use App\Models\UserList;
 use App\Models\ListService;
@@ -138,7 +139,10 @@ class SearchServicesController extends MyController
         $data = [];
 
         foreach($service_ids as $id){
-            array_push($data, ['list_id' => $list->id, 'service_id' => $id]);
+            // get API template info from service id
+            $service = Service::where('id', $id)->first();
+            $provider = Provider::where('id', $service->provider_id)->first();
+            array_push($data, ['list_id' => $list->id, 'service_id' => $id, 'api_template' => $provider->api_template, 'created_at' => date('Y-m-d H:i:s')]);
         }
         ListService::insert($data);
         return response()->json(['code'=>200, 'message'=>'success'], 200);
@@ -157,7 +161,9 @@ class SearchServicesController extends MyController
             $exist = ListService::where('list_id', $request->selected_list_id)->where('service_id', $id)->get();
             if(count($exist) == 0){
                 $added_count++;
-                ListService::insert(['list_id' => $request->selected_list_id, 'service_id' => $id]);
+                $service = Service::where('id', $id)->first();
+                $provider = Provider::where('id', $service->provider_id)->first();
+                ListService::create(['list_id' => $request->selected_list_id, 'service_id' => $id, 'api_template' => $provider->api_template]);
             }
         }
 

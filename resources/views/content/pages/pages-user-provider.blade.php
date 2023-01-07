@@ -94,7 +94,6 @@ $configData = Helper::appClasses();
                 </tr>
             </thead>
             <tbody>
-              
             </tbody>
         </table>
     </div>

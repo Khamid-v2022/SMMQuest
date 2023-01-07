@@ -24,4 +24,7 @@ class UserList extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function services() {
+        return $this->hasMany('App\Models\ListService', 'list_id');
+    }
 }

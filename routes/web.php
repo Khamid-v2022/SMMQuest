@@ -9,6 +9,9 @@ use App\Http\Controllers\pages\AccountSettingsSecurity;
 use App\Http\Controllers\pages\ProviderController;
 use App\Http\Controllers\pages\SearchServicesController;
 use App\Http\Controllers\pages\SearchServicesTestController;
+use App\Http\Controllers\pages\MyListController;
+
+use App\Http\Controllers\pages\PaymentController;
 
 // use App\Http\Controllers\admin\LoginPage;
 // use App\Http\Controllers\admin\DashboardPage;
@@ -30,6 +33,7 @@ $controller_path = 'App\Http\Controllers';
 Route::group(['middleware' => ['auth', 'user']], function () {
     Route::get('/home', [HomePage::class, 'index'])->name('pages-home');
 
+    // profile
     Route::get('/profile', [AccountSettingsAccount::class, 'index'])->name('profile-show');
     Route::post('/profile', [AccountSettingsAccount::class, 'update']);
     Route::delete('/profile', [AccountSettingsAccount::class, 'delete']);
@@ -59,7 +63,18 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     // serarch services for test
     Route::get('/search-services-test', [SearchServicesTestController::class, 'index'])->name('pages-search-services-test');
     Route::post('/search-services-test', [SearchServicesTestController::class, 'searchServices']);
+
+    // My Lists page
+    Route::get('/my-list', [MyListController::class, 'index'])->name('pages-my-list');
+    Route::delete('/my-list/delete_service_from_list/{id}', [MyListController::class, 'deleteServiceFromList'])->where('id', '[0-9]+');
+    Route::post('/my-list/start_order', [MyListController::class, 'startOrder']);
+   
+
+    // started list page
+    Route::get('/my-started-list', [MyListController::class, 'startedListPage'])->name('pages-started-list');
     
+    // payment page
+    Route::get('/payment', [PaymentController::class, 'index'])->name('pages-payment');
 });
 
 // error pages
