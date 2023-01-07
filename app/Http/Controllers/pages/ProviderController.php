@@ -122,6 +122,9 @@ class ProviderController extends MyController
   }
 
   public function changeAPIKey(Request $request){
+    if(Auth::user()->subscrib_status == 0)
+      return response()->json(['code'=>401, 'message'=>'This feature is for subscribers only'], 200);
+
     $user_provider = UserProvider::where('id', $request->selected_id)->first();
     $user_provider->api_key = $this->encrypt(trim( $request->api_key));
     $user_provider->save();
@@ -220,6 +223,9 @@ class ProviderController extends MyController
   }
 
   public function changeBalanceAlertLimit(Request $request){
+    if(Auth::user()->subscrib_status == 0)
+      return response()->json(['code'=>400, 'message'=>'This feature is for subscribers only'], 200);
+
     $user_provider = UserProvider::where('id', $request->selected_id)->first();
     $user_provider->balance_alert_limit = $request->limit;
     $user_provider->save();

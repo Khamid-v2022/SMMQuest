@@ -86,7 +86,7 @@ $configData = Helper::appClasses();
                                             <td class="text-end">{{ $service->service->min }}</td>
                                             <td class="text-end">{{ $service->service->max }}</td>
                                             <td class="text-center">
-                                                <a href="javascript:;" class="btn btn-sm btn-icon delete-service-btn" title="Delete serviced from this list" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="left"><i class="bx bxs-trash"></i></a>
+                                                <a href="javascript:;" class="btn btn-sm btn-icon delete-service-btn" title="Delete serviced from this list" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class="bx bxs-trash"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

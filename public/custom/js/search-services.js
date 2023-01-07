@@ -206,8 +206,15 @@ $(function () {
                 width: 150,
                 render: function (data, type, full, meta) {
                     let domain = data;
+                    if(full.is_valid_key == 1){
+                        domain += '<i class="bx bx-check-circle text-success ms-1" style="display:inline" title="Api Key is active" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"></i>';
+                    }
+                    else {
+                        domain += '<i class="bx bx-error text-warning ms-1 custom-tooltip-wrapper" style="display:inline"><div class="custom-tooltip">Set your API Key on the<a href="/providers"> &quot;My Providers&quot; </a>page</div></i>';
+                    }
+
                     if(full.is_favorite == 1)
-                        domain += '<i class="bx bxs-like text-warning ms-1" style="display:inline"></i>';
+                        domain += '<i class="bx bxs-star text-warning ms-1" style="display:inline"></i>';
                     return domain;
                 }
             },
@@ -319,6 +326,13 @@ $(function () {
                 // }
             }
         ],
+        "fnDrawCallback": function (oSettings) {
+            $('.datatables-basic [data-bs-toggle="tooltip"]').each(function () {
+                $(this).tooltip({
+                    html: true
+                })
+            });
+        },
         order: [[5, 'asc']],
         orderCellsTop: true,
         // ordering: false,
@@ -853,7 +867,8 @@ function drawTableWithAPI(page){
             cancel: service.cancel,
             created_at: service.created_at,
             is_favorite: service.is_favorite,
-            service_id: service.id
+            service_id: service.id,
+            is_valid_key: service.is_valid_key
         });
 
         if(!providers_opt.includes(service.domain))

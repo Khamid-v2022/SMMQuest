@@ -16,6 +16,27 @@ $configData = Helper::appClasses();
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css')}}">
 <!-- Form Validation -->
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css')}}" />
+<style type="text/css">
+    .datatables-basic {
+        font-size: .9rem;
+    }
+
+    .light-style .swal2-container {
+        z-index: 3000!important;
+    }
+
+    .provider-status {
+        min-width: 194px;
+    }
+
+    .btn-avalible:hover i  {
+        filter: brightness(1.5);
+    }
+
+    .btn-unable i {
+        color: gray;
+    }
+</style>
 @endsection
 
 
@@ -37,19 +58,7 @@ $configData = Helper::appClasses();
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
 @endsection
 
-<style type="text/css">
-    .datatables-basic {
-        font-size: .9rem;
-    }
 
-    .light-style .swal2-container {
-        z-index: 3000!important;
-    }
-
-    .provider-status {
-        min-width: 194px;
-    }
-</style>
 
 @section('content')
 <h4>Providers Page</h4>
@@ -80,6 +89,7 @@ $configData = Helper::appClasses();
         </div>
     </div>
     <div class="card-datatable table-responsive">
+        <input type="hidden" id="user_permission" value="{{Auth::user()->subscrib_status}}">
         <table class="datatables-basic table border-top" id="data_table">
             <thead>
                 <tr>

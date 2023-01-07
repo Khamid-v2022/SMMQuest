@@ -30,6 +30,84 @@ $configData = Helper::appClasses();
         max-height: 200px;
         overflow-y: scroll;
     }
+
+    .custom-tooltip {
+        background: #444;
+        bottom: 100%;
+        color: #fff;
+        display: block;
+        left: -87px;
+        margin-bottom: 15px;
+        opacity: 0;
+        padding: 6px 8px;
+        pointer-events: none;
+        position: absolute;
+        width: 200px;
+        font-size: .9rem;
+        font-family: var(--bs-body-font-family);
+        border-radius: 5px;
+        line-height: 1.1rem;
+        -webkit-transform: translateY(10px);
+        -moz-transform: translateY(10px);
+        -ms-transform: translateY(10px);
+        -o-transform: translateY(10px);
+            transform: translateY(10px);
+        -webkit-transition: all .25s ease-out;
+        -moz-transition: all .25s ease-out;
+        -ms-transition: all .25s ease-out;
+        -o-transition: all .25s ease-out;
+            transition: all .25s ease-out;
+        -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+        -moz-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+        -ms-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+        -o-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.28);
+    }
+    /* .custom-tooltip a,  .custom-tooltip a:hover {
+        color: white;
+    } */
+    .custom-tooltip:before {
+        bottom: -20px;
+        content: " ";
+        display: block;
+        height: 20px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+    }
+    .custom-tooltip:after {
+        border-left: solid transparent 10px;
+        border-right: solid transparent 10px;
+        border-top: solid #444 10px;
+        bottom: -10px;
+        content: " ";
+        height: 0;
+        left: 50%;
+        margin-left: -13px;
+        position: absolute;
+        width: 0;
+    }
+    .custom-tooltip-wrapper {
+        position: relative;
+        -webkit-transform: translateZ(0); /* webkit flicker fix */
+        -webkit-font-smoothing: antialiased; /* webkit text rendering fix */
+    }
+    .custom-tooltip-wrapper:hover .custom-tooltip {
+        opacity: 1;
+        pointer-events: auto;
+        -webkit-transform: translateY(0px);
+        -moz-transform: translateY(0px);
+        -ms-transform: translateY(0px);
+        -o-transform: translateY(0px);
+        transform: translateY(0px);
+    }
+    .lte8 .custom-tooltip-wrapper .custom-tooltip {
+        display: none;
+    }
+
+    .lte8 .custom-tooltip-wrapper:hover .custom-tooltip {
+        display: block;
+    }
 </style>
 @endsection
 
@@ -102,7 +180,7 @@ $configData = Helper::appClasses();
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="include">
                                     Words Included
-                                    <span class="badge rounded-pill bg-label-primary" title='Press Enter or "," to add words' data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="right">?</span>
+                                    <span class="badge rounded-pill bg-label-primary" title='Press Enter or "," to add words' data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span>
                                 </label>
                                 <input id="include" class="form-control"/>
                                 <!-- <div class="form-text">
@@ -112,7 +190,7 @@ $configData = Helper::appClasses();
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="exclude">
                                     Words Excluded
-                                    <span class="badge rounded-pill bg-label-primary" title='Press Enter or "," to add words' data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="right">?</span> 
+                                    <span class="badge rounded-pill bg-label-primary" title='Press Enter or "," to add words' data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span> 
                                 </label>
                                 <input id="exclude" class="form-control"/>
                             </div>
@@ -233,13 +311,13 @@ $configData = Helper::appClasses();
 <div class="card mb-4">
     <div class="card-datatable table-responsive">
         <button class="btn btn-info load-more" data-page="1" style="position: absolute; right: 15px;top: 15px;z-index:10">
-            <span class="btn-txt"> Load More</span>
+            <span class="btn-txt">Load More</span>
             <i class="fas fa-spinner fa-spin" style="display:none"></i>
         </button>
         <table class="datatables-basic table border-top" id="data_table" style="font-size: .9rem;">
             <thead>
                 <tr>
-                    <th class='service-domain'> Provider </th>
+                    <th class='service-domain'>Provider</th>
                     <th class='service-category'>Category</th>
                     <th class='service-id'>ID</th>
                     <th class='service-name'>Name</th>
