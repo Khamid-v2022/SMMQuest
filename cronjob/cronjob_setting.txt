@@ -1,0 +1,6 @@
+0 */6 * * * /var/www/html/SMMQuest/cronjob/check_balance.sh >> /var/www/html/SMMQuest/cronjob/errors/balance_log.txt 2>&1
+0 */8 * * * /var/www/html/SMMQuest/cronjob/cron.sh >> /var/www/html/SMMQuest/cronjob/errors/services_log.txt 2>&1
+0 1 * * * /var/www/html/SMMQuest/cronjob/check_provider.sh >> /var/www/html/SMMQuest/cronjob/errors/provider_log.txt 2>&1
+* * * * * /usr/bin/flock -w 0 /var/www/html/SMMQuest/cronjob/hold_provider.lock /var/www/html/SMMQuest/cronjob/check_hold_provider_to_add.sh >> /var/www/html/>
+50 */6 * * * /usr/bin/flock -w 1 /var/www/html/SMMQuest/cronjob/balance_alert.lock /var/www/html/SMMQuest/cronjob/balance_alert_email.sh >> /var/www/html/SMMQ>
+10 0 * * * /var/www/html/SMMQuest/cronjob/update_currency.sh >> 2>&1

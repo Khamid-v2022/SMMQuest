@@ -66,12 +66,9 @@ Route::group(['middleware' => ['auth', 'user']], function () {
 
     // My Lists page
     Route::get('/my-list', [MyListController::class, 'index'])->name('pages-my-list');
+    Route::post('/my-list', [MyListController::class, 'loadMyLists']);
     Route::delete('/my-list/delete_service_from_list/{id}', [MyListController::class, 'deleteServiceFromList'])->where('id', '[0-9]+');
     Route::post('/my-list/start_order', [MyListController::class, 'startOrder']);
-   
-
-    // started list page
-    Route::get('/my-started-list', [MyListController::class, 'startedListPage'])->name('pages-started-list');
     
     // payment page
     Route::get('/payment', [PaymentController::class, 'index'])->name('pages-payment');

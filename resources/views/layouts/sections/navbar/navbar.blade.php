@@ -36,20 +36,130 @@ $navbarDetached = ($navbarDetached ?? '');
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
         <!-- Style Switcher -->
-        <div class="navbar-nav align-items-center">
+        <!-- <div class="navbar-nav align-items-center">
           <a class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
             <i class='bx bx-sm'></i>
           </a>
-        </div>
+        </div> -->
         <!--/ Style Switcher -->
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+          <!-- Currency -->
+          <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
+            <a class="nav-link dropdown-toggle hide-arrow" id="selected-currency" href="javascript:void(0);" data-bs-toggle="dropdown">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="USD" data-icon-class="fi-us">
+                  <i class="fi fi-us fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">USD</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="EUR" data-icon-class="fi-eu">
+                  <i class="fi fi-eu fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">EUR</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="INR" data-icon-class="fi-in">
+                  <i class="fi fi-in fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">INR</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="TRY" data-icon-class="fi-tr">
+                  <i class="fi fi-tr fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">TRY</span>
+                </a>
+              </li>
 
+
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="RUB" data-icon-class="fi-ru">
+                  <i class="fi fi-ru fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">RUB</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="BRL" data-icon-class="fi-br">
+                  <i class="fi fi-br fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">BRL</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="NGN" data-icon-class="fi-ng">
+                  <i class="fi fi-ng fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">NGN</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="KRW" data-icon-class="fi-kr">
+                  <i class="fi fi-kr fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">KRW</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="THB" data-icon-class="fi-th">
+                  <i class="fi fi-th fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">THB</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="SAR" data-icon-class="fi-sa">
+                  <i class="fi fi-sa fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">SAR</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="CNY" data-icon-class="fi-cn">
+                  <i class="fi fi-cn fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">CNY</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="VND" data-icon-class="fi-vn">
+                  <i class="fi fi-vn fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">VND</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="KWD" data-icon-class="fi-kw">
+                  <i class="fi fi-kw fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">KWD</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="EGP" data-icon-class="fi-eg">
+                  <i class="fi fi-eg fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">EGP</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="PKR" data-icon-class="fi-pk">
+                  <i class="fi fi-pk fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">PKR</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item currency-item" href="javascript:void(0);" data-currency="PHP" data-icon-class="fi-ph">
+                  <i class="fi fi-ph fis rounded-circle fs-4 me-1"></i>
+                  <span class="align-middle">PHP</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Style Switcher -->
+          <li class="nav-item me-2 me-xl-0">
+            <a class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
+              <i class='bx bx-sm'></i>
+            </a>
+          </li>
           <!-- User -->
           <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <div class="avatar avatar-online">
-                <img src="{{ Auth::user() ? Auth::user()->avatar : asset('custom/img/avatars/default-2.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                <img src="{{ Auth::user() ? Auth::user()->avatar : asset('custom/img/avatars/default-2.png') }}" alt class="rounded-circle">
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">

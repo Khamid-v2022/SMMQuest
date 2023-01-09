@@ -121,7 +121,8 @@ class SearchServicesController extends MyController
     }
 
     public function createNewList(Request $request){
-        $service_ids = $request->selected_service_ids;
+        set_time_limit(300);
+        $service_ids = json_decode($request->selected_service_ids);
         $list_name = $request->list_name;
   
         // check list name is exist alredy
@@ -142,14 +143,15 @@ class SearchServicesController extends MyController
             // get API template info from service id
             $service = Service::where('id', $id)->first();
             $provider = Provider::where('id', $service->provider_id)->first();
-            array_push($data, ['list_id' => $list->id, 'service_id' => $id, 'api_template' => $provider->api_template, 'created_at' => date('Y-m-d H:i:s')]);
+            array_push($data, ['list_id' => $list->id, 'provider_id'=>$service->provider_id, 'service_id' => $id, 'api_template' => $provider->api_template, 'created_at' => date('Y-m-d H:i:s')]);
         }
         ListService::insert($data);
-        return response()->json(['code'=>200, 'message'=>'success'], 200);
+        return response()->json(['code'=>200, 'message'=>'success', 'request' => $request], 200);
     }
 
     public function addServicesExistingList(Request $request){
-        $service_ids = $request->selected_service_ids;
+        set_time_limit(300);
+        $service_ids = json_decode($request->selected_service_ids);
         $data = [];
 
         // foreach($service_ids as $id){
@@ -163,7 +165,7 @@ class SearchServicesController extends MyController
                 $added_count++;
                 $service = Service::where('id', $id)->first();
                 $provider = Provider::where('id', $service->provider_id)->first();
-                ListService::create(['list_id' => $request->selected_list_id, 'service_id' => $id, 'api_template' => $provider->api_template]);
+                ListService::create(['list_id' => $request->selected_list_id, 'provider_id'=>$service->provider_id, 'service_id' => $id, 'api_template' => $provider->api_template]);
             }
         }
 

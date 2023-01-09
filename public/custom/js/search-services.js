@@ -99,8 +99,12 @@ $(function () {
             html += '<option value="No">No</option>';   
             html += '</select>';
             $(this).html(html);
-        } else if(i == 12 || i == 13){
+        } else if(i == 12){
             $(this).html("");
+        } else if(i == 13){
+            $(this).addClass("text-end");
+            let html = '<input type="checkbox" class="dt-checkboxes form-check-input" id="check_all"></input>';
+            $(this).html(html);
         }
         else {
             $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
@@ -179,6 +183,32 @@ $(function () {
             }
             $("#data_table").unblock();
         });
+
+        $("#check_all", this).on("click", function(){
+            
+            if($(this).prop('checked')){
+                $("input.each-check").prop('checked', true);
+                
+                let arr = [];
+                $('.datatables-basic').find('.each-check:checked').each(function() {
+                    arr.push($(this).attr('data-service_id'));
+                });
+                $("#selected_count").html(arr.length);
+                
+                if(arr.length == 0){
+                    $(".sticky-wrapper").css("display", "none");
+                } else {
+                    $(".sticky-wrapper").css("display", "block");
+                    window.scrollBy(0, 1);
+                }
+            } else {
+                $("input.each-check").prop('checked', false);
+                
+                $("#selected_count").html("0");
+                $(".sticky-wrapper").css("display", "none");
+            }
+              
+        })
 
     });
 
@@ -318,7 +348,7 @@ $(function () {
                 orderable: false,
                 width: 30,
                 render: function (data, type, full, meta) {
-                    return '<input type="checkbox" class="dt-checkboxes form-check-input" data-service_id="' + data + '">';
+                    return '<input type="checkbox" class="dt-checkboxes form-check-input each-check" data-service_id="' + data + '">';
                 },
                 // checkboxes: {
                 //   selectRow: true,
@@ -332,6 +362,11 @@ $(function () {
                     html: true
                 })
             });
+
+            $(".paginate_button .page-link").on("click", function(){
+                $("input.each-check").prop('checked', false);
+                $("#check_all").prop('checked', false);
+            })
         },
         order: [[5, 'asc']],
         orderCellsTop: true,
@@ -467,6 +502,8 @@ $(function () {
             exclude.push(item.value)
         })
 
+        const currency = $("#selected-currency").attr("data-currency");
+
         send_data = {
             providers,
             type,
@@ -476,7 +513,7 @@ $(function () {
             max,
             min_rate: $("#min_rate").val(),
             max_rate: $("#max_rate").val(),
-            currency: $("#currency").val(),
+            currency,
             added_after: $("#added_after").val(),
             added_before: $("#added_before").val(),
         }
@@ -592,9 +629,9 @@ $(function () {
     })
 
 
-    $('.datatables-basic tbody').on('click', '.form-check-input', function () {
+    $('.datatables-basic tbody').on('click', '.each-check', function () {
         let arr = [];
-        $('.datatables-basic').find('.form-check-input:checked').each(function() {
+        $('.datatables-basic').find('.each-check:checked').each(function() {
             arr.push($(this).attr('data-service_id'));
         });
         $("#selected_count").html(arr.length);
@@ -608,7 +645,7 @@ $(function () {
 
     $("#add_list").on('click', function(){
         let arr = [];
-        $('.datatables-basic').find('.form-check-input:checked').each(function() {
+        $('.datatables-basic').find('.each-check:checked').each(function() {
             arr.push($(this).attr('data-service_id'));
         });
 
@@ -671,7 +708,7 @@ $(function () {
     $("#m_save_btn").on("click", function(){
 
         let selected_service_ids = [];
-        $('.datatables-basic').find('.form-check-input:checked').each(function() {
+        $('.datatables-basic').find('.each-check:checked').each(function() {
             selected_service_ids.push($(this).attr('data-service_id'));
         });
 
@@ -711,13 +748,13 @@ $(function () {
             const _url = "/search-services/create_new_list";
             const data = {
                 list_name: new_list_name,
-                selected_service_ids: selected_service_ids
+                selected_service_ids: JSON.stringify(selected_service_ids)
             };
-
+           
             $.ajax({
                 url: _url,
                 type: "POST",
-                data: data,
+                data:  data,
                 success: function (response) {
                     if (response.code == 200) {
                         Swal.fire({
@@ -768,7 +805,7 @@ $(function () {
             const _url = "/search-services/add_services_existing_list";
             const data = {
                 selected_list_id: selected_list_id,
-                selected_service_ids: selected_service_ids
+                selected_service_ids: JSON.stringify(selected_service_ids)
             };
 
             $.ajax({
@@ -959,5 +996,6 @@ function clearSelectedServicesFromTable(){
     $('.datatables-basic').find('.form-check-input:checked').each(function() {
         $(this).prop('checked', false);
     });
+
     $(".sticky-wrapper").css("display", "none");
 }

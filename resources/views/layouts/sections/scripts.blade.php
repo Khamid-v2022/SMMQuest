@@ -14,7 +14,7 @@
 <!-- END: Page Vendor JS-->
 <!-- BEGIN: Theme JS-->
 <script src="{{ asset(mix('assets/js/main.js')) }}"></script>
-
+<script src="{{asset('custom/js/global.js')}}"></script>
 <!-- END: Theme JS-->
 <!-- custom JS file for each pages -->
 @stack('scripts')

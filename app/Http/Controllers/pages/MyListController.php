@@ -6,53 +6,76 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\UserList;
 use App\Models\ListService;
+use App\Models\Currency;
 
 class MyListController extends MyController
 {
+    private $currencies = NULL;
+
     public function index()
     {
         $pageConfigs = ['myLayout' => 'horizontal'];
+        $this->currencies = Currency::where("id", 1)->first();
 
         if(Auth::user()->subscrib_status == 0){
             // get my list
-            $list = UserList::where('is_started', '0')
-                        ->where('user_id', Auth::user()->id)
-                        ->with(['services'])
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
-            return view('content.pages.pages-my-list-non-subscrib', [
-                'pageConfigs'=> $pageConfigs, 
-                'list' => $list
-            ]);
+            // $list = UserList::where('user_id', Auth::user()->id)
+            //             ->with(['services'])
+            //             ->orderBy('created_at', 'DESC')
+            //             ->get();
+            // return view('content.pages.pages-my-list-non-subscrib', [
+            //     'pageConfigs'=> $pageConfigs, 
+            //     'list' => $list
+            // ]);
         } else {
-            $list = UserList::where('is_started', '0')
-                        ->where('user_id', Auth::user()->id)
-                        ->with(['services'])
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
+
             return view('content.pages.pages-my-list-subscrib', [
-                'pageConfigs'=> $pageConfigs, 
-                'list' => $list
+                'pageConfigs'=> $pageConfigs
             ]);
         }
     }
 
-    public function startedListPage(){
-        if(Auth::user()->subscrib_status == 0){
-            $this->index();
-            return;
-        } 
+    public function loadMyLists(Request $request){
+            // using Eloquent 
+            // $list = UserList::where('user_id', Auth::user()->id)
+            //             ->with(['services'])
+            //             ->orderBy('created_at', 'DESC')
+            //             ->get();
 
-        $pageConfigs = ['myLayout' => 'horizontal'];
-        $started_list = UserList::where('is_started', '1')
-                        ->where('user_id', Auth::user()->id)
-                        ->with(['services'])
-                        ->orderBy('created_at', 'DESC')
-                        ->get();
-        return view('content.pages.pages-my-started-list', [
-            'pageConfigs'=> $pageConfigs, 
-            'list' => $started_list
-        ]);
+            // Using SQL query
+            $result = UserList::getMyLists(Auth::user()->id);
+            $list = $result['result'];
+
+
+            $return_result = [];
+
+            if(count($list) > 0){
+                if(!$this->currencies){
+                    // currency table based USD
+                    $this->currencies = Currency::where("id", 1)->first();
+                }
+
+                for($index = 0; $index < count($list); $index++){
+                    $currency = NULL;
+                    if(strtoupper($list[$index]->balance_currency) != $request->currency){
+                        $currency = $this->currencies[strtoupper($list[$index]->balance_currency)];
+                    }
+
+                    if($currency && $currency != 0) {
+                        $list[$index]->rate = round(($list[$index]->rate / $currency) * $this->currencies[$request->currency], 6);
+                    }
+
+                    // group by list
+                    if(array_key_exists($list[$index]->id, $return_result)){
+                        array_push($return_result[$list[$index]->id], $list[$index]);
+                    } else {
+                        $return_result[$list[$index]->id] = [];
+                        array_push($return_result[$list[$index]->id], $list[$index]);
+                    }
+                }
+            }
+
+            return response()->json(['code'=>200, 'lists'=>$return_result, 'query'=> $result['query']], 200);
     }
 
     public function deleteServiceFromList($id){

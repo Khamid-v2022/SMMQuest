@@ -1,9 +1,0 @@
-
-
-Service STARTED: 2022-12-16 16:00:01
-PHP Fatal error:  Uncaught mysqli_sql_exception: Out of range value for column 'rate_usd' at row 1 in /var/www/html/SMMQuest/cronjob/cron_services.php:109
-Stack trace:
-#0 /var/www/html/SMMQuest/cronjob/cron_services.php(109): mysqli->query()
-#1 /var/www/html/SMMQuest/cronjob/cron_services.php(5): loadServices()
-#2 {main}
-  thrown in /var/www/html/SMMQuest/cronjob/cron_services.php on line 109

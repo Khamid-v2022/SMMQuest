@@ -214,14 +214,14 @@ $configData = Helper::appClasses();
                                 <label class="form-label">Maximum Price:</label>
                                 <input type="number" id="max_rate" class="form-control dt-input" placeholder="Maximum Price" step="any">
                             </div>
-                            <div class="col-12 col-sm-6 col-lg-4">
+                            <!-- <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label">Currency:</label>
                                 <select id="currency" class="selectpicker w-100">
                                     @foreach(config('variables.currencies') as $currency)
                                         <option value="{{ $currency }}">{{ $currency }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row pt-3">
                             <div class="col-12 col-sm-6 col-lg-4">

@@ -1,5 +1,5 @@
 @php
-$configData = Helper::appClasses();
+    $configData = Helper::appClasses();
 @endphp
 
 @extends('layouts/layoutMaster')
@@ -18,15 +18,36 @@ $configData = Helper::appClasses();
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css')}}" />
 
 <style type="text/css">
+    .accordion-header {
+        padding: 10px 20px;
+    }
     .accordion-title {
         display: flex;
         justify-content: space-between;
         width: 100%;
         margin-right: 20px;
     }
-    .accordion-title .accordion-action button{
+    .accordion-title span {
+        padding: 4px 0;
+    }
+
+    .accordion-title span.created-date {
+        font-size: 16px;
+        padding: 8px 0;
+    }
+    .accordion-title .accordion-action {
+        display: flex;
+    }
+    .accordion-title .accordion-action button {
         margin-right: 20px;
         z-index: 9;
+    }
+    .accordion-title .accordion-action a.accordion-button {
+        width: 50px;
+    }
+    .btn-icon-custom {
+        display: table-cell!important;
+        padding-top: 3px;
     }
 </style>
 @endsection
@@ -48,18 +69,18 @@ $configData = Helper::appClasses();
         @php $index = 0; @endphp
         @foreach($list as $item)
             @php $index++ @endphp
-            <div class="card accordion-item">
-                <h2 class="accordion-header">
-                    <a class="accordion-button {{$index > 1 ? 'collapsed':''}}" type="button" data-bs-toggle="collapse" {{ $index == 1 ? 'aria-expanded="true"':'' }} data-bs-target="#accordion-{{$item->id}}" aria-controls="accordion-{{$item->id}}">
-                        <div class="accordion-title">    
-                            <span>{{ $item->list_name }}</span>
-                            <div class="accordion-action">
-                                <button class="btn btn-sm btn-primary redirect-to-payment" title="Enable for subscribers only" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" >Start test order</button>
-                                <span>{{ $item->created_at }}</span>
-                            </div>
+            <div class="card accordion-item" data-list_id="{{$item->id}}">
+                <h5 class="accordion-header">
+                    <div class="accordion-title">    
+                        <span>{{ $item->list_name }}</span>
+                        <div class="accordion-action">
+                            <button class="btn btn-sm btn-primary start-order-btn">Start test order</button>
+                            <span class="created-date">{{ $item->created_at }}</span>
+                            <a class="accordion-button {{$index > 1 ? 'collapsed':''}}" type="button" data-bs-toggle="collapse" {{ $index == 1 ? 'aria-expanded="true"':'' }} data-bs-target="#accordion-{{$item->id}}" aria-controls="accordion-{{$item->id}}">
+                            </a>
                         </div>
-                    </a>
-                </h2>
+                    </div>
+                </h5>
                 <div id="accordion-{{$item->id}}" class="accordion-collapse collapse {{ $index == 1 ? 'show':''}}">
                     <!-- <div class="accordion-body"> -->
                     <div>
@@ -86,7 +107,25 @@ $configData = Helper::appClasses();
                                             <td class="text-end">{{ $service->service->min }}</td>
                                             <td class="text-end">{{ $service->service->max }}</td>
                                             <td class="text-center">
-                                                <a href="javascript:;" class="btn btn-sm btn-icon delete-service-btn" title="Remove this service from this list" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class="bx bxs-trash"></i></a>
+                                                <a href="javascript:;" class="btn btn-sm btn-icon btn-icon-custom delete-service-btn" title="Remove this service from this list" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class="bx bxs-trash"></i></a>
+                                                <a href="javascript:void(0);" class="btn-icon-custom card-collapsible collapse-detail-box-btn"><i class="tf-icons bx bxs-chevron-up"></i></a>
+                                                <!-- <a href="javascript:;" class="btn btn-sm btn-icon collapse-detail-box-btn"><i class="bx bxs-trash"></i></a> -->
+                                            </td>
+                                        </tr>
+                                        <tr class="collapse" data-list_service_id="{{$service->id}}" data-template="{{$service->api_template}}">
+                                            <td colspan="7">
+                                                <form class="order-details" data-list_service_id="{{$service->id}}" data-service_id="{{$service->service_id}}" data-template="{{$service->api_template}}">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label class="form-label" for="quantity_for_{{$service->id}}">Quantity:</label>
+                                                            <input type="number" id="quantity_for_{{$service->id}}" class="form-control form-control-sm quantity-input" placeholder="Quantify" value="{{$service->quantity}}">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label class="form-label" for="link_for_{{$service->id}}">Link:</label>
+                                                            <input type="text" id="link_for_{{$service->id}}" class="form-control form-control-sm link-input" placeholder="Link" value="{{$service->link}}">
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -96,7 +135,6 @@ $configData = Helper::appClasses();
                     </div>
                 </div>
             </div>
-        
         @endforeach
     </div>
 </div>

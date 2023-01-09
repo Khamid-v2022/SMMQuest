@@ -151,30 +151,6 @@ if (document.getElementById('layout-menu')) {
     });
   }
 
-  // change the flag and name of language when you change the language through laravel locale (Language Dropdown).
-  // -------------------------------------------------------------------------------------------------------------
-  let language = document.documentElement.getAttribute('lang');
-  let langDropdown = document.getElementsByClassName('dropdown-language');
-  if (language !== null && langDropdown.length) {
-    // getting selected flag's name and icon class
-    let selectedDropdownItem = document.querySelector('a[data-language=' + language + ']'),
-        selectedFlag = selectedDropdownItem.childNodes[1].className,
-        startsWith = 'fs-',
-        classes = selectedFlag.split(' ').filter(function (v) {
-          return v.lastIndexOf(startsWith, 0) !== 0;
-        });
-
-    selectedFlag = classes.join(' ').trim() + ' fs-3';
-
-    // add 'selected' class to current language's dropdown options
-    selectedDropdownItem.classList.add('selected');
-
-   // set selected language's flag
-    let setLangFlag = (document.querySelector(
-      '.dropdown-language .dropdown-toggle'
-    ).childNodes[1].className = selectedFlag);
-  }
-
   // Notification
   // ------------
   const notificationMarkAsReadAll = document.querySelector('.dropdown-notifications-all');

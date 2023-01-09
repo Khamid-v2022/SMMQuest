@@ -15,6 +15,7 @@ class ListService extends Model
 
     protected $fillable = [
         'list_id',
+        'provider_id',
         'service_id',
         'api_template',
         'order_id',
