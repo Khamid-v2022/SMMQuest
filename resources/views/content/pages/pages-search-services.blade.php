@@ -21,9 +21,16 @@ $configData = Helper::appClasses();
 <style type="text/css">
     .sticky-wrapper {
         bottom: 0px;
-        position: sticky;
+        position: fixed;
+        width: 100%;
+        left: 0px;
         display: none;
         z-index: 9;
+    }
+
+    .sticky-element {
+        bottom: 0px;
+        padding: 12px 16px;
     }
 
     #exiting_list {
@@ -107,6 +114,10 @@ $configData = Helper::appClasses();
 
     .lte8 .custom-tooltip-wrapper:hover .custom-tooltip {
         display: block;
+    }
+
+    html:not([dir=rtl]) div.card-datatable table.dataTable thead th:last-child, html:not([dir=rtl]) div.card-datatable table.dataTable tfoot th:last-child {
+        padding-right: 20px;
     }
 </style>
 @endsection
@@ -344,7 +355,10 @@ $configData = Helper::appClasses();
             <i class="fas fa-spinner fa-spin" style="display:none"></i>
         </button>
     </div>
-    <div class="card-footer sticky-element bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
+    
+</div>
+<div class="sticky-wrapper">
+    <div class="sticky-element bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
         <h5 class="card-title mb-sm-0 me-2">Services Selected: <span id="selected_count"></span></h5>
         <div class="action-btns">
             <button class="btn btn-primary" id="add_list">

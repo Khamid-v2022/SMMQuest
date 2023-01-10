@@ -32,10 +32,10 @@ $(function () {
     });
 
     // sticky 
-    const stickyEl = $('.sticky-element');
-    stickyEl.sticky({
-        zIndex: 9
-    });
+    // const stickyEl = $('.sticky-element');
+    // stickyEl.sticky({
+    //     zIndex: 9
+    // });
 
     $('#add_service_modal').on('hidden.bs.modal', function () {
         $(this).find('form').trigger('reset');
@@ -102,7 +102,7 @@ $(function () {
         } else if(i == 12){
             $(this).html("");
         } else if(i == 13){
-            $(this).addClass("text-end");
+            $(this).addClass("text-center");
             let html = '<input type="checkbox" class="dt-checkboxes form-check-input" id="check_all"></input>';
             $(this).html(html);
         }
@@ -199,7 +199,7 @@ $(function () {
                     $(".sticky-wrapper").css("display", "none");
                 } else {
                     $(".sticky-wrapper").css("display", "block");
-                    window.scrollBy(0, 1);
+                    // window.scrollBy(0, 1);
                 }
             } else {
                 $("input.each-check").prop('checked', false);
@@ -639,7 +639,6 @@ $(function () {
             $(".sticky-wrapper").css("display", "none");
         } else {
             $(".sticky-wrapper").css("display", "block");
-            window.scrollBy(0, 1);
         }
     })
 
@@ -774,7 +773,7 @@ $(function () {
                         Swal.fire({
                             icon: 'warning',
                             title: '',
-                            text: "List name already exists. Please enter a different name.",
+                            text: response.message,
                             customClass: {
                                 confirmButton: 'btn btn-primary'
                             },

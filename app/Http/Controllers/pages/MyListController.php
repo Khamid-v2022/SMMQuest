@@ -18,11 +18,6 @@ class MyListController extends MyController
         $this->currencies = Currency::where("id", 1)->first();
 
         if(Auth::user()->subscrib_status == 0){
-            // get my list
-            // $list = UserList::where('user_id', Auth::user()->id)
-            //             ->with(['services'])
-            //             ->orderBy('created_at', 'DESC')
-            //             ->get();
             return view('content.pages.pages-my-list-non-subscrib', [
                 'pageConfigs'=> $pageConfigs
             ]);
@@ -35,7 +30,7 @@ class MyListController extends MyController
     }
 
     public function loadMyLists(Request $request){
-            // using Eloquent 
+            // get my list by Eloquent -- Do not delete
             // $list = UserList::where('user_id', Auth::user()->id)
             //             ->with(['services'])
             //             ->orderBy('created_at', 'DESC')
@@ -43,6 +38,7 @@ class MyListController extends MyController
 
             // Using SQL query
             $result = UserList::getMyLists(Auth::user()->id);
+          
             $list = $result['result'];
 
 
@@ -62,14 +58,15 @@ class MyListController extends MyController
 
                     if($currency && $currency != 0) {
                         $list[$index]->rate = round(($list[$index]->rate / $currency) * $this->currencies[$request->currency], 6);
+                        $list[$index]->user_balance = round(($list[$index]->user_balance / $currency) * $this->currencies[$request->currency], 6);
                     }
 
                     // group by list
-                    if(array_key_exists($list[$index]->id, $return_result)){
-                        array_push($return_result[$list[$index]->id], $list[$index]);
+                    if(array_key_exists($list[$index]->id . "\0", $return_result)){
+                        array_push($return_result[$list[$index]->id . "\0"], $list[$index]);
                     } else {
-                        $return_result[$list[$index]->id] = [];
-                        array_push($return_result[$list[$index]->id], $list[$index]);
+                        $return_result[$list[$index]->id . "\0"] = [];
+                        array_push($return_result[$list[$index]->id . "\0"], $list[$index]);
                     }
                 }
             }

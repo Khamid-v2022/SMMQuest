@@ -35,7 +35,9 @@ function loadMyLists(){
 
 function drawingListTable(list){
     let html = "";
+    let index = 0;
     Object.entries(list).forEach(([key, val]) => {
+        index++;
         html += '<div class="card accordion-item">';
             html += '<h5 class="accordion-header">';
                 html += '<div class="accordion-title">';
@@ -43,17 +45,17 @@ function drawingListTable(list){
                     html += '<div class="accordion-action">';
                         html += '<button class="btn btn-sm btn-primary redirect-to-payment" title="Enable for subscribers only" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" >Start test order</button>';
                         html += '<span class="created-date">' + val[0].created_at + '</span>';
-                        html += '<a class="accordion-button collapsed" type="button" data-bs-toggle="collapse" aria-expanded="false"  data-bs-target="#accordion-' + key + '" aria-controls="accordion-' + key + '"></a>';
+                        html += '<a class="accordion-button ' + (index > 1 ? 'collapsed' : '') + '" type="button" data-bs-toggle="collapse" aria-expanded="' + (index == 1 ? 'true' : 'false') + '"  data-bs-target="#accordion-' + key + '" aria-controls="accordion-' + key + '"></a>';
                     html += "</div>";
                 html += "</div>";
             html += "</h5>";
-            html += '<div id="accordion-' + key + '" class="accordion-collapse collapse">';
+            html += '<div id="accordion-' + key + '" class="accordion-collapse collapse ' + (index == 1 ? 'show' : '')+ '">';
                 html += '<div class="card-datatable table-responsive">';
                     html += '<table class="table border-top" style="font-size: .9rem;">';
                         html += '<thead><tr>';
                             html += '<th class="">Provider</th>';
                             html += '<th class="">ID</th>';
-                            html += '<th class="">Service Name</th>';
+                            html += '<th class="">Name</th>';
                             html += '<th class="text-end">Price</th>';
                             html += '<th class="text-end">Min</th>';
                             html += '<th class="text-end">Max</th>';

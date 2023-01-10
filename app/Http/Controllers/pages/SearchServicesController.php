@@ -116,7 +116,8 @@ class SearchServicesController extends MyController
     }
 
     public function loadExistingList(){
-        $existing_list = UserList::where('user_id', Auth::user()->id)->where('is_started', '0')->get();
+        // $existing_list = UserList::where('user_id', Auth::user()->id)->where('is_started', '0')->get();
+        $existing_list = UserList::where('user_id', Auth::user()->id)->get();
         return response()->json(['code'=>200, 'existing_list'=>$existing_list], 200);
     }
 
@@ -124,7 +125,12 @@ class SearchServicesController extends MyController
         set_time_limit(300);
         $service_ids = json_decode($request->selected_service_ids);
         $list_name = $request->list_name;
-  
+        
+        // check number of services is over than limit
+        if(count($service_ids) > env('LIST_SERVICES_LIMIT'))
+            return response()->json(['code'=>400, 'message'=>'The number of selected services exceeds the maximum limit for the list'], 200);
+        
+
         // check list name is exist alredy
         $exist = UserList::where("list_name", $list_name)->get();
         if(count($exist) > 0){
@@ -154,10 +160,21 @@ class SearchServicesController extends MyController
         $service_ids = json_decode($request->selected_service_ids);
         $data = [];
 
+        // check number of services is over than limit
+        if(count($service_ids) > env('LIST_SERVICES_LIMIT'))
+            return response()->json(['code'=>400, 'message'=>'The number of selected services exceeds the maximum limit for the list'], 200);
+     
+        $existing_services = ListService::where('list_id', $request->selected_list_id)->get();
+        
+        if(count($service_ids) + count($existing_services) > env('LIST_SERVICES_LIMIT'))
+            return response()->json(['code'=>400, 'message'=>'The number of selected services exceeds the maximum limit for the list'], 200);
+     
         // foreach($service_ids as $id){
         //     array_push($data, ['list_id' => $request->selected_list_id, 'service_id' => $id]);
         // }
         // ListService::insert($data);
+
+
         $added_count = 0;
         foreach($service_ids as $id){
             $exist = ListService::where('list_id', $request->selected_list_id)->where('service_id', $id)->get();

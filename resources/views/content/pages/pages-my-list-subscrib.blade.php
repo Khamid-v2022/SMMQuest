@@ -45,9 +45,37 @@
     .accordion-title .accordion-action a.accordion-button {
         width: 50px;
     }
+
     .btn-icon-custom {
         display: table-cell!important;
         padding-top: 3px;
+    }
+
+    .form-check-input[type=checkbox] {
+        width: 16px;
+        height: 16px;
+    }
+
+    label.service-cost-label {
+        display: block;
+        margin-top: 5px;
+    }
+
+
+    .layout-page {
+        position: relative;
+    }
+    .sticky-wrapper {
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        left: 0px;
+        display: none;
+        z-index: 9;
+    }
+
+    .sticky-element {
+        padding: 12px 16px;
     }
 </style>
 @endsection
@@ -66,7 +94,15 @@
 <h4>My Lists</h4>
 <div class="my-lists">
     <div class="accordion" id="lists_wrraper">
-       
     </div>
+</div>
+<div class="sticky-wrapper">
+    <div class="sticky-element bg-label-secondary d-flex justify-content-sm-between align-items-sm-center flex-column flex-sm-row">
+        <span>Services Selected: <span id="selected_count" class="badge bg-label-success">0</span></span>
+        <span>Expected Cost: <span id="expected_cost" class="badge bg-label-success">0</span></span>
+        <button class="btn btn-primary" id="start_test_order">
+            Start Test Order
+        </button>
+    </div> 
 </div>
 @endsection
