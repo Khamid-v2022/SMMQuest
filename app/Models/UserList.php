@@ -29,7 +29,7 @@ class UserList extends Model
     }
 
     public static function getMyLists($user_id){
-        $sql = "SELECT `ul`.*, `ls`.`provider_id`, `ls`.`api_template`, `up`.`is_favorite`, `up`.`user_balance`, `up`.`balance_currency`, `ls`.`id` AS `list_service_id`, `s`.`provider`, `s`.`id` AS `service_id`, `s`.`service`, `s`.`name`, `s`.`rate`, `s`.`min`, `s`.`max`, `s`.`type`
+        $sql = "SELECT `ul`.*, `ls`.`provider_id`, `ls`.`api_template`, `up`.`is_favorite`, `up`.`user_balance`,  `s`.`default_currency`, `ls`.`id` AS `list_service_id`, `s`.`provider`, `s`.`id` AS `service_id`, `s`.`service`, `s`.`name`, `s`.`rate`, `s`.`min`, `s`.`max`, `s`.`type`
         FROM
         (SELECT * FROM `user_lists` WHERE `user_id` = " . $user_id . ") `ul`
         LEFT JOIN `list_services` `ls` ON `ul`.`id` = `ls`.`list_id`

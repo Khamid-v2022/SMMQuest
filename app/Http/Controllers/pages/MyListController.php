@@ -23,10 +23,9 @@ class MyListController extends MyController
             //             ->with(['services'])
             //             ->orderBy('created_at', 'DESC')
             //             ->get();
-            // return view('content.pages.pages-my-list-non-subscrib', [
-            //     'pageConfigs'=> $pageConfigs, 
-            //     'list' => $list
-            // ]);
+            return view('content.pages.pages-my-list-non-subscrib', [
+                'pageConfigs'=> $pageConfigs
+            ]);
         } else {
 
             return view('content.pages.pages-my-list-subscrib', [
@@ -57,8 +56,8 @@ class MyListController extends MyController
 
                 for($index = 0; $index < count($list); $index++){
                     $currency = NULL;
-                    if(strtoupper($list[$index]->balance_currency) != $request->currency){
-                        $currency = $this->currencies[strtoupper($list[$index]->balance_currency)];
+                    if(strtoupper($list[$index]->default_currency) != $request->currency){
+                        $currency = $this->currencies[strtoupper($list[$index]->default_currency)];
                     }
 
                     if($currency && $currency != 0) {

@@ -8,7 +8,6 @@ $(function () {
 
     loadMyLists();
 
-    
 });
 
 function loadMyLists(){
@@ -37,12 +36,12 @@ function loadMyLists(){
 function drawingListTable(list){
     let html = "";
     Object.entries(list).forEach(([key, val]) => {
-        html += '<div class="card accordion-item" data-list_id="' + key + '">';
+        html += '<div class="card accordion-item">';
             html += '<h5 class="accordion-header">';
                 html += '<div class="accordion-title">';
                     html += '<span>' + val[0].list_name + '</span>';
                     html += '<div class="accordion-action">';
-                        html += '<button class="btn btn-sm btn-primary start-order-btn">Start test order</button>';
+                        html += '<button class="btn btn-sm btn-primary redirect-to-payment" title="Enable for subscribers only" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" >Start test order</button>';
                         html += '<span class="created-date">' + val[0].created_at + '</span>';
                         html += '<a class="accordion-button collapsed" type="button" data-bs-toggle="collapse" aria-expanded="false"  data-bs-target="#accordion-' + key + '" aria-controls="accordion-' + key + '"></a>';
                     html += "</div>";
@@ -71,23 +70,6 @@ function drawingListTable(list){
                                     html += '<td class="text-end">' + service.max + '</td>';
                                     html += '<td class="text-center">';
                                         html += '<a href="javascript:;" class="btn btn-sm btn-icon btn-icon-custom delete-service-btn" title="Remove this service from this list" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class="bx bxs-trash"></i></a>';
-                                        html += '<a href="javascript:void(0);" class="btn-icon-custom card-collapsible collapse-detail-box-btn"><i class="tf-icons bx bxs-chevron-down"></i></a>';
-                                    html += '</td>';
-                                html += '</tr>';
-                                html += '<tr class="collapse" data-list_service_id="' + service.list_service_id + '" data-template="' + service.api_template + '">';
-                                    html += '<td colspan="7">';
-                                        html += '<form class="order-details" data-list_service_id="' + service.list_service_id + '" data-service_id="' + service.service_id + '" data-template="' + service.api_template + '">';
-                                            html += '<div class="row">';
-                                                html += '<div class="col-sm-4">';
-                                                    html += '<label class="form-label" for="quantity_for_' + service.service_id + '">Quantity:</label>';
-                                                    html += '<input type="number" id="quantity_for_' + service.service_id + '" class="form-control form-control-sm quantity-input" placeholder="Quantify" value="">';
-                                                html += '</div>';
-                                                html += '<div class="col-sm-4">';
-                                                    html += '<label class="form-label" for="link_for_' + service.service_id + '">Link:</label>';
-                                                    html += '<input type="text" id="link_for_' + service.service_id + '" class="form-control form-control-sm link-input" placeholder="Link" value="">';
-                                                html += '</div>';
-                                            html += '</div>';
-                                        html += '</form>';
                                     html += '</td>';
                                 html += '</tr>';
                             })
@@ -170,74 +152,5 @@ function initializeButtons(){
         });
     })
 
-    $(".start-order-btn").on("click", function(e){
-        let check_flag = true;
-        const list_id = $(this).parents('.accordion-item').attr("data-list_id");
-        $(this).parents('.accordion-item').find("form.order-details").each(function(){
-            $(this).find('input').map(function(){
-                if(!$(this).val())
-                    check_flag = false;
-            });
-        })
-
-        if(!check_flag){
-            Swal.fire({
-                icon: 'warning',
-                text: 'Please enter values in the fields for all services in this list',
-                customClass: {
-                  confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false
-            })
-            return;
-        }
-
-        // start order
-        let data = [];
-        $(this).parents('.accordion-item').find("form.order-details").each(function(){
-            const list_service_id = $(this).attr("data-list_service_id");
-            const service_id = $(this).attr("data-service_id");
-            const quantity = $(this).find("input.quantity-input").val();
-            const link = $(this).find("input.link-input").val();
-            data.push({list_service_id, service_id, quantity, link});
-        })
-
-        const _url = '/my-list/start_order';
-        $.ajax({
-            url: _url,
-            data: {
-                list_id: list_id,
-                orders: data
-            },
-            type: "POST",
-            success: function (response) {
-                if (response.code == 200) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '',
-                        text: "Started this order!",
-                        customClass: {
-                            confirmButton: 'btn btn-primary'
-                        },
-                        buttonsStyling: false
-                    }).then(function(){
-                        // delete this list
-                        $(".accordion-item[data-list_id='" + list_id + "']").remove();
-                    });
-                }
-            },
-            error: function (response) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Something went wrong. Please try again later!',
-                    customClass: {
-                      confirmButton: 'btn btn-primary'
-                    },
-                    buttonsStyling: false
-                })
-                return;
-            },
-        });
-    })
+  
 }

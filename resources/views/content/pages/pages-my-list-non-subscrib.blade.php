@@ -18,15 +18,36 @@ $configData = Helper::appClasses();
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css')}}" />
 
 <style type="text/css">
+    .accordion-header {
+        padding: 10px 20px;
+    }
     .accordion-title {
         display: flex;
         justify-content: space-between;
         width: 100%;
         margin-right: 20px;
     }
-    .accordion-title .accordion-action button{
+    .accordion-title span {
+        padding: 4px 0;
+    }
+
+    .accordion-title span.created-date {
+        font-size: 16px;
+        padding: 8px 0;
+    }
+    .accordion-title .accordion-action {
+        display: flex;
+    }
+    .accordion-title .accordion-action button {
         margin-right: 20px;
         z-index: 9;
+    }
+    .accordion-title .accordion-action a.accordion-button {
+        width: 50px;
+    }
+    .btn-icon-custom {
+        display: table-cell!important;
+        padding-top: 3px;
     }
 </style>
 @endsection
@@ -38,66 +59,14 @@ $configData = Helper::appClasses();
 @endsection
 
 @section('page-script')
-<script src="{{asset('custom/js/my-list.js')}}"></script>
+<script src="{{asset('custom/js/my-list-non-subscrib.js')}}"></script>
 @endsection
 
 @section('content')
 <h4>My Lists</h4>
 <div class="my-lists">
-    <div class="accordion">
-        @php $index = 0; @endphp
-        @foreach($list as $item)
-            @php $index++ @endphp
-            <div class="card accordion-item">
-                <h2 class="accordion-header">
-                    <a class="accordion-button {{$index > 1 ? 'collapsed':''}}" type="button" data-bs-toggle="collapse" {{ $index == 1 ? 'aria-expanded="true"':'' }} data-bs-target="#accordion-{{$item->id}}" aria-controls="accordion-{{$item->id}}">
-                        <div class="accordion-title">    
-                            <span>{{ $item->list_name }}</span>
-                            <div class="accordion-action">
-                                <button class="btn btn-sm btn-primary redirect-to-payment" title="Enable for subscribers only" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" >Start test order</button>
-                                <span>{{ $item->created_at }}</span>
-                            </div>
-                        </div>
-                    </a>
-                </h2>
-                <div id="accordion-{{$item->id}}" class="accordion-collapse collapse {{ $index == 1 ? 'show':''}}">
-                    <!-- <div class="accordion-body"> -->
-                    <div>
-                        <div class="card-datatable table-responsive">
-                            <table class="table border-top" style="font-size: .9rem;">
-                                <thead>
-                                    <tr>
-                                        <th class=''>Provider</th>
-                                        <th class=''>ID</th>
-                                        <th class=''>Service Name</th>
-                                        <th class="text-end">Price</th>
-                                        <th class="text-end">Min</th>
-                                        <th class="text-end">Max</th>
-                                        <th class=''></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($item->services as $service)
-                                        <tr data-list_service_id="{{$service->id}}">
-                                            <td>{{ $service->service->provider }}</td>
-                                            <td>{{ $service->service->service }}</td>
-                                            <td>{{ $service->service->name }}</td>
-                                            <td class="text-end">{{ $service->service->rate . " " . $service->service->default_currency }}</td>
-                                            <td class="text-end">{{ $service->service->min }}</td>
-                                            <td class="text-end">{{ $service->service->max }}</td>
-                                            <td class="text-center">
-                                                <a href="javascript:;" class="btn btn-sm btn-icon delete-service-btn" title="Remove this service from this list" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"><i class="bx bxs-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="accordion" id="lists_wrraper">
         
-        @endforeach
     </div>
 </div>
 @endsection
