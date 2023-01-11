@@ -77,6 +77,10 @@
     .sticky-element {
         padding: 12px 16px;
     }
+
+    .input-error {
+        border-color: red!important;
+    }
 </style>
 @endsection
 

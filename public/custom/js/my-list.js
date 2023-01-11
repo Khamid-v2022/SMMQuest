@@ -80,7 +80,7 @@ function drawingListTable(list){
                                 html += '<tr class="collapse" data-list_service_id="' + service.list_service_id + '" data-template="' + service.api_template + '" data-service_id="' + service.service_id + '">';
                                     html += '<td colspan="7">';
                                         html += '<form class="order-details" data-list_service_id="' + service.list_service_id + '" data-service_id="' + service.service_id + '" data-template="' + service.api_template + '" data-balance="' + (service.user_balance ? service.user_balance : 0) + '" data-min="' + service.min + '" data-max="' + service.max + '" data-price="' + service.rate + '">';
-                                            html += htmlByServiceType(service.api_template, service.type, service.rate, service.service.user_balance ? service.user_balance : 0);    
+                                            html += htmlByServiceType(service.api_template, service.type, service.rate, service.user_balance ? service.user_balance : 0);    
                                                 // html += '<div class="col-sm-2">';
                                                 //     html += '<label class="form-label service-cost-label">Cost:</label>';
                                                 //     html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
@@ -129,9 +129,9 @@ function initializeButtons(){
     $(".collapse-detail-box-btn").on("click", function(){
         const data_list_service_id = $(this).parents('tr').attr("data-list_service_id");
         if($(this).prop("checked")){
-            $('.collapse[data-list_service_id="' + data_list_service_id + '"]').addClass("show").removeClass("selected");
+            $('.collapse[data-list_service_id="' + data_list_service_id + '"]').addClass("show").find("input, textarea").removeClass("input-error");
         } else {
-            $('.collapse[data-list_service_id="' + data_list_service_id + '"]').removeClass("show").removeClass("selected");
+            $('.collapse[data-list_service_id="' + data_list_service_id + '"]').removeClass("show").find("input, textarea").removeClass("input-error");
         }
         checkServiceSelected();
     })
@@ -143,14 +143,14 @@ function initializeButtons(){
             $("#accordion-" + list_id + " tbody").find(".collapse-detail-box-btn").map(function() {
                 $(this).prop("checked", true);
             })
-            $("#accordion-" + list_id + " tbody .collapse").addClass("show").removeClass("selected");
+            $("#accordion-" + list_id + " tbody .collapse").addClass("show").find("input, textarea").removeClass("input-error");
             checkServiceSelected();
         } else {
             $("#accordion-" + list_id + " tbody").find(".collapse-detail-box-btn").map(function() {
                 $(this).prop("checked", false);
 
             })
-            $("#accordion-" + list_id + " tbody .collapse").removeClass("show").removeClass("selected");
+            $("#accordion-" + list_id + " tbody .collapse").removeClass("show").find("input, textarea").removeClass("input-error");
             checkServiceSelected();
         }
     })
@@ -159,7 +159,8 @@ function initializeButtons(){
     $(".quantity-input").on("change", function(){
         const val = parseInt($(this).val());   
         if(!val){
-            $(this).parents("tr").addClass("selected");
+            // $(this).parents("tr").addClass("input-error");
+            $(this).addClass("input-error");
             $(this).parents("form.order-details").find(".service-cost-item").html('0');
             $(this).parents("form.order-details").find("input[type='hidden'].quantity-status").val("0");
         } else {
@@ -172,11 +173,13 @@ function initializeButtons(){
             if(cost > user_balance){
                 $(this).parents("form.order-details").find(".service-cost-item").removeClass("bg-label-success").addClass("bg-label-danger");
                 $(this).parents("form.order-details").find("input[type='hidden'].quantity-status").val("0");
-                $(this).parents("tr").addClass("selected");
+               
+                $(this).addClass("input-error");
             } else {
                 $(this).parents("form.order-details").find(".service-cost-item").removeClass("bg-label-danger").addClass("bg-label-success");
                 $(this).parents("form.order-details").find("input[type='hidden'].quantity-status").val("1");
-                $(this).parents("tr").removeClass("selected");
+                
+                $(this).removeClass("input-error");
             }
         }
 
@@ -194,7 +197,7 @@ function initializeButtons(){
                 buttonsStyling: false
             }).then(function(){
                 $(input_this).parents("form.order-details").find("input[type='hidden'].quantity-status").val("0");
-                $(input_this).parents("tr").addClass("selected");
+                $(input_this).addClass("input-error");
                 calculateSelectedServices();
                 $(input_this).focus();
             })
@@ -205,9 +208,9 @@ function initializeButtons(){
     $(".link-input, .comments-input, .username-input, .usernames-input, .hashtag-input, .hashtags-input, .media-input, .answer-input, .groups-input, .min-input, .max-input, .delay-input").on("change", function(){
         const val = $(this).val();   
         if(!val){
-            $(this).parents("tr").addClass("selected");
+            $(this).addClass("input-error");
         } else {
-            $(this).parents("tr").removeClass("selected");
+            $(this).removeClass("input-error");
         }
     })
 
@@ -351,12 +354,9 @@ function initializeButtons(){
         // check quentity-input status
         $(".card-datatable tr.collapse.show input[type='hidden'].quantity-status").map(function(){
             if($(this).val() == 0){
-                $(this).parents("tr").addClass("selected");
+                // $(this).parents("tr").addClass("input-error");
                 flag = 0;
-            } 
-            // else {
-            //     $(this).parents("tr").removeClass("selected");
-            // }
+            }
         })
 
         // check other input fields is empty
@@ -364,7 +364,7 @@ function initializeButtons(){
         $(".card-datatable tr.collapse.show input, .card-datatable tr.collapse.show textarea").map(
             function(){
                 if(!$(this).val()){
-                    $(this).parents("tr").addClass("selected");
+                    $(this).addClass("input-error");
                     flag = 0;
                 }
             }
@@ -499,8 +499,8 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
-                        html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by line"></textarea>';
                     html += '</div>';
                     html += '<input type="hidden" class="quantity-status" value="1">';
                 html += '</div>';
@@ -520,8 +520,8 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
-                        html += '<label class="form-label">User Names <span class="badge rounded-pill bg-label-primary" title="Usernames list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm usernames-input" placeholder="Usernames list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">User Names <span class="badge rounded-pill bg-label-primary" title="Usernames list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm usernames-input" placeholder="Usernames list separated by line"></textarea>';
                     html += '</div>';
                     html += '<input type="hidden" class="quantity-status" value="0">';
                 html += '</div>';
@@ -541,12 +541,12 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
-                        html += '<label class="form-label">User Names <span class="badge rounded-pill bg-label-primary" title="Usernames list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm usernames-input" placeholder="Usernames list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">User Names <span class="badge rounded-pill bg-label-primary" title="Usernames list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm usernames-input" placeholder="Usernames list separated by line"></textarea>';
                     html += '</div>';
                     html += '<div class="col-sm-3">';
-                        html += '<label class="form-label">Hashtags <span class="badge rounded-pill bg-label-primary" title="Hashtags list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm hashtags-input" placeholder="Hashtags list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">Hashtags <span class="badge rounded-pill bg-label-primary" title="Hashtags list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm hashtags-input" placeholder="Hashtags list separated by line"></textarea>';
                     html += '</div>';
                     html += '<input type="hidden" class="quantity-status" value="0">';
                 html += '</div>';
@@ -562,8 +562,8 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
-                        html += '<label class="form-label">User Names <span class="badge rounded-pill bg-label-primary" title="Usernames list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm usernames-input" placeholder="Usernames list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">User Names <span class="badge rounded-pill bg-label-primary" title="Usernames list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm usernames-input" placeholder="Usernames list separated by line"></textarea>';
                     html += '</div>';
                     html += '<input type="hidden" class="quantity-status" value="1">';
                 html += '</div>';
@@ -642,8 +642,8 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
-                        html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by line"></textarea>';
                     html += '</div>';
                     html += '<input type="hidden" class="quantity-status" value="1">';
                 html += '</div>';
@@ -705,8 +705,8 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<input type="text" class="form-control form-control-sm username-input" placeholder="User Name">';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
-                        html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by line"></textarea>';
                     html += '</div>';
                     html += '<input type="hidden" class="quantity-status" value="1">';
                 html += '</div>';
@@ -726,8 +726,8 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
-                        html += '<label class="form-label">Groups <span class="badge rounded-pill bg-label-primary" title="Groups list separated by \\r\\n or \\n" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
-                        html += '<textarea type="text" class="form-control form-control-sm groups-input" placeholder="Groups list separated by \\r\\n or \\n"></textarea>';
+                        html += '<label class="form-label">Groups <span class="badge rounded-pill bg-label-primary" title="Groups list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
+                        html += '<textarea type="text" class="form-control form-control-sm groups-input" placeholder="Groups list separated by line"></textarea>';
                     html += '</div>';
                     html += '<input type="hidden" class="quantity-status" value="0">';
                 html += '</div>';

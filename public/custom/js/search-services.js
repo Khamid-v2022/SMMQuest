@@ -10,6 +10,8 @@ let max_array_opt = [];
 let providers_opt = [];
 let types_opt = [];
 
+let selected_services_ids = [];
+
 const number_per_load = 5000;
 
 var previous_selected_providers = ["0"];
@@ -111,7 +113,7 @@ $(function () {
         }
 
         // $('input', this).on('keyup change', function () {
-        $('input', this).on('change', function () {
+        $('input[type="text"]', this).on('change', function () {
             blockDataTable();
             if (dt_basic.column(i).search() !== this.value) {
                 dt_basic.column(i).search(this.value).draw();
@@ -188,26 +190,29 @@ $(function () {
             
             if($(this).prop('checked')){
                 $("input.each-check").prop('checked', true);
-                
-                let arr = [];
+            
                 $('.datatables-basic').find('.each-check:checked').each(function() {
-                    arr.push($(this).attr('data-service_id'));
+                    if(!selected_services_ids.includes($(this).attr('data-service_id')))
+                        selected_services_ids.push($(this).attr('data-service_id'));
                 });
-                $("#selected_count").html(arr.length);
-                
-                if(arr.length == 0){
-                    $(".sticky-wrapper").css("display", "none");
-                } else {
-                    $(".sticky-wrapper").css("display", "block");
-                    // window.scrollBy(0, 1);
-                }
             } else {
                 $("input.each-check").prop('checked', false);
-                
-                $("#selected_count").html("0");
-                $(".sticky-wrapper").css("display", "none");
+                $('.datatables-basic').find('.each-check').each(function() {
+                    if(selected_services_ids.includes($(this).attr('data-service_id'))){
+                        const index = selected_services_ids.indexOf($(this).attr('data-service_id'));
+                        selected_services_ids.splice(index, 1);
+                    }
+                });
             }
-              
+            
+            $("#selected_count").html(selected_services_ids.length);
+                
+            if(selected_services_ids.length == 0){
+                $(".sticky-wrapper").css("display", "none");
+            } else {
+                $(".sticky-wrapper").css("display", "block");
+            }
+            console.log(selected_services_ids);
         })
 
     });
@@ -364,7 +369,7 @@ $(function () {
             });
 
             $(".paginate_button .page-link").on("click", function(){
-                $("input.each-check").prop('checked', false);
+                // $("input.each-check").prop('checked', false);
                 $("#check_all").prop('checked', false);
             })
         },
@@ -519,6 +524,7 @@ $(function () {
         }
 
         dt_basic.clear().draw();
+        selected_services_ids = [];
 
         // loadMore_with_ajax(0);
 
@@ -630,25 +636,27 @@ $(function () {
 
 
     $('.datatables-basic tbody').on('click', '.each-check', function () {
-        let arr = [];
-        $('.datatables-basic').find('.each-check:checked').each(function() {
-            arr.push($(this).attr('data-service_id'));
-        });
-        $("#selected_count").html(arr.length);
-        if(arr.length == 0){
+        if($(this).prop("checked")){
+            if(!selected_services_ids.includes($(this).attr('data-service_id')))
+                selected_services_ids.push($(this).attr('data-service_id'));
+        } else {
+            if(selected_services_ids.includes($(this).attr('data-service_id'))){
+                const index = selected_services_ids.indexOf($(this).attr('data-service_id'));
+                selected_services_ids.splice(index, 1);
+            }
+        }
+
+        $("#selected_count").html(selected_services_ids.length);
+        if(selected_services_ids.length == 0){
             $(".sticky-wrapper").css("display", "none");
         } else {
             $(".sticky-wrapper").css("display", "block");
         }
+
     })
 
     $("#add_list").on('click', function(){
-        let arr = [];
-        $('.datatables-basic').find('.each-check:checked').each(function() {
-            arr.push($(this).attr('data-service_id'));
-        });
-
-        if(arr.length == 0){
+        if(selected_services_ids.length == 0){
             Swal.fire({
                 icon: 'warning',
                 title: '',
@@ -706,12 +714,7 @@ $(function () {
     // create/assign services to list
     $("#m_save_btn").on("click", function(){
 
-        let selected_service_ids = [];
-        $('.datatables-basic').find('.each-check:checked').each(function() {
-            selected_service_ids.push($(this).attr('data-service_id'));
-        });
-
-        if(selected_service_ids.length == 0){
+        if(selected_services_ids.length == 0){
             Swal.fire({
                 icon: 'warning',
                 title: '',
@@ -747,7 +750,7 @@ $(function () {
             const _url = "/search-services/create_new_list";
             const data = {
                 list_name: new_list_name,
-                selected_service_ids: JSON.stringify(selected_service_ids)
+                selected_service_ids: JSON.stringify(selected_services_ids)
             };
            
             $.ajax({
@@ -804,7 +807,7 @@ $(function () {
             const _url = "/search-services/add_services_existing_list";
             const data = {
                 selected_list_id: selected_list_id,
-                selected_service_ids: JSON.stringify(selected_service_ids)
+                selected_service_ids: JSON.stringify(selected_services_ids)
             };
 
             $.ajax({
@@ -997,4 +1000,10 @@ function clearSelectedServicesFromTable(){
     });
 
     $(".sticky-wrapper").css("display", "none");
+    selected_services_ids = [];
+    
+    dt_basic.cells(null, '.select-service').every( function () {
+        var cell = this.node();
+        $(cell).find('input.each-check[type=checkbox]').prop('checked', false); 
+    });
 }
