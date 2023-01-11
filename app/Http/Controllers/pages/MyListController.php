@@ -74,7 +74,7 @@ class MyListController extends MyController
                 }
             }
 
-            return response()->json(['code'=>200, 'lists'=>$return_result, 'query'=> $result['query']], 200);
+            return response()->json(['code'=>200, 'lists'=>$return_result], 200);
     }
 
     public function deleteServiceFromList($id){
@@ -149,11 +149,11 @@ class MyListController extends MyController
                 'min'           => $item->min,
                 'max'           => $item->max,
                 'delay'         => $item->delay,
-                'start_count'   => 0,
-                'remains'       => $item->quentity,
-                'in_progress_minute' => 5,
-                'completed_minute'   => 60,
-                'status'      => 1
+                'start_count'   => 0,                       // Need to be fixed
+                'remains'       => $item->quentity,         // Need to be fixed
+                'in_progress_minute' => 5,                  // Need to be fixed
+                'completed_minute'   => 60,                 // Need to be fixed
+                'status'      => 1                          
             ]);
         }
           

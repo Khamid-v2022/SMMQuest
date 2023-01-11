@@ -10,6 +10,7 @@ use App\Http\Controllers\pages\ProviderController;
 use App\Http\Controllers\pages\SearchServicesController;
 use App\Http\Controllers\pages\SearchServicesTestController;
 use App\Http\Controllers\pages\MyListController;
+use App\Http\Controllers\pages\OrderHistoryController;
 
 use App\Http\Controllers\pages\PaymentController;
 
@@ -71,6 +72,10 @@ Route::group(['middleware' => ['auth', 'user']], function () {
     // Route::post('/my-list/start_order', [MyListController::class, 'startOrder']);
     Route::post('/my-list/start-test-order', [MyListController::class, 'startTestOrder']);
 
+
+    // Orders History page
+    Route::get('/order-history', [OrderHistoryController::class, 'index'])->name('pages-order-history');
+    Route::post('/order-history', [OrderHistoryController::class, 'loadHistory']);
     
     
     // payment page

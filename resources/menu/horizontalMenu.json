@@ -19,6 +19,12 @@
       "slug": "pages-my-list"
     },
     {
+      "url": "/order-history",
+      "icon": "menu-icon tf-icons bx bx-history",
+      "name": "Orders History",
+      "slug": "pages-order-history"
+    },
+    {
       "url": "/providers",
       "icon": "menu-icon tf-icons bx bx-donate-blood",
       "name": "My Providers",
