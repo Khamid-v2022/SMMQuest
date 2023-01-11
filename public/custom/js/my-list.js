@@ -52,7 +52,7 @@ function drawingListTable(list){
             html += "</h5>";
             html += '<div id="accordion-' + key + '" class="accordion-collapse collapse ' + (index == 1 ? 'show' : '')+ '">';
                 html += '<div class="card-datatable table-responsive">';
-                    html += '<table class="table dataTable border-top" style="font-size: .9rem;">';
+                    html += '<table class="table table-striped border-top" style="font-size: .9rem;">';
                         html += '<thead><tr>';
                             html += '<th class="">Provider</th>';
                             html += '<th class="">ID</th>';
@@ -64,11 +64,12 @@ function drawingListTable(list){
                         html += '</tr></thead>';
                         html += "<tbody>";
                             val.forEach((service) => {
+                                let price = Math.round(service.rate * 1000000) / 1000000;
                                 html += '<tr data-list_service_id="' + service.list_service_id + '">';
                                     html += '<td>' + service.provider + '<i class="bx bx-check-circle text-success ms-1" style="display:inline" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="' + $("#selected-currency").attr("data-currency") + " " + (service.user_balance ? service.user_balance : 0) + '"></i>' + '</td>';
                                     html += '<td>' + service.service + '</td>';
                                     html += '<td>' + service.name + '</td>';
-                                    html += '<td class="text-end">' + service.rate + '</td>';
+                                    html += '<td class="text-end">' + price + '</td>';
                                     html += '<td class="text-end">' + service.min + '</td>';
                                     html += '<td class="text-end">' + service.max + '</td>';
                                     html += '<td class="">';
@@ -79,20 +80,8 @@ function drawingListTable(list){
                                 html += '</tr>';
                                 html += '<tr class="collapse" data-list_service_id="' + service.list_service_id + '" data-template="' + service.api_template + '" data-service_id="' + service.service_id + '">';
                                     html += '<td colspan="7">';
-                                        html += '<form class="order-details" data-list_service_id="' + service.list_service_id + '" data-service_id="' + service.service_id + '" data-template="' + service.api_template + '" data-balance="' + (service.user_balance ? service.user_balance : 0) + '" data-min="' + service.min + '" data-max="' + service.max + '" data-price="' + service.rate + '">';
-                                            html += htmlByServiceType(service.api_template, service.type, service.rate, service.user_balance ? service.user_balance : 0);    
-                                                // html += '<div class="col-sm-2">';
-                                                //     html += '<label class="form-label service-cost-label">Cost:</label>';
-                                                //     html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
-                                                // html += '</div>';
-                                                // html += '<div class="col-sm-4">';
-                                                //     html += '<label class="form-label">Quantity:</label>';
-                                                //     html += '<input type="number" class="form-control form-control-sm quantity-input" placeholder="Quantify" value="">';
-                                                // html += '</div>';
-                                                // html += '<div class="col-sm-4">';
-                                                //     html += '<label class="form-label">Link:</label>';
-                                                //     html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
-                                                // html += '</div>';
+                                        html += '<form class="order-details" data-list_service_id="' + service.list_service_id + '" data-service_id="' + service.service_id + '" data-template="' + service.api_template + '" data-balance="' + (service.user_balance ? service.user_balance : 0) + '" data-min="' + service.min + '" data-max="' + service.max + '" data-price="' + price + '">';
+                                            html += htmlByServiceType(service.api_template, service.type, price, service.user_balance ? service.user_balance : 0);    
                                         html += '</form>';
                                     html += '</td>';
                                 html += '</tr>';
