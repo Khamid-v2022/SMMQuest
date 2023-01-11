@@ -61,7 +61,7 @@ class OrderHistoryController extends MyController
             }
         }
 
-        return response()->json(['code'=>200, 'lists'=>$return_result], 200);
+        return response()->json(['code'=>200, 'lists'=>$return_result, 'query'=>$result['query']], 200);
     }
 
 }

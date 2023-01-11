@@ -33,7 +33,7 @@ class OrderHeader extends Model
         $sql = "SELECT `h`.`order_serial_id`, `h`.`total_cost`, `h`.`created_at` AS `order_created_at`, `d`.*, `s`.`provider`, `s`.`service`, `s`.`name`, `s`.`type`, `s`.`rate` AS `current_price`, `s`.`default_currency`, `s`.`min` AS `service_min`, `s`.`max` AS `service_max`
         FROM 
         ( 
-            SELECT * FROM `order_headers` WHERE `user_id` = 1
+            SELECT * FROM `order_headers` WHERE `user_id` = " . $user_id . "
         ) `h`
         LEFT JOIN `order_details` `d` ON `h`.`id` = `d`.`header_id`
         INNER JOIN `services` `s` ON `d`.`service_id` = `s`.`id`

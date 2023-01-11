@@ -39,7 +39,7 @@ class OrderDetail extends Model
         'remains',
         'in_progress_minute',
         'completed_minute',
-        'status',                           //0: default, 1: started(make order), 2: inprogress(started order via API), 3: complete, 4: rejected, 5: canceled
+        'status',                           //0: default, 1: pending(make order), 2: inprogress(started order via API), 3: complete, 4: rejected, 5: canceled
         'error_message',
     ];
 
