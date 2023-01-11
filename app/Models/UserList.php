@@ -28,6 +28,10 @@ class UserList extends Model
         return $this->hasMany('App\Models\ListService', 'list_id');
     }
 
+    public function order_details(){
+        return $this->hasMany('App\Models\OrderDetail', 'list_id');
+    }
+
     public static function getMyLists($user_id){
         $sql = "SELECT `ul`.*, `ls`.`provider_id`, `ls`.`api_template`, `up`.`is_favorite`, `up`.`user_balance`,  `s`.`default_currency`, `ls`.`id` AS `list_service_id`, `s`.`provider`, `s`.`id` AS `service_id`, `s`.`service`, `s`.`name`, `s`.`rate`, `s`.`min`, `s`.`max`, `s`.`type`
         FROM

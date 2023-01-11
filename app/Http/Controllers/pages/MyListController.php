@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\UserList;
 use App\Models\ListService;
 use App\Models\Currency;
+use App\Models\Service;
+use App\Models\OrderHeader;
+use App\Models\OrderDetail;
 
 class MyListController extends MyController
 {
@@ -79,27 +82,81 @@ class MyListController extends MyController
         return response()->json(['code'=>200, 'message'=>'Deleted successfully'], 200);
     }
 
-    public function startOrder(Request $request){
-        $list_id = $request->list_id;
-        $orders = $request->orders;
+    // public function startOrder(Request $request){
+    //     $list_id = $request->list_id;
+    //     $orders = $request->orders;
 
-        // set list as started status
-        UserList::where('id', $list_id)->update(['is_started' => '1', 'started_at' => date("Y-m-d H:i:s")]);
+    //     // set list as started status
+    //     UserList::where('id', $list_id)->update(['is_started' => '1', 'started_at' => date("Y-m-d H:i:s")]);
         
-        foreach($orders as $order){
-            ListService::where('id', $order['list_service_id'])
-                        ->update(
-                            [
-                                'quantity' => $order['quantity'],
-                                'link' => $order['link'],
-                                // 'service_type' => $order->service_type,
-                                'started_at' => date("Y-m-d H:i:s"),
-                                'status' => 1,                                      // pending
-                                'inprogress_minute' => 5,                           // cronjob running every 5min
-                                // 'completed_minute' => 30
-                            ]
-                        );
+    //     foreach($orders as $order){
+    //         ListService::where('id', $order['list_service_id'])
+    //                     ->update(
+    //                         [
+    //                             'quantity' => $order['quantity'],
+    //                             'link' => $order['link'],
+    //                             // 'service_type' => $order->service_type,
+    //                             'started_at' => date("Y-m-d H:i:s"),
+    //                             'status' => 1,                                      // pending
+    //                             'inprogress_minute' => 5,                           // cronjob running every 5min
+    //                             // 'completed_minute' => 30
+    //                         ]
+    //                     );
+    //     }
+    //     return response()->json(['code'=>200, 'message'=>'Started successfully'], 200);
+    // }
+
+    public function startTestOrder(Request $request) {
+        $max_order_id = OrderHeader::where('user_id', Auth::user()->id)->max('order_serial_id');
+
+        $header = OrderHeader::create([
+            'user_id' => Auth::user()->id,
+            'order_serial_id' => $max_order_id + 1,
+            'service_count' => $request->service_count,
+            'total_cost' => $request->total_cost
+        ]);
+
+        $list = json_decode($request->order_list);
+        
+        if(!$this->currencies){
+            // currency table based USD
+            $this->currencies = Currency::where("id", 1)->first();
         }
+
+        foreach($list as $item){
+            // get service info for get price & currency to pay
+            $service_info = Service::where('id', $item->service_id)->first();
+
+            OrderDetail::create([
+                'header_id'     => $header->id,
+                'list_id'       => $item->list_id,
+                'service_id'    => $item->service_id,
+                'paid_price'    => $service_info->rate,
+                'paid_currency' => $service_info->default_currency,
+                'converstion_rate' => $this->currencies[strtoupper($service_info->default_currency)],
+
+                'cost'          => $item->cost,
+                'quantity'      => $item->quentity,
+                'link'          => $item->link,
+                'comments'      => $item->comments,
+                'usernames'     => $item->usernames,
+                'username'      => $item->username,
+                'hashtags'      => $item->hashtags,
+                'hashtag'       => $item->hashtag,
+                'media'         => $item->media,
+                'answer_number' => $item->answer_number,
+                'groups'        => $item->groups,
+                'min'           => $item->min,
+                'max'           => $item->max,
+                'delay'         => $item->delay,
+                'start_count'   => 0,
+                'remains'       => $item->quentity,
+                'in_progress_minute' => 5,
+                'completed_minute'   => 60,
+                'status'      => 1
+            ]);
+        }
+          
         return response()->json(['code'=>200, 'message'=>'Started successfully'], 200);
     }
 }

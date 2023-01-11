@@ -18,16 +18,6 @@ class ListService extends Model
         'provider_id',
         'service_id',
         'api_template',
-        'order_id',
-        'start_count',
-        'quantity',
-        'link',
-        'service_type',
-        'started_at',
-        'comment',
-        'status',
-        'inprogress_minute',
-        'completed_minute'
     ];
 
     public function list() {

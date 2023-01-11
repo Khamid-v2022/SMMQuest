@@ -377,28 +377,34 @@ function initializeButtons(){
         let params = [];
         // submit order
         $(".card-datatable tr.collapse.show").map(function(){
-            let service_id = $(this).attr("data-service_id");
-            let quentity =  $(this).find(".quantity-input").length > 0 ? $(this).find(".quantity-input").val() : null;
-            let link =      $(this).find(".link-input").length > 0 ? $(this).find(".link-input").val() : null;     
-            let comments =  $(this).find(".comments-input").length > 0 ? $(this).find(".comments-input").val() : null;  
-            let usernames = $(this).find(".usernames-input").length > 0 ? $(this).find(".usernames-input").val() : null;  
-            let username =  $(this).find(".username-input").length > 0 ? $(this).find(".username-input").val() : null; 
-            let hashtags =  $(this).find(".hashtags-input").length > 0 ? $(this).find(".hashtags-input").val() : null; 
-            let hashtag =   $(this).find(".hashtag-input").length > 0 ? $(this).find(".hashtag-input").val() : null;  
-            let media =     $(this).find(".media-input").length > 0 ? $(this).find(".media-input").val() : null; 
+
+            let list_id     =   parseInt($(this).parents(".accordion-item").attr("data-list_id"));
+            let service_id  =   $(this).attr("data-service_id");
+            let cost        =   $(this).find(".service-cost-item").length > 0 ? $(this).find(".service-cost-item").html() : null;
+            let quentity    =   $(this).find(".quantity-input").length > 0 ? $(this).find(".quantity-input").val() : null;
+            let link        =   $(this).find(".link-input").length > 0 ? $(this).find(".link-input").val() : null;     
+            let comments    =   $(this).find(".comments-input").length > 0 ? $(this).find(".comments-input").val() : null;  
+            let usernames   =   $(this).find(".usernames-input").length > 0 ? $(this).find(".usernames-input").val() : null;  
+            let username    =   $(this).find(".username-input").length > 0 ? $(this).find(".username-input").val() : null; 
+            let hashtags    =   $(this).find(".hashtags-input").length > 0 ? $(this).find(".hashtags-input").val() : null; 
+            let hashtag     =   $(this).find(".hashtag-input").length > 0 ? $(this).find(".hashtag-input").val() : null;  
+            let media       =   $(this).find(".media-input").length > 0 ? $(this).find(".media-input").val() : null; 
             let answer_number = $(this).find(".answer-input").length > 0 ? $(this).find(".answer-input").val() : null;
-            let groups =    $(this).find(".groups-input").length > 0 ? $(this).find(".groups-input").val() : null;  
-            let min =       $(this).find(".min-input").length > 0 ? $(this).find(".min-input").val() : null;  
-            let max =       $(this).find(".max-input").length > 0 ? $(this).find(".max-input").val() : null;  
-            let delay =     $(this).find(".delay-input").length > 0 ? $(this).find(".delay-input").val() : null;  
+            let groups      =   $(this).find(".groups-input").length > 0 ? $(this).find(".groups-input").val() : null;  
+            let min         =   $(this).find(".min-input").length > 0 ? $(this).find(".min-input").val() : null;  
+            let max         =   $(this).find(".max-input").length > 0 ? $(this).find(".max-input").val() : null;  
+            let delay       =   $(this).find(".delay-input").length > 0 ? $(this).find(".delay-input").val() : null;  
+
             params.push({
+                list_id,
                 service_id,
+                cost,
                 quentity,
                 link,
                 comments,
                 usernames,
                 username,
-                hashtags,
+                hashtags,   
                 hashtag,
                 media,
                 answer_number,
@@ -409,8 +415,44 @@ function initializeButtons(){
             })
         })
 
-        console.log(params);
+        const service_count   = $("#selected_count").html();
+        const total_cost      = $("#expected_cost").html();
+
+        $("#start_test_order").attr("disabled", true);
+        $("#start_test_order .fa-spinner").css("display", "inline-block");
+
+        const _url = "/my-list/start-test-order";
         
+        $.ajax({
+            url: _url,
+            type: "POST",
+            data: {
+                service_count,
+                total_cost,
+                order_list: JSON.stringify(params)
+            },
+            success: function (response) {
+                if (response.code == 200) {
+                    clearForm();
+                    Swal.fire({
+                        icon: 'success',
+                        title: '',
+                        text: 'Success',
+                        customClass: {
+                          confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false
+                    });
+
+                }
+                $("#start_test_order .fa-spinner").css("display", "none");
+                $("#start_test_order").removeAttr("disabled");
+            },
+            error: function (response) {
+                $("#start_test_order .fa-spinner").css("display", "none");
+                $("#start_test_order").removeAttr("disabled");
+            }
+        });
     })
 
     
@@ -453,7 +495,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<label class="form-label service-cost-label">Cost:</label>';
                         html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
                     html += '</div>';
-                    html += '<div class="col-sm-4">';
+                    html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
                         html += '<input type="number" class="form-control form-control-sm quantity-input" placeholder="Quantify" value="">';
                     html += '</div>';
@@ -750,4 +792,17 @@ function htmlByServiceType(panel, service_type, price, user_balance){
     }
 
     return "";
+}
+
+function clearForm(){
+    $(".accordion-item .form-check-input").prop("checked", false);
+    $(".accordion-item .service-cost-item").html("0");
+    $(".accordion-item .service-cost-item").removeClass("bg-label-danger").addClass("bg-label-success");
+    $(".accordion-item input, .accordion-item textarea").val("");
+
+    $(".accordion-item tr.collapse").removeClass("show");
+    
+    $("#selected_count").html("0");
+    $("#expected_cost").html("0");
+    $(".sticky-wrapper").css("display", "none");
 }

@@ -106,6 +106,7 @@
         <span>Expected Cost: <span id="expected_cost" class="badge bg-label-success">0</span></span>
         <button class="btn btn-primary" id="start_test_order">
             Start Test Order
+            <i class="fas fa-spinner fa-spin" style="display:none"></i>
         </button>
     </div> 
 </div>

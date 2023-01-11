@@ -70,4 +70,8 @@ class User extends Authenticatable
     public function lists() {
         return $this->hasMany('App\Models\UserList');
     }
+
+    public function orders() {
+        return $this->hasMany('App\Models\OrderHeader');
+    }
 }

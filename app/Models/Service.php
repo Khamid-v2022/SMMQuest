@@ -44,6 +44,10 @@ class Service extends Model
         return $this->hasMany('App\Models\ListService');
     }
 
+    public function order_details(){
+        return $this->hasMany('App\Models\OrderDetail', 'service_id');
+    }
+
     public static function service_types($user_id){
         return UserProvider::where('user_id', $user_id)
             ->join('services', 'services.provider_id' , '=', 'user_provider.provider_id')
