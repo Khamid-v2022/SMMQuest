@@ -120,6 +120,9 @@ function drawingListTable(list){
                                                 html += service.groups ? ('<br><span>Groups: </span>' + service.groups) : '';
                                                 html += service.min ? ('<br><span>Min: </span>' + service.min) : '';
                                                 html += service.max ? ('<br><span>Max: </span>' + service.max) : '';
+                                                html += service.posts ? ('<br><span>Posts: </span>' + service.posts) : '';
+                                                html += service.old_posts ? ('<br><span>Old Posts: </span>' + service.old_posts) : '';
+                                                html += service.expiry ? ('<br><span>Expiry: </span>' + service.expiry) : '';
                                                 html += service.delay ? ('<br><span>Delay: </span>' + service.delay) : '';
                                                 html += service.start_count ? ('<br><span>Start Count: </span>' + service.start_count) : '';
                                                 html += service.remains ? ('<br><span>Remains: </span>' + service.remains) : '';

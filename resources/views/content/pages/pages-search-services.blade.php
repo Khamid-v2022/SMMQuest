@@ -241,7 +241,7 @@ $configData = Helper::appClasses();
                             </div>
                             <div class="col-12 col-sm-6 col-lg-4">
                                 <label class="form-label" for="added_before">Added Before:</label>
-                                <input type="number" id="added_before" class="form-control flatpickr-date" placeholder="Added Before">
+                                <input type="text" id="added_before" class="form-control flatpickr-date" placeholder="Added Before">
                             </div>
                         </div>
 

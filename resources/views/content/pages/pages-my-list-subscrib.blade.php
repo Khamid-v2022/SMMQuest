@@ -14,8 +14,6 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 <!-- Row Group CSS -->
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css')}}">
-<!-- Form Validation -->
-<link rel="stylesheet" href="{{asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css')}}" />
 
 <style type="text/css">
     .accordion-header {
@@ -88,6 +86,8 @@
 @section('vendor-script')
 <script src="{{asset('assets/vendor/libs/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/moment/moment.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
 @endsection
 
 @section('page-script')
@@ -98,6 +98,10 @@
 <h4>My Lists</h4>
 <div class="my-lists">
     <div class="accordion" id="lists_wrraper">
+    </div>
+    <div class="dataTables_wrapper text-end mt-2">
+        <div class="dataTables_paginate paging_simple_numbers" id="paginate">
+        </div>
     </div>
 </div>
 <div class="sticky-wrapper">
