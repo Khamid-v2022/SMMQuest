@@ -102,8 +102,21 @@ function drawingListTable(list){
                                         }
                                         else {
                                             let cost = price;
-                                            if(service.quantity)
+                                            if(service.quantity){
                                                 cost = Math.round(price * service.quantity * 1000000) / 1000000;
+                                            }
+                                            // check comments type
+                                            if(service.comments){
+                                                let comments = service.comments.split("\n");
+  
+                                                let real_comments = [];
+                                                comments.forEach((item) => {
+                                                    if(item.trim() != '')
+                                                        real_comments.push(item);
+                                                })
+                                                cost = Math.round(price * real_comments.length * 1000000) / 1000000;
+                                            }
+                                            
                                             html += '<div>';
                                                 html += '<span>Creation Date: </span>' + service.created_at;
                                                 html += '<br><span>Order ID: </span>' + (service.order_id ? service.order_id : '');

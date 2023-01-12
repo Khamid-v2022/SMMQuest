@@ -289,13 +289,43 @@ function initializeButtons(){
     })
 
     // Link input box
-    $(".link-input, .comments-input, .username-input, .usernames-input, .hashtag-input, .hashtags-input, .media-input, .answer-input, .groups-input, .min-input, .max-input, .delay-input").on("change", function(){
+    $(".link-input, .username-input, .usernames-input, .hashtag-input, .hashtags-input, .media-input, .answer-input, .groups-input, .min-input, .max-input, .delay-input").on("change", function(){
         const val = $(this).val();   
         if(!val){
             $(this).addClass("input-error");
         } else {
             $(this).removeClass("input-error");
         }
+    })
+
+    $(".comments-input").on("change", function(){
+        const val = $(this).val(); 
+        if(!val){
+            $(this).addClass("input-error");
+            return;
+        } 
+
+        $(this).removeClass("input-error");
+
+        let comments = val.split("\n");
+        $(this).val(val.trim());
+
+        let real_comments = [];
+        comments.forEach((item) => {
+            if(item.trim() != '')
+                real_comments.push(item);
+        })
+        
+
+        let price = $(this).parents("form.order-details").attr("data-price");
+        const balance = $(this).parents("form.order-details").attr("data-balance");
+
+        let cost = Math.round(price * real_comments.length * 1000000) / 1000000;
+        $(this).parents("form.order-details").find(".service-cost-item").html(cost);
+        if(cost > balance){
+            $(this).parents("form.order-details").find(".service-cost-item").removeClass("bg-label-success").addClass("bg-label-danger");
+        } else
+            $(this).parents("form.order-details").find(".service-cost-item").removeClass("bg-label-danger").addClass("bg-label-success");
     })
 
 
@@ -378,7 +408,6 @@ function initializeButtons(){
         // $(".card-datatable tr.collapse.show input.link-input, .card-datatable tr.collapse.show textarea").map(
         $(".card-datatable tr.collapse.show input, .card-datatable tr.collapse.show textarea").map(
             function(){
-
                 // except for optional input, textarea for must be input condition
                 if(!$(this).hasClass("posts-input") && !$(this).hasClass("old-posts-input") && !$(this).hasClass("expiry-input")){
                     if(!$(this).val()){
@@ -528,7 +557,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -545,20 +574,20 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-package">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item">' + price + '</span>';
+                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item static-cost-item">' + price + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
                         html += '<label class="form-label">Link:</label>';
                         html += '<input type="text" class="form-control form-control-sm link-input" placeholder="Link" value="">';
                     html += '</div>';
-                    html += '<input type="hidden" class="quantity-status" value="1">';
+                    html += '<input type="hidden" class="quantity-status static-status" value="1">';
                 html += '</div>';
                 return html;
             case 'Custom Comments':
                 html += '<div class="row" class="form-content-custom-comments">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item">' + price + '</span>';
+                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item static-cost-item">' + price + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
                         html += '<label class="form-label">Link:</label>';
@@ -568,14 +597,14 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
                         html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by line"></textarea>';
                     html += '</div>';
-                    html += '<input type="hidden" class="quantity-status" value="1">';
+                    html += '<input type="hidden" class="quantity-status static-status" value="1">';
                 html += '</div>';
                 return html;
             case 'Mentions':
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -596,7 +625,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -621,7 +650,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item">' + price + '</span>';
+                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item static-cost-item">' + price + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
                         html += '<label class="form-label">Link:</label>';
@@ -631,14 +660,14 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<label class="form-label">User Names <span class="badge rounded-pill bg-label-primary" title="Usernames list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
                         html += '<textarea type="text" class="form-control form-control-sm usernames-input" placeholder="Usernames list separated by line"></textarea>';
                     html += '</div>';
-                    html += '<input type="hidden" class="quantity-status" value="1">';
+                    html += '<input type="hidden" class="quantity-status static-status" value="1">';
                 html += '</div>';
                 return html;
             case 'Mentions Hashtag':
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -659,7 +688,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -680,7 +709,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -701,7 +730,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-custom-comments">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item">' + price + '</span>';
+                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item static-cost-item">' + price + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
                         html += '<label class="form-label">Link:</label>';
@@ -711,14 +740,14 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
                         html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by line"></textarea>';
                     html += '</div>';
-                    html += '<input type="hidden" class="quantity-status" value="1">';
+                    html += '<input type="hidden" class="quantity-status static-status" value="1">';
                 html += '</div>';
                 return html;
             case 'Comment Likes':
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -739,7 +768,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -760,7 +789,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-custom-comments">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item">' + price + '</span>';
+                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item static-cost-item">' + price + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
                         html += '<label class="form-label">Link:</label>';
@@ -774,14 +803,14 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<label class="form-label">Comments <span class="badge rounded-pill bg-label-primary" title="Comments list separated by line" data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
                         html += '<textarea type="text" class="form-control form-control-sm comments-input" placeholder="Comments list separated by line"></textarea>';
                     html += '</div>';
-                    html += '<input type="hidden" class="quantity-status" value="1">';
+                    html += '<input type="hidden" class="quantity-status static-status" value="1">';
                 html += '</div>';
                 return html;
             case 'Invites from Groups':
                 html += '<div class="row" class="form-content-default">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge bg-label-success service-cost-item">' + '0' + '</span>';
+                        html += '<span type="text" class="badge bg-label-success service-cost-item dynamic-cost-item">' + '0' + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Quantity:</label>';
@@ -802,7 +831,7 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                 html += '<div class="row" class="form-content-package">';
                     html += '<div class="col-sm-2">';
                         html += '<label class="form-label service-cost-label">Cost:</label>';
-                        html += '<span type="text" class="badge ' + (parseFloat(price) > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item">' + price + '</span>';
+                        html += '<span type="text" class="badge ' + (price > parseFloat(user_balance) ? 'bg-label-danger' : 'bg-label-success') + ' service-cost-item static-cost-item">' + price + '</span>';
                     html += '</div>';
                     html += '<div class="col-sm-4">';
                         html += '<label class="form-label">User Name:</label>';
@@ -828,12 +857,12 @@ function htmlByServiceType(panel, service_type, price, user_balance){
                         html += '<label class="form-label">Old Posts <span class="badge rounded-pill bg-label-primary" title="Number of existing posts that will be parsed and for which orders will be created, can be used if this option is available for the service." data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">?</span></label>';
                         html += '<textarea type="text" class="form-control form-control-sm old-posts-input" placeholder="Old Posts (optional)"></textarea>';
                     html += '</div>';
-                    html += '<div class="col-sm-4">';
+                    html += '<div class="col-sm-2">';
                         html += '<label class="form-label">Expiry: </label>';
                         html += '<input type="text" class="form-control form-control-sm expiry-input flatpickr-date" placeholder="Expiry (optional)">';
                     html += '</div>';
 
-                    html += '<input type="hidden" class="quantity-status" value="1">';
+                    html += '<input type="hidden" class="quantity-status static-status" value="1">';
                 html += '</div>';
                 return html;
         }
@@ -844,9 +873,28 @@ function htmlByServiceType(panel, service_type, price, user_balance){
 
 function clearForm(){
     $(".accordion-item .form-check-input").prop("checked", false);
-    $(".accordion-item .service-cost-item").html("0");
-    $(".accordion-item .service-cost-item").removeClass("bg-label-danger").addClass("bg-label-success");
+    
+    $(".accordion-item .service-cost-item.dynamic-cost-item").html("0");
+    $(".accordion-item .service-cost-item.dynamic-cost-item").removeClass("bg-label-danger").addClass("bg-label-success");
+    
+    $(".accordion-item .service-cost-item.static-cost-item").map(function() {
+        const price = $(this).parents("form.order-details").attr("data-price");
+        const balance = $(this).parents("form.order-details").attr("data-balance");
+
+        $(this).html(price);
+        if(price > balance){
+            $(this).removeClass("bg-label-success").addClass("bg-label-danger");
+        } else
+            $(this).removeClass("bg-label-danger").addClass("bg-label-success");
+    });
+    
     $(".accordion-item input, .accordion-item textarea").val("");
+
+    // initialize hidden status input box
+    $(".accordion-item input.quantity-status").val(0);
+    $(".accordion-item input.static-status").val(1);
+
+    
 
     $(".accordion-item tr.collapse").removeClass("show");
     
